@@ -50,7 +50,7 @@ education:
 social:
   - icon: envelope
     icon_pack: fas
-    link: '/#contact'
+    link: 'mailto:jonas.kneifl@itm.uni-stuttgart.de'
   - icon: researchgate
     icon_pack: fab
     link: https://www.researchgate.net/profile/Jonas_Kneifl
