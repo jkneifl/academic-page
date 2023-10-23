@@ -47,14 +47,14 @@ sections:
         #   date_start: '2023-09-01'
         #   date_end: '2023-09-01'
         #   description: Development of a reduced-order modeling with uncertainty quantification framework using generative AI algorithms.
-        # - title: Research Intern
-        #   company: Artificial Intelligence Institute in Dynamic Systems 
-        #   company_url: 'https://dynamicsai.org'
-        #   company_logo: UW
-        #   location: Seattle (US)
-        #   date_start: '2022-08-01'
-        #   date_end: '2022-11-16'
-        #   description: Development of a multi-hierarchic surrogate modeling approach using graph convolutional neural networks and mesh simplification.
+        - title: Research Intern
+          company: Artificial Intelligence Institute in Dynamic Systems 
+          company_url: 'https://dynamicsai.org'
+          company_logo: UW
+          location: Seattle (US)
+          date_start: '2022-08-01'
+          date_end: '2022-11-16'
+          description: Development of a multi-hierarchic surrogate modeling approach using graph convolutional neural networks and mesh simplification.
     design:
       columns: '2'
   - block: collection
