@@ -39,66 +39,74 @@ sections:
       #   Leave `date_end` empty if it's your current employer.
       #   Begin multi-line descriptions with YAML's `|2-` multi-line prefix.
       items:
-        # - title: Visiting Researcher
-        #   company: Department of Civil and Environmental Engineering
-        #   company_url: https://www.dica.polimi.it/?lang=en
-        #   company_logo: polimi
-        #   location: Polytechnic University of Milan, Milan, Italy
-        #   date_start: '2023-09-01'
-        #   date_end: '2023-09-01'
-        #   description: Development of a reduced-order modeling with uncertainty quantification framework using generative AI algorithms.
+        - title: Visiting Researcher
+          company: Department of Civil and Environmental Engineering
+          company_url: https://www.dica.polimi.it/?lang=en
+          company_logo: polimi
+          location: Polytechnic University of Milan, Milan, Italy
+          date_start: '2023-09-01'
+          date_end: '2023-09-01'
+          description: Development of a reduced-order modeling with uncertainty quantification framework using generative AI algorithms.
         - title: Research Intern
-          company: Artificial Intelligence Institute in Dynamic Systems 
-          company_url: 'https://dynamicsai.org'
+          company: Artificial Intelligence Institute in Dynamic Systems
+          company_url: 'https://dynamicsai.org/'
           company_logo: UW
-          location: Seattle (US)
+          location: University of Washington, Seattle (US)
           date_start: '2022-08-01'
           date_end: '2022-11-16'
           description: Development of a multi-hierarchic surrogate modeling approach using graph convolutional neural networks and mesh simplification.
+        # - title: Industrial Internship
+        #   company: Daimler AG
+        #   company_url: 'https://group.mercedes-benz.com/de/'
+        #   company_logo: UW
+        #   location: Sindelfingen, Germany
+        #   date_start: '2018-09-01'
+        #   date_end: '2019-04-30'
+        #   description: Scenario generation and tool development for the simulative validation of driver assistance systems
     design:
       columns: '2'
-  - block: collection
-    id: featured
-    content:
-      title: Featured Publications
-      filters:
-        folders:
-          - publication
-        featured_only: true
-    design:
-      columns: '2'
-      view: card
-  - block: collection
-    content:
-      title: Publications
-      text: |-
-        {{% callout note %}}
-        Quickly discover relevant content by [filtering publications](./publication/).
-        {{% /callout %}}
-      filters:
-        folders:
-          - publication
-        exclude_featured: true
-    design:
-      columns: '2'
-      view: citation
-  - block: collection
-    id: talks
-    content:
-      title: Recent & Upcoming Talks
-      filters:
-        folders:
-          - event
-    design:
-      columns: '2'
-      view: compact
+  # - block: collection
+  #   id: featured
+  #   content:
+  #     title: Featured Publications
+  #     filters:
+  #       folders:
+  #         - publication
+  #       featured_only: true
+  #   design:
+  #     columns: '2'
+  #     view: card
+  # - block: collection
+  #   content:
+  #     title: Publications
+  #     text: |-
+  #       {{% callout note %}}
+  #       Quickly discover relevant content by [filtering publications](./publication/).
+  #       {{% /callout %}}
+  #     filters:
+  #       folders:
+  #         - publication
+  #       exclude_featured: true
+  #   design:
+  #     columns: '2'
+  #     view: citation
+  # - block: collection
+  #   id: talks
+  #   content:
+  #     title: Recent & Upcoming Talks
+  #     filters:
+  #       folders:
+  #         - event
+  #   design:
+  #     columns: '2'
+  #     view: compact
   - block: contact
     id: contact
     content:
       title: Contact
       subtitle:
-      text: |-
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam mi diam, venenatis ut magna et, vehicula efficitur enim.
+      # text: |-
+      #   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam mi diam, venenatis ut magna et, vehicula efficitur enim.
       # Contact (add or remove contact options as necessary)
       email: jonas.kneifl@itm.uni-stuttgart.de
       address:
@@ -111,19 +119,19 @@ sections:
       directions: ITM Room 3.101
       contact_links:
         - icon: linkedin
-          icon_pack: fas
-          name: Zoom Me
+          icon_pack: fab
+          name: Connect on
           link: 'https://linkedin.com/in/jonas-kneifl-918ba4194'
       # Automatically link email and phone or display as text?
       autolink: true
       # Email form provider
-      form:
-        provider: netlify
-        formspree:
-          id:
-        netlify:
-          # Enable CAPTCHA challenge to reduce spam?
-          captcha: false
+      # form:
+      #   provider: netlify
+      #   formspree:
+      #     id:
+      #   netlify:
+      #     # Enable CAPTCHA challenge to reduce spam?
+      #     captcha: false
     design:
       columns: '2'
 ---
