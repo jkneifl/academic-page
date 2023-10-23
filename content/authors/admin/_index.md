@@ -26,19 +26,19 @@ bio: My research interests combines model order reduction, surrogate modeling an
 
 # Interests to show in About widget
 interests:
-  - Artificial Intelligence
+  # - Artificial Intelligence
   - Scientific Machine Learning
   - Model Order Reduction
   - Surrogate Modeling
-  - Control Theory
+  # - Control Theory
 
 # Education to show in About widget
 education:
   courses:
     - course: PhD in Simulation Technology
       institution: University of Stuttgart
-      year: (in progress)
-    - course: Msc in Engineering Cybernetics
+      year: in progress
+    - course: MSc in Engineering Cybernetics
       institution: University of Stuttgart
       year: 2020
     - course: BSc in Engineering Cybernetics
