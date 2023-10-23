@@ -27,8 +27,10 @@ bio: My research interests combines model order reduction, surrogate modeling an
 # Interests to show in About widget
 interests:
   - Artificial Intelligence
+  - Scientific Machine Learning
   - Model Order Reduction
   - Surrogate Modeling
+  - Control Theory
 
 # Education to show in About widget
 education:
