@@ -56,6 +56,14 @@ sections:
           date_start: '2022-08-01'
           date_end: '2022-11-16'
           description: Development of a multi-hierarchic surrogate modeling approach using graph convolutional neural networks and mesh simplification.
+        - title: Working Student
+          company: Robert Bosch GmbH
+          company_url: 'https://www.bosch.de/en/'
+          company_logo: bosch
+          location: Stuttgart, Germany
+          date_start: '2019-05-01'
+          date_end: '2020-04-30'
+          description: Process automation in project planning within the area of autonomous driving.
         - title: Industrial Internship
           company: Daimler AG
           company_url: 'https://group.mercedes-benz.com/de/'
