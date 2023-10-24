@@ -9,6 +9,5 @@ node_modules/
 go.sum
 .hugo_build.lock
 
-assets/media/icons/.DS_Store
-
-assets/media/icons/brands/.DS_Store
+# mac related
+*.DS_Store
