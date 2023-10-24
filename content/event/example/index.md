@@ -39,16 +39,16 @@ image:
   # caption: ''
   focal_point: Right
 
-links:
-  # - icon: twitters
-    # icon_pack: fab
-    # name: Follow
-    # url: https://twitter.com/georgecushen
-  url_code: ''
-  url_pdf: ''
-  url_slides: ''
-  url_video: ''
-
+# links:
+#   # - icon: twitters
+#     # icon_pack: fab
+#     # name: Follow
+#     # url: https://twitter.com/georgecushen
+#   url_code: ''
+#   url_pdf: ''
+#   url_slides: ''
+#   url_video: ''
+# 
 # Markdown Slides (optional).
 #   Associate this talk with Markdown slides.
 #   Simply enter your slide deck's filename without extension.
