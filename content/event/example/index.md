@@ -1,24 +1,29 @@
 ---
-title: Example Talk
+title: Data-driven Surrogate Modeling of Structural Dynamical Systems
 
-event: Wowchemy Conference
-event_url: https://example.org
+event: Seminar Visit @ DICA
+# event_url: https://example.org
 
-location: Wowchemy HQ
+location: Politecnico Milano, Milan
 address:
-  street: 450 Serra Mall
-  city: Stanford
-  region: CA
-  postcode: '94305'
-  country: United States
+  street: Piazza Leonardo da Vinci 32
+  city: Milan
+  region: Lombardy
+  postcode: '20133'
+  country: Italy
 
-summary: An example talk using Wowchemy's Markdown slides feature.
-abstract: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellusac convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum. Sed ac faucibus dolor, scelerisque sollicitudin nisi. Cras purus urna, suscipit quis sapien eu, pulvinar tempor diam.'
+summary: This talk discusses two topics a multi-hierarchic graph convolutional surrogate modeling approach and dhe discovery of low-dimensional port Hamiltonian systems with imposed structure.
+abstract: 'High-fidelity simulation models provide insight into complex dynamical systems but are neither suitable for time critical applications nor for evaluation on resource limited hardware. This results in a high demand for efficient surrogate models that require less computational effort while retaining the most important aspects of the original model. 
+Data based non intrusive model order reduction has emerged as a potent solution
+to the task of creating efficient yet accurate surrogate models. In this talk we will discuss two related topics:
+(i) a multi hierarchic graph convolutional surrogate modeling scheme, in which
+surrogates are created on coarse representations of the model in an iterative manner, and
+(ii) structure imposing discovery of low dimensional port Hamiltonian systems.'
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-date: '2030-06-01T13:00:00Z'
-date_end: '2030-06-01T15:00:00Z'
+date: '2023-09-14T13:00:00Z'
+date_end: '2023-09-14T15:00:00Z'
 all_day: false
 
 # Schedule page publish date (NOT talk date).
@@ -31,43 +36,31 @@ tags: []
 featured: false
 
 image:
-  caption: 'Image credit: [**Unsplash**](https://unsplash.com/photos/bzdhc5b3Bxs)'
+  # caption: ''
   focal_point: Right
 
-links:
-  - icon: twitter
-    icon_pack: fab
-    name: Follow
-    url: https://twitter.com/georgecushen
-url_code: ''
-url_pdf: ''
-url_slides: ''
-url_video: ''
-
+# links:
+#   # - icon: twitters
+#     # icon_pack: fab
+#     # name: Follow
+#     # url: https://twitter.com/georgecushen
+#   url_code: ''
+#   url_pdf: ''
+#   url_slides: ''
+#   url_video: ''
+# 
 # Markdown Slides (optional).
 #   Associate this talk with Markdown slides.
 #   Simply enter your slide deck's filename without extension.
 #   E.g. `slides = "example-slides"` references `content/slides/example-slides.md`.
 #   Otherwise, set `slides = ""`.
-slides: example
+slides: ""
 
 # Projects (optional).
 #   Associate this post with one or more of your projects.
 #   Simply enter your project's folder or file name without extension.
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
-projects:
-  - example
+projects: 
+  - []
 ---
-
-{{% callout note %}}
-Click on the **Slides** button above to view the built-in slides feature.
-{{% /callout %}}
-
-Slides can be added in a few ways:
-
-- **Create** slides using Wowchemy's [_Slides_](https://wowchemy.com/docs/managing-content/#create-slides) feature and link using `slides` parameter in the front matter of the talk file
-- **Upload** an existing slide deck to `static/` and link using `url_slides` parameter in the front matter of the talk file
-- **Embed** your slides (e.g. Google Slides) or presentation video on this page using [shortcodes](https://wowchemy.com/docs/writing-markdown-latex/).
-
-Further event details, including [page elements](https://wowchemy.com/docs/writing-markdown-latex/) such as image galleries, can be added to the body of this page.
