@@ -34,7 +34,7 @@ image:
   # caption: ''
   focal_point: Right
 
-links:
+# links:
 #   # - icon: twitters
 #     # icon_pack: fab
 #     # name: Follow
@@ -42,7 +42,7 @@ links:
 #   url_code: ''
 #   url_pdf: ''
 #   url_slides: ''
-  url_video: 'https://www.youtube.com/watch?v=HCfbT1OF0Tc'
+  # url_video: 'https://www.youtube.com/watch?v=HCfbT1OF0Tc'
 # 
 # Markdown Slides (optional).
 #   Associate this talk with Markdown slides.
