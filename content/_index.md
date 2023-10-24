@@ -56,15 +56,14 @@ sections:
           date_start: '2022-08-01'
           date_end: '2022-11-16'
           description: Development of a multi-hierarchic surrogate modeling approach using graph convolutional neural networks and mesh simplification.
-        # - title: Industrial Internship
-        #   company: Daimler AG
-        #   company_url: 'https://group.mercedes-benz.com/de/'
-        #   company_logo: UW
-        #   location: Sindelfingen, Germany
-        #   date_start: '2018-09-01'
-        #   date_end: '2019-04-30'
-        #   description: Scenario generation and tool development for the simulative validation of driver assistance systems
-    design:
+        - title: Industrial Internship
+          company: Daimler AG
+          company_url: 'https://group.mercedes-benz.com/de/'
+          company_logo: mercedes
+          location: Sindelfingen, Germany
+          date_start: '2018-09-01'
+          date_end: '2019-04-30'
+          description: Scenario generation and tool development for the simulative validation of autonomous driving systems.
       columns: '2'
   # - block: collection
   #   id: featured
@@ -91,16 +90,16 @@ sections:
   #   design:
   #     columns: '2'
   #     view: citation
-  # - block: collection
-  #   id: talks
-  #   content:
-  #     title: Recent & Upcoming Talks
-  #     filters:
-  #       folders:
-  #         - event
-  #   design:
-  #     columns: '2'
-  #     view: compact
+  - block: collection
+    id: talks
+    content:
+      title: Recent & Upcoming Talks
+      filters:
+        folders:
+          - event
+    design:
+      columns: '2'
+      view: compact
   - block: contact
     id: contact
     content:
