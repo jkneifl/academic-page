@@ -1,11 +1,51 @@
 ---
-title: Writing technical content in Markdown
-date: 2019-07-12
-math: true
+title: CROM
+subtitle: continoues reduced order models.
+
+# Summary for listings and search engines
+summary: CROM blog post.
+
+# Link this post with a project
+projects: []
+
+# Date published
+date: '2023-10-26T00:00:00Z'
+
+# Date updated
+lastmod: '2023-10-26T00:00:00Z'
+
+# Is this an unpublished draft?
+draft: false
+
+# Show this page in the Featured widget?
+featured: false
+
+# Featured image
+# Place an image named `featured.jpg/png` in this page's folder and customize its options here.
 image:
+  caption: ''
+  focal_point: ''
   placement: 2
-  caption: 'Image credit: [**John Moeses Bauan**](https://unsplash.com/photos/OGZtQF8iC0g)'
+  preview_only: false
+
+authors:
+  - admin
+
+tags:
+  - Reduced Order Models
+
+categories:
+  - Scientific Machine Learning
+  - Model Order Reduction
 ---
+
+```python
+import libr
+print('hello')
+```
+
+## Overview
+
 
 Wowchemy is designed to give technical content creators a seamless experience. You can focus on the content and Wowchemy handles the rest.
 
