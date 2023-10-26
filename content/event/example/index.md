@@ -12,7 +12,7 @@ address:
   postcode: '20133'
   country: Italy
 
-summary: This talk discusses two topics a multi-hierarchic graph convolutional surrogate modeling approach and dhe discovery of low-dimensional port Hamiltonian systems with imposed structure.
+summary: This talk discusses a multi-hierarchic graph convolutional surrogate modeling approach and the discovery of low-dimensional port Hamiltonian systems with imposed structure.
 abstract: 'High-fidelity simulation models provide insight into complex dynamical systems but are neither suitable for time critical applications nor for evaluation on resource limited hardware. This results in a high demand for efficient surrogate models that require less computational effort while retaining the most important aspects of the original model. 
 Data based non intrusive model order reduction has emerged as a potent solution
 to the task of creating efficient yet accurate surrogate models. In this talk we will discuss two related topics:
