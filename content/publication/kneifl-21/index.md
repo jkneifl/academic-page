@@ -1,5 +1,5 @@
 ---
-title: A non-intrusive nonlinear model reduction method for structural dynamical problems
+title: A nonintrusive nonlinear model reduction method for structural dynamical problems
   based on machine learning
 
 # Authors
@@ -15,10 +15,10 @@ authors:
 # A YAML list of notes for each author in the above `authors` list
 author_notes: []
 
-date: '2021-04-01'
+date: '2021-01-01'
 
 # Date to publish webpage (NOT necessarily Bibtex publication's date).
-publishDate: '2023-10-26T15:17:02.963686Z'
+publishDate: '2023-10-26T15:27:19.799546Z'
 
 # Publication type.
 # A single CSL publication type but formatted as a YAML list (for Hugo requirements).
@@ -29,15 +29,35 @@ publication_types:
 publication: '*International Journal for Numerical Methods in Engineering*'
 publication_short: ''
 
-doi: 10.1002/nme.6712
+doi: https://doi.org/10.1002/nme.6712
 
-abstract: ''
+abstract: Abstract Model order reduction (MOR) has become one of the most widely used
+  tools to create efficient surrogate models for time-critical applications. For nonlinear
+  models, however, linear MOR approaches are only practicable to a limited extent.
+  Nonlinear approaches, on the contrary, often require intrusive manipulations of
+  the used simulation code. Hence, nonintrusive MOR approaches using classic model
+  order reduction along with machine learning (ML) algorithms can provide remedy.
+  Such approaches have drawn a lot of attention in the recent years. They rely on
+  the idea to learn the dynamics not in a high dimensional but in a reduced space,
+  that is, they predict the discrete sequence of reduced basis' coefficients. Open
+  questions are the suitability of such methods in the field of structural dynamics
+  and the best choice of the used ML algorithm. Both are addressed in this article
+  in addition to the integration of the methodology into a modular and flexible framework
+  that can effortless be adapted to various requirements. By applying the methodology
+  to a dynamic mechanical system, accurate surrogate models are received, which can
+  speed up the simulation time significantly, while still providing high-quality state
+  approximations.
 
 # Summary. An optional shortened abstract.
 summary: ''
 
 tags:
-- sys:relevantfor:simtech exc2075 for:simtech jkneifl myown peerReviewed pn7 sent:unibiblio
+- black box model
+- data-based model reduction
+- machine learning
+- nonlinear behavior
+- structural dynamics
+- surrogate model
 
 # Display this page in a list of Featured pages?
 featured: false
@@ -72,7 +92,7 @@ image:
 projects: []
 links:
 - name: URL
-  url: https://doi.org/10.1002%2Fnme.6712
+  url: https://onlinelibrary.wiley.com/doi/abs/10.1002/nme.6712
 ---
 
 Add the **full text** or **supplementary notes** for the publication here using Markdown formatting.

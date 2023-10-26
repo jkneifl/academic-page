@@ -1,23 +1,25 @@
 ---
-title: Machine Learning Algorithms for Learning Nonlinear Terms of Reduced Mechanical
-  Models in Explicit Structural Dynamics
+title: Physics-informed Neural Networks-based Model Predictive Control for Multi-link
+  Manipulators
 
 # Authors
 # A YAML list of author names
 # If you created a profile for a user (e.g. the default `admin` user at `content/authors/admin/`), 
 # write the username (folder name) here, and it will be replaced with their full name and linked to their profile.
 authors:
+- Jonas Nicodemus
 - Jonas Kneifl
 - Jörg Fehr
+- Benjamin Unger
 
 # Author notes (such as 'Equal Contribution')
 # A YAML list of notes for each author in the above `authors` list
 author_notes: []
 
-date: '2021-03-01'
+date: '2022-01-01'
 
 # Date to publish webpage (NOT necessarily Bibtex publication's date).
-publishDate: '2023-10-26T15:17:02.967709Z'
+publishDate: '2023-10-26T15:27:19.812390Z'
 
 # Publication type.
 # A single CSL publication type but formatted as a YAML list (for Hugo requirements).
@@ -25,18 +27,35 @@ publication_types:
 - article-journal
 
 # Publication name and optional abbreviated publication name.
-publication: '*PAMM*'
+publication: '*IFAC-PapersOnLine*'
 publication_short: ''
 
-doi: 10.1002/pamm.202000353
+doi: https://doi.org/10.1016/j.ifacol.2022.09.117
 
-abstract: ''
+abstract: We discuss nonlinear model predictive control (MPC) for multi-body dynamics
+  via physics-informed machine learning methods. In more detail, we use a physics-informed
+  neural networks (PINNs)-based MPC to solve a tracking problem for a complex mechanical
+  system, a multi-link manipulator. PINNs are a promising tool to approximate (partial)
+  differential equations but are not suited for control tasks in their original form
+  since they are not designed to handle variable control actions or variable initial
+  values. We thus follow the strategy of Antonelo et al. (arXiv:2104.02556, 2021)
+  by enhancing PINNs with adding control actions and initial conditions as additional
+  network inputs. Subsequently, the high-dimensional input space is reduced via a
+  sampling strategy and a zero-hold assumption. This strategy enables the controller
+  design based on a PINN as an approximation of the underlying system dynamics. The
+  additional benefit is that the sensitivities are easily computed via automatic differentiation,
+  thus leading to efficient gradient-based algorithms for the underlying optimal control
+  problem.
 
 # Summary. An optional shortened abstract.
 summary: ''
 
 tags:
-- sys:relevantfor:simtech exc2075 for:simtech jkneifl myown pn7
+- Physics-informed Machine Learning
+- Model Predictive Control
+- Surrogate Model
+- Mechanical System
+- Real-time Control
 
 # Display this page in a list of Featured pages?
 featured: false
@@ -71,7 +90,7 @@ image:
 projects: []
 links:
 - name: URL
-  url: https://doi.org/10.1002%2Fpamm.202000353
+  url: https://www.sciencedirect.com/science/article/pii/S2405896322013118
 ---
 
 Add the **full text** or **supplementary notes** for the publication here using Markdown formatting.

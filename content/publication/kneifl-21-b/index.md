@@ -1,6 +1,6 @@
 ---
-title: Real-time Human Response Prediction Using a Non-intrusive Data-driven Model
-  Reduction Scheme
+title: Machine Learning Algorithms for Learning Nonlinear Terms of Reduced Mechanical
+  Models in Explicit Structural Dynamics
 
 # Authors
 # A YAML list of author names
@@ -8,17 +8,16 @@ title: Real-time Human Response Prediction Using a Non-intrusive Data-driven Mod
 # write the username (folder name) here, and it will be replaced with their full name and linked to their profile.
 authors:
 - Jonas Kneifl
-- Julian Hay
 - Jörg Fehr
 
 # Author notes (such as 'Equal Contribution')
 # A YAML list of notes for each author in the above `authors` list
 author_notes: []
 
-date: '2021-01-01'
+date: '2021-03-01'
 
 # Date to publish webpage (NOT necessarily Bibtex publication's date).
-publishDate: '2023-10-26T15:15:44.312297Z'
+publishDate: '2023-10-26T15:27:19.804136Z'
 
 # Publication type.
 # A single CSL publication type but formatted as a YAML list (for Hugo requirements).
@@ -26,18 +25,17 @@ publication_types:
 - article-journal
 
 # Publication name and optional abbreviated publication name.
-publication: '*ArXiv e-print 2110.13583*'
+publication: '*PAMM*'
 publication_short: ''
 
-doi: ''
+doi: 10.1002/pamm.202000353
 
 abstract: ''
 
 # Summary. An optional shortened abstract.
 summary: ''
 
-tags:
-- exc2075 myown pn7 preprint sys:relevantfor:simtech
+tags: []
 
 # Display this page in a list of Featured pages?
 featured: false
@@ -71,10 +69,8 @@ image:
 #   Otherwise, set `projects: []`.
 projects: []
 links:
-- name: arXiv
-  url: https://arxiv.org/abs/2110.13583
 - name: URL
-  url: https://arxiv.org/abs/2110.13583
+  url: https://doi.org/10.1002%2Fpamm.202000353
 ---
 
 Add the **full text** or **supplementary notes** for the publication here using Markdown formatting.

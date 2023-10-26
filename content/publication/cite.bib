@@ -1,0 +1,75 @@
+@article{KneiflEtAl23,
+  abstract = {Over the last decades, computer modeling has evolved from a supporting tool for engineering prototype design to an ubiquitous instrument in non-traditional fields such as medical rehabilitation. This area comes with unique challenges, e.g. the complex modeling of soft tissue or the analysis of musculoskeletal systems. Conventional modeling approaches like the finite element (FE) method are computationally costly when dealing with such models, limiting their usability for real-time simulation or deployment on low-end hardware, if the model at hand cannot be simplified without losing its expressiveness. Non-traditional approaches such as surrogate modeling using data-driven model order reduction are used to make complex high-fidelity models more widely available regardless. They often involve a dimensionality reduction step, in which the high-dimensional system state is transformed onto a low-dimensional subspace or manifold, and a regression approach to capture the reduced system behavior. While most publications focus on one dimensionality reduction, such as principal component analysis (PCA) (linear) or autoencoder (nonlinear), we consider and compare PCA, kernel PCA, autoencoders, as well as variational autoencoders for the approximation of a continuum-mechanical system. In detail, we demonstrate the benefits of the surrogate modeling approach on a complex musculoskeletal system of a human upper-arm with severe nonlinearities and physiological geometry. We consider both, the model's deformation and the internal stress as the two main quantities of interest in a FE context. By doing so we are able to create computationally low-cost surrogate models which capture the system behavior with high approximation quality and fast evaluations.},
+  author = {Kneifl, Jonas and Rosin, David and Avci, Okan and R{\"o}hrle, Oliver and Fehr, J{\"o}rg},
+  day = 28,
+  doi = {10.1007/s00419-023-02458-5},
+  issn = {1432-0681},
+  journal = {Archive of Applied Mechanics},
+  month = jun,
+  title = {Low-dimensional data-based surrogate model of a continuum-mechanical musculoskeletal system based on non-intrusive model order reduction},
+  url = {https://doi.org/10.1007/s00419-023-02458-5},
+  year = 2023
+}
+
+@article{Kneifl21,
+author = {Kneifl, Jonas and Grunert, Dennis and Fehr, Joerg},
+title = {A nonintrusive nonlinear model reduction method for structural dynamical problems based on machine learning},
+journal = {International Journal for Numerical Methods in Engineering},
+volume = {122},
+number = {17},
+pages = {4774-4786},
+keywords = {black box model, data-based model reduction, machine learning, nonlinear behavior, structural dynamics, surrogate model},
+doi = {https://doi.org/10.1002/nme.6712},
+url = {https://onlinelibrary.wiley.com/doi/abs/10.1002/nme.6712},
+eprint = {https://onlinelibrary.wiley.com/doi/pdf/10.1002/nme.6712},
+abstract = {Abstract Model order reduction (MOR) has become one of the most widely used tools to create efficient surrogate models for time-critical applications. For nonlinear models, however, linear MOR approaches are only practicable to a limited extent. Nonlinear approaches, on the contrary, often require intrusive manipulations of the used simulation code. Hence, nonintrusive MOR approaches using classic model order reduction along with machine learning (ML) algorithms can provide remedy. Such approaches have drawn a lot of attention in the recent years. They rely on the idea to learn the dynamics not in a high dimensional but in a reduced space, that is, they predict the discrete sequence of reduced basis' coefficients. Open questions are the suitability of such methods in the field of structural dynamics and the best choice of the used ML algorithm. Both are addressed in this article in addition to the integration of the methodology into a modular and flexible framework that can effortless be adapted to various requirements. By applying the methodology to a dynamic mechanical system, accurate surrogate models are received, which can speed up the simulation time significantly, while still providing high-quality state approximations.},
+year = {2021}
+}
+
+
+@article{Kneifl21b,
+  added-at = {2021-03-12T13:55:39.000+0100},
+  author = {Kneifl, Jonas and Fehr, Jörg},
+  doi = {10.1002/pamm.202000353},
+  journal = {{PAMM}},
+  month = {3},
+  number = {S1},
+  publisher = {Wiley},
+  title = {Machine Learning Algorithms for Learning Nonlinear Terms of Reduced Mechanical Models in Explicit Structural Dynamics},
+  url = {https://doi.org/10.1002%2Fpamm.202000353},
+  volume = 20,
+  year = 2021
+}
+
+@article{KNEIFL2022283,
+title = {Real-time Human Response Prediction Using a Non-intrusive Data-driven Model Reduction Scheme},
+journal = {IFAC-PapersOnLine},
+volume = {55},
+number = {20},
+pages = {283-288},
+year = {2022},
+note = {10th Vienna International Conference on Mathematical Modelling MATHMOD 2022},
+issn = {2405-8963},
+doi = {https://doi.org/10.1016/j.ifacol.2022.09.109},
+url = {https://www.sciencedirect.com/science/article/pii/S2405896322013015},
+author = {J. Kneifl and J. Hay and J. Fehr},
+keywords = {Model Reduction, Machine Learning, Occupant Safety, Human Body Modeling, Parameterized Ordinary Differential Equations, Long Short-Term Memory},
+abstract = {Recent research in non-intrusive data-driven model order reduction (MOR) enabled accurate and efficient approximation of parameterized ordinary differential equations (ODEs). However, previous studies have focused on constant parameters, whereas time-dependent parameters have been neglected. The purpose of this paper is to introduce a novel two-step MOR scheme to tackle this issue. In a first step, classic MOR approaches are applied to calculate a low-dimensional representation of high-dimensional ODE solutions, i.e., to extract the most important features of simulation data. Based on this representation, a long short-term memory (LSTM) is trained to predict the reduced dynamics iteratively in a second step considering the parameters at the respective time step. The potential of this approach is demonstrated on an occupant model within a car driving scenario. The reduced model's response to time-varying accelerations matches the reference data with high accuracy for a limited amount of time. Furthermore, real-time capability is achieved. Accordingly, it is concluded that the presented method is well suited to approximate parameterized ODEs and can handle time-dependent parameters in contrast to common methods.}
+}
+
+@article{NICODEMUS2022331,
+title = {Physics-informed Neural Networks-based Model Predictive Control for Multi-link Manipulators},
+journal = {IFAC-PapersOnLine},
+volume = {55},
+number = {20},
+pages = {331-336},
+year = {2022},
+note = {10th Vienna International Conference on Mathematical Modelling MATHMOD 2022},
+issn = {2405-8963},
+doi = {https://doi.org/10.1016/j.ifacol.2022.09.117},
+url = {https://www.sciencedirect.com/science/article/pii/S2405896322013118},
+author = {Jonas Nicodemus and Jonas Kneifl and Jörg Fehr and Benjamin Unger},
+keywords = {Physics-informed Machine Learning, Model Predictive Control, Surrogate Model, Mechanical System, Real-time Control},
+abstract = {We discuss nonlinear model predictive control (MPC) for multi-body dynamics via physics-informed machine learning methods. In more detail, we use a physics-informed neural networks (PINNs)-based MPC to solve a tracking problem for a complex mechanical system, a multi-link manipulator. PINNs are a promising tool to approximate (partial) differential equations but are not suited for control tasks in their original form since they are not designed to handle variable control actions or variable initial values. We thus follow the strategy of Antonelo et al. (arXiv:2104.02556, 2021) by enhancing PINNs with adding control actions and initial conditions as additional network inputs. Subsequently, the high-dimensional input space is reduced via a sampling strategy and a zero-hold assumption. This strategy enables the controller design based on a PINN as an approximation of the underlying system dynamics. The additional benefit is that the sensitivities are easily computed via automatic differentiation, thus leading to efficient gradient-based algorithms for the underlying optimal control problem.}
+}
+
