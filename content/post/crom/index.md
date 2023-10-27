@@ -3,7 +3,7 @@ title: CROM Continoues Reduced Order Modeling
 subtitle: of PDEs Using Implicit Neural Representations
 
 # Summary for listings and search engines
-summary: CROM builds a continous low-dimensional embedding for continous vector fields of PDEs themselves instead relying on a predefined discretization of the latter.
+summary: CROM - builds a continous low-dimensional embedding for continous vector fields of PDEs themselves instead relying on a predefined discretization of the latter.
 
 # Link this post with a project
 projects: []
@@ -39,7 +39,24 @@ categories:
   - Scientific Machine Learning
 ---
 
-## Overview
+Many dynamical processes in engineering and sciences can be described by (nonlinear) _partial differential equations_ (PDE)
+{{< math >}}
+$$
+\mathcal{F}(\bm{f}, \nabla\bm{f}, \nabla^2\bm{f}, \dots, \dot{\bm{f}}, \ddot{\bm{f}})=0, \quad \bm{f}(\bm{x},t): \Omega \times \mathcal{T} \to \mathbb{R}^d
+$$
+{{< /math >}}
+where $\bm{f}$ describes a spatiotemporal vector field and $\nabla\bm{f}$ respective $\dot{\bm{f}}$ represent its spatial and time gradients. This vector field could describe the displacement of a continous system for a given point (spatial coordinate) $\bm{x}\in\Omega\subseteq \mathbb{R}^m$ and time (temporal coordinate) $t \in \mathcal{T}\subseteq \mathbb{R}$.
+
+A common approach to solve PDEs for $\bm{f}$ is to descretize them in space, e.g. using the finite element method, and then use a time-stepping scheme like Runge-Kutta methods to evolve their dynamics in time. However, the discretization methods used often require very high resolutions to accurately approximate the continoues vector field. Consequently, the resulting equations can be extremely high-dimensional (millions of degrees of freedom are not uncommon in the modeling of complex three-dimensional systems). Hence, their evaluation is both, time consuming and resource demanding making them unsuitable for real-time applications, large parameter studies, or weak hardware. 
+
+To alleviate this bottleneck, _reduced order models_ (ROMs) are used to significantly accelerate the calculations. The goal of reduced order modeling is to find efficient surrogate models that maintain the expressiveness of the original high-fidelity simulation model while being way cheaper to evaluate. There are two main challenges: 
+1. find expressive and low-dimensional coordinates to describe the vector field
+2. evolve the dynamics
+
+While conventional approaches create a reduced order model for a fixed discretization of the PDE, the recently proposed _continous reduced order modeling_ CROM (ref) directly approximates the continous vector field itself. 
+
+## Conventional Reduced Order Models
+
 
 ## Examples
 
