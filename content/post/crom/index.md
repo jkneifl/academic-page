@@ -1,6 +1,6 @@
 ---
-title: CROM Continoues Reduced Order Modeling
-subtitle: of PDEs Using Implicit Neural Representations
+title: CROM Continoues Reduced Order Models
+subtitle: Discretization-free Approximation of PDEs Using Implicit Neural Representations
 
 # Summary for listings and search engines
 summary: CROM - builds a continous low-dimensional embedding for continous vector fields of PDEs themselves instead relying on a predefined discretization of the latter.
@@ -41,13 +41,19 @@ categories:
 
 Many dynamical processes in engineering and sciences can be described by (nonlinear) _partial differential equations_ (PDE)
 {{< math >}}
-$$
-\mathcal{F}(\mathbf{f}, \nabla\mathbf{f}, \nabla^2\mathbf{f}, \dots, \dot{\mathbf{f}}, \ddot{\mathbf{f}})=0, \quad \mathbf{f}(\mathbf{x},t): \Omega \times \mathcal{T} \to \mathbb{R}^d
-$$
+  $$
+  \mathcal{F}(\mathbf{f}, \nabla\mathbf{f}, \nabla^2\mathbf{f}, \dots, \dot{\mathbf{f}}, \ddot{\mathbf{f}})=0, \quad \mathbf{f}(\mathbf{x},t): \Omega \times \mathcal{T} \to \mathbb{R}^d
+  $$
 {{< /math >}}
 where $\mathbf{f}$ describes a spatiotemporal vector field and $\nabla\mathbf{f}$ respective $\dot{\mathbf{f}}$ represent its spatial and time gradients. This vector field could for example describe the displacement of a continous system for a given point (spatial coordinate) $\mathbf{x}\in\Omega\subseteq \mathbb{R}^m$ and time (temporal coordinate) $t \in \mathcal{T}\subseteq \mathbb{R}$.
 
-A common approach to solve PDEs for $\mathbf{f}$ is to descretize them in space, e.g. using the finite element method, and then use a time-stepping scheme like Runge-Kutta methods to evolve their dynamics in time. However, the discretization methods used often require very high resolutions to accurately approximate the continoues vector field. Consequently, the resulting equations can be extremely high-dimensional (millions of degrees of freedom are not uncommon in the modeling of complex three-dimensional systems). Hence, their evaluation is both, time consuming and resource demanding making them unsuitable for real-time applications, large parameter studies, or weak hardware. 
+A common approach to solve PDEs for $\mathbf{f}$ is to descretize them in space, e.g. using the finite element method, resulting in a set of _ordinary differential equations_ (ODEs)
+{{< math >}}
+  $$
+  \dot{\mathbf{f}}(t) = \mathbf{q}(\mathbf{f},t): \Omega \times \mathcal{T} \to \mathbb{R}^d.
+$$
+{{< /math >}}
+These ODEs can then be evolved in time using a time-stepping scheme like Runge-Kutta methods. However, the discretization methods used often require very high resolutions to accurately approximate the continoues vector field. Consequently, the resulting equations can be extremely high-dimensional (millions of degrees of freedom are not uncommon in the modeling of complex three-dimensional systems). Hence, their evaluation is both, time consuming and resource demanding making them unsuitable for real-time applications, large parameter studies, or weak hardware. 
 
 To alleviate this bottleneck, _reduced order models_ (ROMs) are used to significantly accelerate the calculations. The goal of reduced order modeling is to find efficient surrogate models that maintain the expressiveness of the original high-fidelity simulation model while being way cheaper to evaluate. There are two main challenges: 
 1. find expressive and low-dimensional coordinates to describe the vector field
@@ -60,34 +66,73 @@ Reduced order modeling mainly is concerned with finding suitable low-dimensional
 {{% /callout %}}
 
 ## Conventional Reduced Order Models
-{{< figure src="ae.png" caption="A caption" numbered="true" id="ae">}}
+{{< figure src="ae.png" caption="Conventional autoencoder to construct a low-dimensional embedding for a discretized vector field." numbered="true" id="ae">}}
 Conventional data-driven reduced order modeling approaches rely on a fixed description of a system. Fortunately, the number of degrees of freedoms results from the discretization method used and not from the intrinsic dimension of the given problem. This means that the actual system often lives on a low-dimensional embedding. For parameterized PDEs, the intrinsic dimension, i.e. the actual minimal dimension of the problem, equals at most the number of parameters $n_\text{p}$ plus one for the time $r=n_\text{p}+1$. 
 
 Popular methods to find a low-dimensional embedding on which a given system can be described on include linear methods like the _principal component analysis_ (PCA) (also known as _proper orthorgnal decomposition_ (POD)) or its nonlinear counterpart _autoencoders_ (AE). Those methods can be used to find a low-dimensional representation of the discretized vector field
   {{< math >}}
   $$
-  \mathbf{z} = encoder_{\mathbf{\theta}_\text{e}}(\mathbf{f})
+  \mathbf{z} = enc_{\mathbf{\theta}_\text{e}}(\mathbf{f})
   $$
   {{< /math >}}
 but also to reconstruct the given discretization from this reduced quantity
   {{< math >}}
   $$
-  \mathbf{f} \approx decoder_{\mathbf{\theta}_\text{d}}(\mathbf{z}).
+  \mathbf{f} \approx dec_{\mathbf{\theta}_\text{d}}(\mathbf{z}).
   $$
   {{< /math >}}
 In case of an autoencoder, these mappings are found by optimizing the reconstruction loss
-  {{< math >}}
+{{< math >}}
   $$
   \min_{\mathbf{\theta}_\text{e}, \mathbf{\theta}_\text{d}} \left| \mathbf{f} - dec_{\mathbf{\theta}_\text{d}}(enc_{\mathbf{\theta}_\text{e}}(\mathbf{f})) \right|
   $$
-  {{< /math >}}
+{{< /math >}}
 for the networks' weights $\mathbf{\theta}_\text{e}, \mathbf{\theta}_\text{d}$ while a truncated singular value decomposition can be used in case of the PCA.
 
-Just as there are different approaches for the reduction, there are also different methods to approximate the temporal dynamics of a system. Purely data-driven approaches try to directly approximate 
+Just as there are different approaches for the reduction, there are also different methods to approximate the temporal dynamics of a system. Purely data-driven approaches either try to directly approximate the time-dependent latent variable $\mathbf{z}(t) = \mathbf{\psi}(t)$, where $\mathbf{\psi}(t)$ could be parameterized by a neural network, or try to approximate the right-hand side of an ODE $\mathbf{\dot{z}}(t) = \mathbf{q}(\mathbf{z}, t) \approx \mathbf{\psi}(\mathbf{z}, t)$ (as done in PINNs) on the low-dimensional embedding. Examples can be found in **cite**.
+Let's have a look how CROM differs from such approaches.
+Other equation based approaches solve the PDE in the latent space cite(Hesthaven20?)
 
-## Examples
+Drawbacks of discretization based approaches: Change of resolution -> new architecture / training etc., no adaptivity of spatial resolution
 
-### Code
+## CROM
+{{< figure src="featured.png" caption="A caption" numbered="true" id="ae">}}
+### Embedding
+Continous reduced order modeling (cite) follows unusual approaches in finding the embedding as well as in the time evolution of the latent dynamics.
+Similar to a conventional autoencoder it consists of an encoder and decoder. While the encoder does not change (as it is only used during training anyways), the decoder this time does not try to reconstruct the discretized vector field from the latent variable. Instead the decoder 
+{{< math >}}
+  $$
+  dec(\mathbf{x}, \mathbf{z}(t)) \approx \mathbf{f}(\mathbf{x}, t) \quad \forall \mathbf{x}\in\Omega, \quad \forall t\in\mathcal{T}
+  $$
+{{< /math >}}
+takes the latent variable $\mathbf{z}(t)$ along with the positional variable $\mathbf{x}$ as input to reconstruct the vector field for this certain point. 
+Consequently, the decoder directly approximates the continous vector field. That's what the title of the original paper is refering to when speaking of implicit neural representations which use neural networks to represent arbitrary vector fields. 
+To reproduce the behavior of a classical autoencoder, the decoder must be evaluated at all points of the discretization with different positional input. 
+However, it is also possible to reconstruct the vector field for any other point $\mathbf{x}\in\Omega$. 
+In order to optimize the weights of the encoder and decoder the loss function (ref) changes to 
+{{< math >}}
+  $$
+  % \min_{\mathbf{\theta}_\text{e}, \mathbf{\theta}_\text{d}} \ 
+  \mathcal{L}_{\text{crom}}=
+    \sum_{i=1}^{P} \left| \mathbf{f}_i - dec_{\mathbf{\theta}_\text{d}}(\mathbf{x}, \mathbf{z}(t)) \right|=
+    \sum_{i=1}^{P} \left| \mathbf{f}_i - dec_{\mathbf{\theta}_\text{d}}(\mathbf{x}, enc_{\mathbf{\theta}_\text{e}}(\mathbf{f}(t))) \right|
+  $$
+{{< /math >}}
+
+### Dynamics
+In contrast to conventional approaches CROM evaluates the actual PDE for a small number of domain points $\mathcal{X}=\{\mathbf{x}_i\}_{i=1}^{n}$ to evolve in time. 
+The approach to update the latent variable from $\mathbf{z}_{n}=\mathbf{z}(t_{n})$ to $\mathbf{z}_{n+1}=\mathbf{z}(t_{n+1})$ at the next time step. consists of three steps
+1. network inference 
+    $\mathbf{f}(\mathbf{x},t_n)=dec(\mathbf{x}, \mathbf{z}_n) \quad \forall \mathbf{x}\in\mathcal{X}$ $\to$ 
+    $\nabla\mathbf{f}(\mathbf{x},t_n) = \nabla_\mathbf{x}dec(\mathbf{x}, \mathbf{z}_n)$,
+    $\dot{\mathbf{f}}(\mathbf{x},t_n) = \frac{\partial dec(\mathbf{x}, \mathbf{z}_n)}{\partial \mathbf{z}}\dot{\mathbf{z}}_n$
+2. PDE time-stepping 
+    PDE $\mathcal{F}(\mathbf{f}_n, \nabla\mathbf{f}_n, \dots, \dot{\mathbf{f}}_{n+1}, \dots)=0$
+    Time-stepping $\mathbf{f}_{n+1} = \mathcal{I}_{\mathcal{F}}(\Delta t, \mathbf{f}_{n}, \dot{\mathbf{f}}_{n+1}) \quad \forall \mathbf{x}\in\mathcal{X} $ 
+3. network inversion 
+    find $\mathbf{z}_{n+1}: \min_{\mathbf{z}_{n+1}} \sum_{\mathbf{x}\in\mathcal{X}} \left| dec(\mathbf{x}, \mathbf{z}_{n+1}) - \mathbf{f}(\mathbf{x}, t_{n+1})\right|$ with Gauss-Newton algorithm (or linearization)
+
+### 
 
 ```python
 import pandas as pd
