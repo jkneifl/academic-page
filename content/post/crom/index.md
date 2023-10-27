@@ -72,11 +72,11 @@ To render _inline_ or _block_ math, wrap your LaTeX math with `{{</* math */>}}$
 
 Example **math block**:
 
+{{< math >}}
 $$
 f(k;p_{0}^{*}) = \begin{cases}p_{0}^{*} & \text{if }k=1, \\
 1-p_{0}^{*} & \text{if }k=0.\end{cases}
 $$
-
 {{< /math >}}
 
 ### Diagrams
