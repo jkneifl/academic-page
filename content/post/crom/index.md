@@ -39,13 +39,7 @@ categories:
   - Scientific Machine Learning
 ---
 
-```python
-import libr
-print('hello')
-```
-
 ## Overview
-
 
 ## Examples
 
