@@ -1,5 +1,5 @@
 ---
-title: Data-driven Surrogate Modeling of Structural Dynamical Systems
+title: Multi-hierarchic Surrogate Modeling and Structure Imposing Dynamics Identification
 
 event: Seminar Visit @ DICA
 # event_url: https://example.org
@@ -16,7 +16,7 @@ summary: This talk discusses a multi-hierarchic graph convolutional surrogate mo
 abstract: 'High-fidelity simulation models provide insight into complex dynamical systems but are neither suitable for time critical applications nor for evaluation on resource limited hardware. This results in a high demand for efficient surrogate models that require less computational effort while retaining the most important aspects of the original model. 
 Data based non intrusive model order reduction has emerged as a potent solution
 to the task of creating efficient yet accurate surrogate models. In this talk we will discuss two related topics:
-(i) a multi hierarchic graph convolutional surrogate modeling scheme, in which
+(i) a multi-hierarchic graph convolutional surrogate modeling scheme, in which
 surrogates are created on coarse representations of the model in an iterative manner, and
 (ii) structure imposing discovery of low dimensional port Hamiltonian systems.'
 
