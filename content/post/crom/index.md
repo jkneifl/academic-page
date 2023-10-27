@@ -1,5 +1,5 @@
 ---
-title: CROM: Continoues Reduced Order Modeling
+title: CROM Continoues Reduced Order Modeling
 subtitle: of PDEs Using Implicit Neural Representations
 
 # Summary for listings and search engines
@@ -39,13 +39,7 @@ categories:
   - Scientific Machine Learning
 ---
 
-```python
-import libr
-print('hello')
-```
-
-## Overview
-
+## Overviewgit
 
 ## Examples
 
