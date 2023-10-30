@@ -93,7 +93,7 @@ In case of an autoencoder, these mappings are found by optimizing the reconstruc
   $$
 {{< /math >}}
 
-for the networks' weights $\mathbf{\theta}_\text{e}, \mathbf{\theta}_\text{d}$ while a truncated singular value decomposition can be used in case of the PCA.
+for the networks' weights {{< math >}}$\mathbf{\theta}_\text{e}, \mathbf{\theta}_\text{d}${{< /math >}} while a truncated singular value decomposition can be used in case of the PCA.
 
 Just as there are different approaches for the reduction, there are also different methods to approximate the temporal dynamics of a system. Purely data-driven approaches either try to directly approximate the time-dependent latent variable $\mathbf{z}(t) = \mathbf{\psi}(t)$, where $\mathbf{\psi}(t)$ could be parameterized by a neural network, or try to approximate the right-hand side of an ODE $\mathbf{\dot{z}}(t) = \mathbf{q}(\mathbf{z}, t) \approx \mathbf{\psi}(\mathbf{z}, t)$ (as done in PINNs) on the low-dimensional embedding. Examples can be found in **cite**.
 Let's have a look how CROM differs from such approaches.
@@ -132,7 +132,7 @@ CROM uses a decoder that directly approximates the continous vector field.
 {{% /callout %}}
 
 ### Dynamics
-In contrast to conventional approaches CROM evaluates the actual PDE for a small number of domain points $\mathcal{X}=\{\mathbf{x}_i\}_{i=1}^{n}$ to evolve in time. 
+In contrast to conventional approaches CROM evaluates the actual PDE for a small number of domain points {{< math >}}$\mathcal{X}=\{\mathbf{x}_i\}_{i=1}^{n}${{< /math >}} to evolve in time. 
 <!-- The approach to update the latent variable from $\mathbf{z}_{n}=\mathbf{z}(t_{n})$ to $\mathbf{z}_{n+1}=\mathbf{z}(t_{n+1})$ at the next time step. consists of three steps -->
 <!-- 1. network inference 
     $\mathbf{f}(\mathbf{x},t_n)=dec(\mathbf{x}, \mathbf{z}_n) \quad \forall \mathbf{x}\in\mathcal{X}$ $\to$ 
@@ -145,7 +145,7 @@ In contrast to conventional approaches CROM evaluates the actual PDE for a small
     find $\mathbf{z}_{n+1}: \min_{\mathbf{z}_{n+1}} \sum_{\mathbf{x}\in\mathcal{X}} \left| dec(\mathbf{x}, \mathbf{z}_{n+1}) - \mathbf{f}(\mathbf{x}, t_{n+1})\right|$ with Gauss-Newton algorithm (or linearization) -->
 
 {{% callout note %}}
-CROM evolves the actual PDE for some domain points and updates the reduced manifold based on these results.
+CROM evolves the actual PDE for some domain points and updates the dynamics on the reduced manifold based on these results.
 {{% /callout %}}
 
 ### 
