@@ -124,9 +124,9 @@ CROM uses a decoder that directly approximates the continous vector field.
 {{% /callout %}}
 
 ### Dynamics
-<!-- In contrast to conventional approaches CROM evaluates the actual PDE for a small number of domain points $\mathcal{X}=\{\mathbf{x}_i\}_{i=1}^{n}$ to evolve in time. 
-The approach to update the latent variable from $\mathbf{z}_{n}=\mathbf{z}(t_{n})$ to $\mathbf{z}_{n+1}=\mathbf{z}(t_{n+1})$ at the next time step. consists of three steps -->
-1. network inference 
+In contrast to conventional approaches CROM evaluates the actual PDE for a small number of domain points $\mathcal{X}=\{\mathbf{x}_i\}_{i=1}^{n}$ to evolve in time. 
+<!-- The approach to update the latent variable from $\mathbf{z}_{n}=\mathbf{z}(t_{n})$ to $\mathbf{z}_{n+1}=\mathbf{z}(t_{n+1})$ at the next time step. consists of three steps -->
+<!-- 1. network inference 
     $\mathbf{f}(\mathbf{x},t_n)=dec(\mathbf{x}, \mathbf{z}_n) \quad \forall \mathbf{x}\in\mathcal{X}$ $\to$ 
     $\nabla\mathbf{f}(\mathbf{x},t_n) = \nabla_\mathbf{x}dec(\mathbf{x}, \mathbf{z}_n)$,
     $\dot{\mathbf{f}}(\mathbf{x},t_n) = \frac{\partial dec(\mathbf{x}, \mathbf{z}_n)}{\partial \mathbf{z}}\dot{\mathbf{z}}_n$
@@ -134,7 +134,11 @@ The approach to update the latent variable from $\mathbf{z}_{n}=\mathbf{z}(t_{n}
     PDE $\mathcal{F}(\mathbf{f}_n, \nabla\mathbf{f}_n, \dots, \dot{\mathbf{f}}_{n+1}, \dots)=0$
     Time-stepping $\mathbf{f}_{n+1} = \mathcal{I}_{\mathcal{F}}(\Delta t, \mathbf{f}_{n}, \dot{\mathbf{f}}_{n+1}) \quad \forall \mathbf{x}\in\mathcal{X} $ 
 3. network inversion 
-    find $\mathbf{z}_{n+1}: \min_{\mathbf{z}_{n+1}} \sum_{\mathbf{x}\in\mathcal{X}} \left| dec(\mathbf{x}, \mathbf{z}_{n+1}) - \mathbf{f}(\mathbf{x}, t_{n+1})\right|$ with Gauss-Newton algorithm (or linearization)
+    find $\mathbf{z}_{n+1}: \min_{\mathbf{z}_{n+1}} \sum_{\mathbf{x}\in\mathcal{X}} \left| dec(\mathbf{x}, \mathbf{z}_{n+1}) - \mathbf{f}(\mathbf{x}, t_{n+1})\right|$ with Gauss-Newton algorithm (or linearization) -->
+
+{{% callout note %}}
+CROM evolves the actual PDE for some domain points and updates the reduced manifold based on these results.
+{{% /callout %}}
 
 ### 
 
