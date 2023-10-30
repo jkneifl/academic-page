@@ -153,7 +153,7 @@ Having all necessary information avaible, the PDE {{< math >}}$\mathcal{F}(\math
 #### Network Inversion
 In the last step the dynamics on the reduced manifold are updated in such a way that {{< math >}}$\mathbf{z}_{n+1}${{< /math >}}  matches best to the just calculated evolved configuration {{< math >}}$\mathbf{f}_{n+1}${{< /math >}} . To achieve this the optimization problem
 {{< math >}}
-  $$\mathbf{z}_{n+1}^*= \argmin_{\mathbf{z}_{n+1}} \sum_{\mathbf{x}\in\mathcal{X}} \left| dec(\mathbf{x}, \mathbf{z}_{n+1}) - \mathbf{f}(\mathbf{x}, t_{n+1})\right|
+  $$\mathbf{z}_{n+1}^*= \underset{\mathbf{z}_{n+1}}{\text{argmin}} \sum_{\mathbf{x}\in\mathcal{X}} \left| dec(\mathbf{x}, \mathbf{z}_{n+1}) - \mathbf{f}(\mathbf{x}, t_{n+1})\right|
   $$
 {{< /math >}} 
 is solved with a with Gauss-Newton algorithm or analytically using linearization.
@@ -200,48 +200,5 @@ With this method training and test data is generated based on diffusion factors 
 The latent dimension is set to {{< math >}}$r=16${{< /math >}} and the decoder {{< math >}}$dec(x, \mathbf{z})${{< /math >}} consists out of three fully-connected hidden layers with 128 neurons each. 
 To evolve the latent dynamics, only $m=22$ support points are evaluated at each time step, as can be seen in fig xy,
 It is also apparent that the ROM captures the FOM quite well. 
-
-### 
-
-```python
-import pandas as pd
-data = pd.read_csv("data.csv")
-data.head()
-```
-
-
-### Charts
-
-Wowchemy supports the popular [Plotly](https://plot.ly/) format for interactive charts.
-
-Save your Plotly JSON in your page folder, for example `line-chart.json`, and then add the `{{</* chart data="line-chart" */>}}` shortcode where you would like the chart to appear.
-
-Demo:
-
-{{< chart data="line-chart" >}}
-
-You might also find the [Plotly JSON Editor](http://plotly-json-editor.getforge.io/) useful.
-
-### Diagrams
-
-Wowchemy supports a Markdown extension for diagrams. You can enable this feature by toggling the `diagram` option in your `config/_default/params.toml` file or by adding `diagram: true` to your page front matter.
-
-### Todo lists
-
-- [x] Write math example
-  - [x] Write diagram example
-- [ ] Do something else
-
-### Tables
-
-Save your spreadsheet as a CSV file in your page's folder and then render it by adding the _Table_ shortcode to your page:
-
-renders as
-
-### Icons
-
-{{< icon name="terminal" pack="fas" >}} Terminal  
-{{< icon name="python" pack="fab" >}} Python  
-{{< icon name="r-project" pack="fab" >}} R
 
 ### Did you find this page helpful? Consider sharing it 🙌
