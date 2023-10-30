@@ -106,7 +106,7 @@ Similar to a conventional autoencoder it consists of an encoder and decoder. Whi
   $$
 {{< /math >}}
 takes the latent variable $\mathbf{z}(t)$ along with the positional variable $\mathbf{x}$ as input to reconstruct the vector field for this certain point. 
-Consequently, the decoder directly approximates the continous vector field. That's what the title of the original paper is refering to when speaking of implicit neural representations which use neural networks to represent arbitrary vector fields. 
+Consequently, the decoder directly approximates the continous vector field. That's what the title of the original paper is refering to when speaking of implicit neural representations: they use neural networks to represent arbitrary vector fields. 
 To reproduce the behavior of a classical autoencoder, the decoder must be evaluated at all points of the discretization with different positional input. 
 However, it is also possible to reconstruct the vector field for any other point $\mathbf{x}\in\Omega$. 
 In order to optimize the weights of the encoder and decoder the loss function (ref) changes to 
@@ -119,8 +119,12 @@ In order to optimize the weights of the encoder and decoder the loss function (r
   $$
 {{< /math >}}
 
+{{% callout note %}}
+CROM uses a decoder that directly approximates the continous vector field.
+{{% /callout %}}
+
 ### Dynamics
-In contrast to conventional approaches CROM evaluates the actual PDE for a small number of domain points $\mathcal{X}=\{\mathbf{x}_i\}_{i=1}^{n}$ to evolve in time. 
+In contrast to conventional approaches CROM evaluates the actual PDE for a small number of domain points $\mathcal{X} = \mathbf{x}_i |_{i=1}^{n}$ to evolve in time. 
 The approach to update the latent variable from $\mathbf{z}_{n}=\mathbf{z}(t_{n})$ to $\mathbf{z}_{n+1}=\mathbf{z}(t_{n+1})$ at the next time step. consists of three steps
 1. network inference 
     $\mathbf{f}(\mathbf{x},t_n)=dec(\mathbf{x}, \mathbf{z}_n) \quad \forall \mathbf{x}\in\mathcal{X}$ $\to$ 
