@@ -133,7 +133,7 @@ CROM uses a decoder that directly approximates the continous vector field.
 
 {{< figure src="dynamics.png" caption="Evolution of the latent dynamics." numbered="true" id="ae">}}
 ### Dynamics
-In contrast to conventional approaches CROM evaluates the actual PDE for a small number of domain points {{< math >}}$\mathcal{X}=\{\mathbf{x}_i\}_{i=1}^{m}${{< /math >}} with $n \l P$ to evolve in time. 
+In contrast to conventional approaches CROM evaluates the actual PDE for a small number of domain points {{< math >}}$\mathcal{X}=\{\mathbf{x}_i\}_{i=1}^{m}${{< /math >}} with $m \ll P$ to evolve in time. 
 The approach to update the latent variable from {{< math >}}$\mathbf{z}_{n}=\mathbf{z}(t_{n})${{< /math >}} to {{< math >}}$\mathbf{z}_{n+1}=\mathbf{z}(t_{n+1})${{< /math >}} at the next time step consists of three steps:
 1. network inference 
 2. PDE time-stepping 
@@ -144,16 +144,17 @@ During the first step of the computation of the latent space dynamics, all spati
 {{< math >}}$\mathbf{f}(\mathbf{x},t_n)=dec(\mathbf{x}, \mathbf{z}_n) \quad \forall \mathbf{x}\in\mathcal{X}${{< /math >}} is obtained from the decoder along with the spatial {{< math >}}$\nabla\mathbf{f}(\mathbf{x},t_n) = \nabla_\mathbf{x}dec(\mathbf{x}, \mathbf{z}_n)${{< /math >}} as well as temporal gradients {{< math >}}$\dot{\mathbf{f}}(\mathbf{x},t_n) = \frac{\partial dec(\mathbf{x}, \mathbf{z}_n)}{\partial \mathbf{z}}\dot{\mathbf{z}}_n${{< /math >}}. A similar procedure can be used for higher order terms ({{< math >}}$\nabla^2_\mathbf{x}dec(\mathbf{x}, \mathbf{z}_n), \ddot{\mathbf{f}}(\mathbf{x},t_n)${{< /math >}}).
 
 #### PDE Time-stepping
-Having all necessary information avaible, the PDE {{< math >}}$\mathcal{F}(\mathbf{f}_n, \nabla\mathbf{f}_n, \dots, \dot{\mathbf{f}}_{n+1}, \dots)=0${{< /math >}} is evolved from $t_n$ to $t_{n+s}$. For each domain point {{< math >}}$\mathcal{X}=\{\mathbf{x}_i\}_{i=1}^{m}${{< /math >}}, the PDE is solved for the temporal derivative $\dot{\mathbf{f}}_{n+1}$ and the configuration is then evolved in time using a, in this case, explicit time integration method $\mathcal{I}_{\mathcal{F}}$ like Runge-Kutta methods. The update then follows 
+Having all necessary information avaible, the PDE {{< math >}}$\mathcal{F}(\mathbf{f}_n, \nabla\mathbf{f}_n, \dots, \dot{\mathbf{f}}_{n+1}, \dots)=0${{< /math >}} is evolved from $t_n$ to $t_{n+s}$. For each domain point {{< math >}}$\mathcal{X}=\{\mathbf{x}_i\}_{i=1}^{m}${{< /math >}}, the PDE is solved for the temporal derivative {{< math >}}$\dot{\mathbf{f}}_{n+1}${{< /math >}} and the configuration is then evolved in time using a, in this case, explicit time integration method {{< math >}}$\mathcal{I}_{\mathcal{F}}${{< /math >}} like Runge-Kutta methods. The update then follows 
 {{< math >}}
-$$\mathbf{f}_{n+1} = \mathcal{I}_{\mathcal{F}}(\Delta t, \mathbf{f}_{n}, \dot{\mathbf{f}}_{n+1}) \quad \forall \mathbf{x}\in\mathcal{X} $$
+  $$\mathbf{f}_{n+1} = \mathcal{I}_{\mathcal{F}}(\Delta t, \mathbf{f}_{n}, \dot{\mathbf{f}}_{n+1}) \quad \forall \mathbf{x}\in\mathcal{X} 
+  $$
 {{< /math >}} 
 
 #### Network Inversion
-In the last step the dynamics on the reduced manifold are updated in such a way that $\mathbf{z}_{n+1}$ matches best to the just calculated evolved configuration $\mathbf{f}_{n+1}$. To achieve this the optimization problem
+In the last step the dynamics on the reduced manifold are updated in such a way that {{< math >}}$\mathbf{z}_{n+1}${{< /math >}}  matches best to the just calculated evolved configuration {{< math >}}$\mathbf{f}_{n+1}${{< /math >}} . To achieve this the optimization problem
 {{< math >}}
-$$\mathbf{z}_{n+1}^*= \argmin_{\mathbf{z}_{n+1}} \sum_{\mathbf{x}\in\mathcal{X}} \left| dec(\mathbf{x}, \mathbf{z}_{n+1}) - \mathbf{f}(\mathbf{x}, t_{n+1})\right|
-$$
+  $$\mathbf{z}_{n+1}^*= \argmin_{\mathbf{z}_{n+1}} \sum_{\mathbf{x}\in\mathcal{X}} \left| dec(\mathbf{x}, \mathbf{z}_{n+1}) - \mathbf{f}(\mathbf{x}, t_{n+1})\right|
+  $$
 {{< /math >}} 
 is solved with a with Gauss-Newton algorithm or analytically using linearization.
 
@@ -162,8 +163,43 @@ CROM evolves the actual PDE for some domain points and updates the dynamics on t
 {{% /callout %}}
 
 ## Examples
+{{< figure src="diffusion.gif" caption="Example simulation of the heat equation. The background is colored with respect to the corresponding diffusion factor in that intervall." numbered="true" id="ae">}}
 Enough of all the theory, let's dedicate ourselves to an example.
+Let's consider a one dimensional diffusion problem
+{{< math >}}
+  $$
+    \frac{\partial u}{\partial t} = \alpha(x) \frac{\partial^2 u}{\partial^2 x}
+  $$
+{{< /math >}} 
+with the temperature {{< math >}}$u${{< /math >}} and a spatially-varying diffusion speed {{< math >}}$\alpha${{< /math >}}. Following the example from cite[crom], the spatial coordinates is departed into three intervalls of equal size with different diffusion factors, i.e. 
+{{< math >}}
+  $$
+    \alpha(x) = \left\{ 
+        \begin{array}{ll}
+            \alpha_1 & 0 \leq x < 1/3 \\
+            \alpha_2 & \, 1/3 \leq x < 2/3 \\
+            \alpha_3 & \, 2/3 \leq x \leq 1 \\
+        \end{array}
+    \right. .
+  $$
+{{< /math >}}
 
+#### High-fidelity Model
+The high-fidelity spatial vector field is discretized with $P=501$ points and solved using the forward time-centered space method, a finite difference method that is based on the forward Euler method. 
+An update of the vector field thus results in 
+{{< math >}}
+  $$
+    \frac{u_{n+1}^i - u_{n}^i}{\Delta t} = \alpha \frac{u_n^{i+1} - 2u_n^{i} + u_n^{i-1}}{\Delta x^2}
+      \Leftrightarrow 
+    u_{n+1}^i = u_n + \frac{\alpha \Delta t}{\Delta x^2}(u_n^{i+1} - 2u_n^{i} + u_n^{i-1}).
+  $$
+{{< /math >}}
+With this method training and test data is generated based on diffusion factors {{< math >}}$\alpha_1, \alpha_2, \alpha_3 \in [0.2,1.0]^3${{< /math >}}.
+
+#### Reduced-Order Model
+The latent dimension is set to {{< math >}}$r=16${{< /math >}} and the decoder {{< math >}}$dec(x, \mathbf{z})${{< /math >}} consists out of three fully-connected hidden layers with 128 neurons each. 
+To evolve the latent dynamics, only $m=22$ support points are evaluated at each time step, as can be seen in fig xy,
+It is also apparent that the ROM captures the FOM quite well. 
 
 ### 
 
