@@ -124,8 +124,8 @@ CROM uses a decoder that directly approximates the continous vector field.
 {{% /callout %}}
 
 ### Dynamics
-In contrast to conventional approaches CROM evaluates the actual PDE for a small number of domain points $\mathcal{X} = \mathbf{x}_i |_{i=1}^{n}$ to evolve in time. 
-The approach to update the latent variable from $\mathbf{z}_{n}=\mathbf{z}(t_{n})$ to $\mathbf{z}_{n+1}=\mathbf{z}(t_{n+1})$ at the next time step. consists of three steps
+<!-- In contrast to conventional approaches CROM evaluates the actual PDE for a small number of domain points $\mathcal{X}=\{\mathbf{x}_i\}_{i=1}^{n}$ to evolve in time. 
+The approach to update the latent variable from $\mathbf{z}_{n}=\mathbf{z}(t_{n})$ to $\mathbf{z}_{n+1}=\mathbf{z}(t_{n+1})$ at the next time step. consists of three steps -->
 1. network inference 
     $\mathbf{f}(\mathbf{x},t_n)=dec(\mathbf{x}, \mathbf{z}_n) \quad \forall \mathbf{x}\in\mathcal{X}$ $\to$ 
     $\nabla\mathbf{f}(\mathbf{x},t_n) = \nabla_\mathbf{x}dec(\mathbf{x}, \mathbf{z}_n)$,
