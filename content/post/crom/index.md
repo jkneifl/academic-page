@@ -131,22 +131,39 @@ In order to optimize the weights of the encoder and decoder the loss function (r
 CROM uses a decoder that directly approximates the continous vector field.
 {{% /callout %}}
 
+{{< figure src="dynamics.png" caption="Evolution of the latent dynamics." numbered="true" id="ae">}}
 ### Dynamics
-In contrast to conventional approaches CROM evaluates the actual PDE for a small number of domain points {{< math >}}$\mathcal{X}=\{\mathbf{x}_i\}_{i=1}^{n}${{< /math >}} to evolve in time. 
-The approach to update the latent variable from {{< math >}}$\mathbf{z}_{n}=\mathbf{z}(t_{n})${{< /math >}} to {{< math >}}$\mathbf{z}_{n+1}=\mathbf{z}(t_{n+1})${{< /math >}} at the next time step. consists of three steps -->
+In contrast to conventional approaches CROM evaluates the actual PDE for a small number of domain points {{< math >}}$\mathcal{X}=\{\mathbf{x}_i\}_{i=1}^{m}${{< /math >}} with $n \l P$ to evolve in time. 
+The approach to update the latent variable from {{< math >}}$\mathbf{z}_{n}=\mathbf{z}(t_{n})${{< /math >}} to {{< math >}}$\mathbf{z}_{n+1}=\mathbf{z}(t_{n+1})${{< /math >}} at the next time step consists of three steps:
 1. network inference 
-    {{< math >}}$\mathbf{f}(\mathbf{x},t_n)=dec(\mathbf{x}, \mathbf{z}_n) \quad \forall \mathbf{x}\in\mathcal{X}${{< /math >}} {{< math >}}$\to${{< /math >}} 
-    {{< math >}}$\nabla\mathbf{f}(\mathbf{x},t_n) = \nabla_\mathbf{x}dec(\mathbf{x}, \mathbf{z}_n)${{< /math >}},
-    {{< math >}}$\dot{\mathbf{f}}(\mathbf{x},t_n) = \frac{\partial dec(\mathbf{x}, \mathbf{z}_n)}{\partial \mathbf{z}}\dot{\mathbf{z}}_n${{< /math >}}
 2. PDE time-stepping 
-    PDE {{< math >}}$\mathcal{F}(\mathbf{f}_n, \nabla\mathbf{f}_n, \dots, \dot{\mathbf{f}}_{n+1}, \dots)=0${{< /math >}}
-    Time-stepping {{< math >}}$\mathbf{f}_{n+1} = \mathcal{I}_{\mathcal{F}}(\Delta t, \mathbf{f}_{n}, \dot{\mathbf{f}}_{n+1}) \quad \forall \mathbf{x}\in\mathcal{X} ${{< /math >}} 
 3. network inversion 
-    find {{< math >}}$\mathbf{z}_{n+1}: \min_{\mathbf{z}_{n+1}} \sum_{\mathbf{x}\in\mathcal{X}} \left| dec(\mathbf{x}, \mathbf{z}_{n+1}) - \mathbf{f}(\mathbf{x}, t_{n+1})\right|${{< /math >}} with Gauss-Newton algorithm (or linearization)
+
+#### Network Inference
+During the first step of the computation of the latent space dynamics, all spatiotemporal information for the PDE time-stepping is gathered for the selected samples {{< math >}}$\mathcal{X}=\{\mathbf{x}_i\}_{i=1}^{m}${{< /math >}}. The function value itself
+{{< math >}}$\mathbf{f}(\mathbf{x},t_n)=dec(\mathbf{x}, \mathbf{z}_n) \quad \forall \mathbf{x}\in\mathcal{X}${{< /math >}} is obtained from the decoder along with the spatial {{< math >}}$\nabla\mathbf{f}(\mathbf{x},t_n) = \nabla_\mathbf{x}dec(\mathbf{x}, \mathbf{z}_n)${{< /math >}} as well as temporal gradients {{< math >}}$\dot{\mathbf{f}}(\mathbf{x},t_n) = \frac{\partial dec(\mathbf{x}, \mathbf{z}_n)}{\partial \mathbf{z}}\dot{\mathbf{z}}_n${{< /math >}}. A similar procedure can be used for higher order terms ({{< math >}}$\nabla^2_\mathbf{x}dec(\mathbf{x}, \mathbf{z}_n), \ddot{\mathbf{f}}(\mathbf{x},t_n)${{< /math >}}).
+
+#### PDE Time-stepping
+Having all necessary information avaible, the PDE {{< math >}}$\mathcal{F}(\mathbf{f}_n, \nabla\mathbf{f}_n, \dots, \dot{\mathbf{f}}_{n+1}, \dots)=0${{< /math >}} is evolved from $t_n$ to $t_{n+s}$. For each domain point {{< math >}}$\mathcal{X}=\{\mathbf{x}_i\}_{i=1}^{m}${{< /math >}}, the PDE is solved for the temporal derivative $\dot{\mathbf{f}}_{n+1}$ and the configuration is then evolved in time using a, in this case, explicit time integration method $\mathcal{I}_{\mathcal{F}}$ like Runge-Kutta methods. The update then follows 
+{{< math >}}
+$$\mathbf{f}_{n+1} = \mathcal{I}_{\mathcal{F}}(\Delta t, \mathbf{f}_{n}, \dot{\mathbf{f}}_{n+1}) \quad \forall \mathbf{x}\in\mathcal{X} $$
+{{< /math >}} 
+
+#### Network Inversion
+In the last step the dynamics on the reduced manifold are updated in such a way that $\mathbf{z}_{n+1}$ matches best to the just calculated evolved configuration $\mathbf{f}_{n+1}$. To achieve this the optimization problem
+{{< math >}}
+$$\mathbf{z}_{n+1}^*= \argmin_{\mathbf{z}_{n+1}} \sum_{\mathbf{x}\in\mathcal{X}} \left| dec(\mathbf{x}, \mathbf{z}_{n+1}) - \mathbf{f}(\mathbf{x}, t_{n+1})\right|
+$$
+{{< /math >}} 
+is solved with a with Gauss-Newton algorithm or analytically using linearization.
 
 {{% callout note %}}
 CROM evolves the actual PDE for some domain points and updates the dynamics on the reduced manifold based on these results.
 {{% /callout %}}
+
+## Examples
+Enough of all the theory, let's dedicate ourselves to an example.
+
 
 ### 
 
