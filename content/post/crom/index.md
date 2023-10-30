@@ -70,23 +70,29 @@ Reduced order modeling mainly is concerned with finding suitable low-dimensional
 Conventional data-driven reduced order modeling approaches rely on a fixed description of a system. Fortunately, the number of degrees of freedoms results from the discretization method used and not from the intrinsic dimension of the given problem. This means that the actual system often lives on a low-dimensional embedding. For parameterized PDEs, the intrinsic dimension, i.e. the actual minimal dimension of the problem, equals at most the number of parameters $n_\text{p}$ plus one for the time $r=n_\text{p}+1$. 
 
 Popular methods to find a low-dimensional embedding on which a given system can be described on include linear methods like the _principal component analysis_ (PCA) (also known as _proper orthorgnal decomposition_ (POD)) or its nonlinear counterpart _autoencoders_ (AE). Those methods can be used to find a low-dimensional representation of the discretized vector field
-  {{< math >}}
+ 
+{{< math >}}
   $$
   \mathbf{z} = enc_{\mathbf{\theta}_\text{e}}(\mathbf{f})
   $$
-  {{< /math >}}
+{{< /math >}}
+
 but also to reconstruct the given discretization from this reduced quantity
-  {{< math >}}
+  
+{{< math >}}
   $$
   \mathbf{f} \approx dec_{\mathbf{\theta}_\text{d}}(\mathbf{z}).
   $$
-  {{< /math >}}
+{{< /math >}}
+
 In case of an autoencoder, these mappings are found by optimizing the reconstruction loss
+
 {{< math >}}
   $$
   \min_{\mathbf{\theta}_\text{e}, \mathbf{\theta}_\text{d}} \left| \mathbf{f} - dec_{\mathbf{\theta}_\text{d}}(enc_{\mathbf{\theta}_\text{e}}(\mathbf{f})) \right|
   $$
 {{< /math >}}
+
 for the networks' weights $\mathbf{\theta}_\text{e}, \mathbf{\theta}_\text{d}$ while a truncated singular value decomposition can be used in case of the PCA.
 
 Just as there are different approaches for the reduction, there are also different methods to approximate the temporal dynamics of a system. Purely data-driven approaches either try to directly approximate the time-dependent latent variable $\mathbf{z}(t) = \mathbf{\psi}(t)$, where $\mathbf{\psi}(t)$ could be parameterized by a neural network, or try to approximate the right-hand side of an ODE $\mathbf{\dot{z}}(t) = \mathbf{q}(\mathbf{z}, t) \approx \mathbf{\psi}(\mathbf{z}, t)$ (as done in PINNs) on the low-dimensional embedding. Examples can be found in **cite**.
@@ -100,19 +106,21 @@ Drawbacks of discretization based approaches: Change of resolution -> new archit
 ### Embedding
 Continous reduced order modeling (cite) follows unusual approaches in finding the embedding as well as in the time evolution of the latent dynamics.
 Similar to a conventional autoencoder it consists of an encoder and decoder. While the encoder does not change (as it is only used during training anyways), the decoder this time does not try to reconstruct the discretized vector field from the latent variable. Instead the decoder 
+
 {{< math >}}
   $$
   dec(\mathbf{x}, \mathbf{z}(t)) \approx \mathbf{f}(\mathbf{x}, t) \quad \forall \mathbf{x}\in\Omega, \quad \forall t\in\mathcal{T}
   $$
 {{< /math >}}
+
 takes the latent variable $\mathbf{z}(t)$ along with the positional variable $\mathbf{x}$ as input to reconstruct the vector field for this certain point. 
 Consequently, the decoder directly approximates the continous vector field. That's what the title of the original paper is refering to when speaking of implicit neural representations: they use neural networks to represent arbitrary vector fields. 
 To reproduce the behavior of a classical autoencoder, the decoder must be evaluated at all points of the discretization with different positional input. 
 However, it is also possible to reconstruct the vector field for any other point $\mathbf{x}\in\Omega$. 
 In order to optimize the weights of the encoder and decoder the loss function (ref) changes to 
+<!-- % \min_{\mathbf{\theta}_\text{e}, \mathbf{\theta}_\text{d}} \  -->
 {{< math >}}
   $$
-  % \min_{\mathbf{\theta}_\text{e}, \mathbf{\theta}_\text{d}} \ 
   \mathcal{L}_{\text{crom}}=
     \sum_{i=1}^{P} \left| \mathbf{f}_i - dec_{\mathbf{\theta}_\text{d}}(\mathbf{x}, \mathbf{z}(t)) \right|=
     \sum_{i=1}^{P} \left| \mathbf{f}_i - dec_{\mathbf{\theta}_\text{d}}(\mathbf{x}, enc_{\mathbf{\theta}_\text{e}}(\mathbf{f}(t))) \right|
@@ -161,21 +169,6 @@ Demo:
 
 You might also find the [Plotly JSON Editor](http://plotly-json-editor.getforge.io/) useful.
 
-### Math
-
-Wowchemy supports a Markdown extension for $\LaTeX$ math. You can enable this feature by toggling the `math` option in your `config/_default/params.yaml` file.
-
-To render _inline_ or _block_ math, wrap your LaTeX math with `{{</* math */>}}$...${{</* /math */>}}` or `{{</* math */>}}$$...$${{</* /math */>}}`, respectively. (We wrap the LaTeX math in the Wowchemy _math_ shortcode to prevent Hugo rendering our math as Markdown. The _math_ shortcode is new in v5.5-dev.)
-
-Example **math block**:
-
-{{< math >}}
-$$
-f(k;p_{0}^{*}) = \begin{cases}p_{0}^{*} & \text{if }k=1, \\
-1-p_{0}^{*} & \text{if }k=0.\end{cases}
-$$
-{{< /math >}}
-
 ### Diagrams
 
 Wowchemy supports a Markdown extension for diagrams. You can enable this feature by toggling the `diagram` option in your `config/_default/params.toml` file or by adding `diagram: true` to your page front matter.
@@ -191,14 +184,6 @@ Wowchemy supports a Markdown extension for diagrams. You can enable this feature
 Save your spreadsheet as a CSV file in your page's folder and then render it by adding the _Table_ shortcode to your page:
 
 renders as
-
-### Callouts
-
-Academic supports a [shortcode for callouts](https://wowchemy.com/docs/content/writing-markdown-latex/#callouts), also referred to as _asides_, _hints_, or _alerts_. By wrapping a paragraph in `{{%/* callout note */%}} ... {{%/* /callout */%}}`, it will render as an aside.
-
-{{% callout note %}}
-A Markdown aside is useful for displaying notices, hints, or definitions to your readers.
-{{% /callout %}}
 
 ### Icons
 
