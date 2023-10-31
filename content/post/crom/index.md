@@ -194,11 +194,172 @@ An update of the vector field thus results in
     u_{n+1}^i = u_n + \frac{\alpha \Delta t}{\Delta x^2}(u_n^{i+1} - 2u_n^{i} + u_n^{i-1}).
   $$
 {{< /math >}}
-With this method training and test data is generated based on diffusion factors {{< math >}}$\alpha_1, \alpha_2, \alpha_3 \in [0.2,1.0]^3${{< /math >}}.
+With this method training and test data is generated based on different diffusion factors {{< math >}}$\alpha_1, \alpha_2, \alpha_3 \in [0.2,1.0]^3${{< /math >}}. Thereby, the initial condition is the same for every simulation and just the diffusion factors change.
+
+For a it can be solved using the following code snippet
+```python
+import numpy as np
+
+def solve_diffusion(Nt, Nx, dx, dt, alpha, u_init):
+    """
+    Solve the diffusion equation u_t - alpha * u_xx = 0 with a first-order Euler scheme
+    :param Nt: number of time steps
+    :param Nx: number of spatial grid points
+    :param dx: spatial step size
+    :param dt: time step size
+    :param alpha: diffusion coefficient
+    :param u_init: initial condition
+    :return: u
+    """
+    # create temperature vector of size (timesteps x spatial points)
+    u = np.zeros((Nt, Nx))
+    # set initial condition
+    u[0] = u_init
+
+    # Main time-stepping loop
+    for t in range(1, Nt):
+        # Compute the second derivative using finite differences
+        u_xx = np.zeros(Nx)
+        u_xx[1:Nx-1] = (u[t - 1, 2:] - 2 * u[t - 1, 1:-1] + u[t - 1, :-2]) / (dx ** 2)
+        # Update the solution
+        u_t = alpha * u_xx
+        # update solution using a first-order Euler scheme
+        u[t] = u[t - 1] + dt * u_t
+
+    return u
+```
 
 #### Reduced-Order Model
 The latent dimension is set to {{< math >}}$r=16${{< /math >}} and the decoder {{< math >}}$dec(x, \mathbf{z})${{< /math >}} consists out of three fully-connected hidden layers with 128 neurons each. 
 To evolve the latent dynamics, only $m=22$ support points are evaluated at each time step, as can be seen in fig xy,
 It is also apparent that the ROM captures the FOM quite well. 
+
+A very simple implementation of the autoencoder for this example in PyTorch could look like this:
+```python
+import torch
+from torch import nn
+
+class CROMAutoencoder(nn.Module):
+    def __init__(self, r, Nx, Nd=1):
+        """
+        :param r: latent space dimension
+        :param Nx: number of spatial points
+        :param Nd: number of coordinates required to describe the position (1 for 1D, 2 for 2D, ...)
+        """
+        super(CROMAutoencoder, self).__init__()
+        self.r = r
+        self.Nx = Nx
+        self.Nd = Nd
+
+        # create fully-connected encoder from u to z
+        self.encoder = nn.Sequential(
+            nn.Linear(self.Nx, 128),
+            nn.ELU(True),
+            nn.Linear(128, 64),
+            nn.ELU(True),
+            nn.Linear(64, self.r),
+            nn.ELU(True),
+        )
+        # create fully-connected decoder from [x, z] to u(x)
+        self.decoder = nn.Sequential(
+            nn.Linear(self.r + self.Nd, 128),
+            nn.ELU(True),
+            nn.Linear(128, 128),
+            nn.ELU(True),
+            nn.Linear(128, 128),
+            nn.ELU(True),
+            nn.Linear(128, 1)
+        )
+
+    def forward(self, x, u):
+        """
+        :param x: (batchsize x n) positional coordinates
+        :param u: (batchsize x n) vector field values
+        """
+        
+        # save batch size for reshaping later
+        batch_size_local = x.size(0)
+
+        # encode input to latent space
+        z = self.encoder(u)
+
+        
+        # repeat z for every point in x
+        z = z.unsqueeze(1).repeat(1, x.size(1), 1)
+        # add new axis to x in the middle
+        x = x.unsqueeze(2)
+        # concatenate x and z
+        decoder_input = torch.cat((x, z), dim=2)
+        # reshape for decoder so that all the points are processed at once (batchsize = batch_size_local * Nx)
+        decoder_input = decoder_input.view(-1, self.r + self.Nd)
+        
+        # decode latent space to output
+        u_rec = self.decoder(decoder_input)
+        # reshape x_rec
+        u_rec = u_rec.view(batch_size_local, -1)
+
+        return u_rec
+```
+
+This autoencoder can then be trained on the FOM simulation data to find the low-dimensional embedding. 
+After 4000 epochs, the autoencoder was able to reconstruct the equation to some extent.
+{{< figure src="diffusion_tec_test.gif" caption="Reconstruction of the full vector field for test data." numbered="true" id="ae">}}
+
+Hereafter, we can evolve the latent dynamics in time using only a few (in this case {{< math >}}$m=22${{< /math >}}) integration points. 
+First, we need to define a function to call the decoder
+```python
+def decode(x, z):
+    """
+    :param x: set of positional coordinates
+    :param z: latent space coordinates
+    """
+
+    n = x.size(0)
+    # repeat z for every point in x
+    z = z.unsqueeze(0).repeat(n, 1)
+    # add new axis to x in the middle
+    x_support = x.unsqueeze(1)
+    # concatenate x and z
+    decoder_input = torch.cat((x, z), dim=1)
+    # cast to float
+    decoder_input = decoder_input.float()
+
+    # decode latent space to output
+    u_n = model.decoder(decoder_input).squeeze()
+
+    return u_n
+```
+which can then be used inside the PDE time-stepping scheme
+```
+# encode initial condition
+z_init = model.encoder(torch.from_numpy(u_init).float()).detach()
+# create latent vector of size (timesteps x (spatial points + 1))
+z = torch.zeros((Nt, r))
+# set initial condition
+z[0] = z_init
+
+# Main time-stepping loop
+for t in range(1, Nt):
+    u_old = forward(x_support, z[t-1])
+    # compute the second order spatial gradient using autograd
+    hessian = torch.func.hessian(forward, argnums=0)(x_support, z[t-1])
+    u_xx = torch.diagonal(torch.diagonal(hess_api, dim1=0, dim2=1), dim1=0, dim2=1).detach()
+    # get time derivative
+    u_t = alpha_support * u_xx
+    # update solution using a first-order Euler scheme
+    u_new = u_old + dt * u_t
+
+    # todo
+    # find z_new that best matches to u_new
+    z[t] = ?
+```
+From this time series, we can reconstruct the full vector field at arbitrary points {{< math >}}$x\in\Omega${{< /math >}}.
+Please note that the presented code does only serves academic and illustrative purposes and is neither optimized nor complete. For a general implementation please refer to the official repositories. 
+
+### Concluding Remarks
+CROM is a very powerful discretization free ROM scheme for PDEs. The authors showed that it can outperform conventional approaches regarding accuracy and resource demands while offering adaptivity in spatial meshing. Nevertheless, it shares some limitations with classic data-driven ROM approaches like the dependency on the training data, i.e. it won't generalize well to unseen scenarios. 
+In contrast to complete data-driven approaches it offers a nice blend of ML and PDE solutions at the cost of increased method complexity.
+#### Should you use CROM?
+Well, it depends. It is a very promising method which is likely to pave the way for many more great research projects. Especially, when you can take advantage of adaptively adjusting your discretization it is worth a try. If you don't mind the discritization present in your problem however, you can still go for the more conventional approaches and in that case even think if linear reduction (POD) isn't suitable for your certain problem.  
 
 ### Did you find this page helpful? Consider sharing it 🙌
