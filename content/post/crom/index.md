@@ -38,7 +38,7 @@ categories:
   - Model Order Reduction
   - Scientific Machine Learning
 ---
-In this blog post I want to talk about _continous reduced order modeling_ (CROM) [[ChenEtAl23](https://doi.org/10.48550/arXiv.2206.02607)], an innovative discretization-free reduced order modeling approach to approximate PDEs. The key novelty lies in utilizing a neural network (NN) to create a _continuous representation_ of the reduced manifold, in contrast to the discrete representation commonly found in classical methods relying on reduction methods as Proper Orthogonal Decomposition (POD).
+In this blog post I want to talk about _continous reduced order modeling_ (CROM) [[ChenEtAl23](https://doi.org/10.48550/arXiv.2206.02607)], an innovative discretization-free reduced order modeling approach to approximate PDEs. The key novelty lies in utilizing a neural network (NN) to create a _continuous representation_ of the reduced manifold, in contrast to the discrete representation commonly found in classical methods relying on reduction methods such as Proper Orthogonal Decomposition (POD).
 Assuming prior knowledge of the PDE's form, the method involves using a solver to generate data for training the neural network. This NN allows the generation of continuous spatial representations at any given time.
 
 At each time step, the PDE is solved for the subsequent time point {{< math >}}$t_{i+1}${{< /math >}} using a numerical scheme, but on a reduced set of spatial points. This selective sampling of spatial points (integration points) is the reason for time savings compared to high-fidelity solvers that operate on the entire spatial space.
@@ -109,14 +109,14 @@ Just as there are different approaches for the reduction, there are also differe
 In case the underlying PDE is known, quasi-Newton solvers for implicit time integration of the latent dynamics on a continuously-differentiable nonlinear manifold have been used in [[LeeCarlberg20](https://doi.org/10.1016/j.jcp.2019.108973)]. 
 When there is no knowledge about the underling equations present, some the purely data-driven approaches try to directly approximate the time-dependent latent variable $\mathbf{z}(t) \approx \mathbf{\psi}(t)$ [[KneiflEtAl23](https://doi.org/10.1007/s00419-023-02458-5)] (Caution self-promotion), while others try to approximate the right-hand side of an ODE $\mathbf{\dot{z}}(t) = \mathbf{q}(\mathbf{z}, t) \approx \mathbf{\psi}(\mathbf{z}, t)$ on the low-dimensional embedding [[ChampionEtAl19](https://doi.org/10.1073/pnas.1906995116)]. In both cases, $\mathbf{\psi}(t)$ could be parameterized by a neural network. 
 
-What all those approaches share is that they rely on a already discretized vector field. Consequently, a change of resolution requires a new architecture and a new training of the reduced order model. Furthermore, they don't allow adaptive spatial resolution what could be useful in scenarios of varying intensity (low resolution when nothin is happening, high resolution when it gets exciting) or for applications under changes of available computational resources.
+What all those approaches share is that they rely on an already discretized vector field. Consequently, a change of resolution requires a new architecture and a new training of the reduced order model. Furthermore, they don't allow adaptive spatial resolution what could be useful in scenarios of varying intensity (low resolution when nothin is happening, high resolution when it gets exciting) or for applications under changes of available computational resources.
 CROM claims to be able to overcome these disadvantages. So, let's have a look how CROM differs from such approaches.
 
 ## CROM
 {{< figure src="featured.png" caption="A caption" numbered="true" id="ae">}}
+CROM follows unconventional approaches in both, finding the low-dimensional embedding as well as in evolving the latent dynamics. 
 ### Embedding
-Continous reduced order modeling (cite) follows unusual approaches in finding the embedding as well as in the time evolution of the latent dynamics.
-Similar to a conventional autoencoder it consists of an encoder and decoder. While the encoder does not change (as it is only used during training anyways), the decoder this time does not try to reconstruct the discretized vector field from the latent variable. Instead the decoder 
+Similar to a conventional autoencoder approaches it constructs an encoder and a decoder. While there are no changes to the encoder compared to conventional methods, the decoder this time does not try to reconstruct a discretized vector field from the latent variable. Instead the decoder 
 
 {{< math >}}
   $$
@@ -124,8 +124,9 @@ Similar to a conventional autoencoder it consists of an encoder and decoder. Whi
   $$
 {{< /math >}}
 
-takes the latent variable $\mathbf{z}(t)$ along with the positional variable $\mathbf{x}$ as input to reconstruct the vector field for this certain point. 
-Consequently, the decoder directly approximates the continous vector field. That's what the title of the original paper is refering to when speaking of implicit neural representations: they use neural networks to represent arbitrary vector fields. 
+takes the latent variable $\mathbf{z}(t)$ along with the positional variable $\mathbf{x}$ as input to reconstruct the vector field at this certain point. 
+Consequently, the decoder directly approximates the continous vector field. That's what the title of the original paper is refering to when speaking of implicit neural representations: Neural representations are class of methods using neural networks to represent arbitrary vector fields. 
+
 To reproduce the behavior of a classical autoencoder, the decoder must be evaluated at all points of the discretization with different positional input. 
 However, it is also possible to reconstruct the vector field for any other point $\mathbf{x}\in\Omega$. 
 In order to optimize the weights of the encoder and decoder the loss function (ref) changes to 
@@ -142,32 +143,32 @@ In order to optimize the weights of the encoder and decoder the loss function (r
 CROM uses a decoder that directly approximates the continous vector field.
 {{% /callout %}}
 
-{{< figure src="dynamics.png" caption="Evolution of the latent dynamics." numbered="true" id="ae">}}
 ### Dynamics
-In contrast to conventional approaches CROM evaluates the actual PDE for a small number of domain points {{< math >}}$\mathcal{X}=\{\mathbf{x}_i\}_{i=1}^{m}${{< /math >}} with $m \ll P$ to evolve in time. 
-The approach to update the latent variable from {{< math >}}$\mathbf{z}_{n}=\mathbf{z}(t_{n})${{< /math >}} to {{< math >}}$\mathbf{z}_{n+1}=\mathbf{z}(t_{n+1})${{< /math >}} at the next time step consists of three steps:
+{{< figure src="dynamics.png" caption="Evolution of the latent dynamics." numbered="true" id="ae">}}
+
+In contrast to conventional approaches CROM, evaluates the actual PDE for a small number of domain points {{< math >}}$\mathcal{X}=\{\mathbf{x}_i\}^{i=1}^{m}${{< /math >}} to evolve in time. For a small set, i.e. $m \ll P$, this leads to dramatic time savings compared to the full-order model where the PDE must be evaluated at all $P$ points.
+The approach to update the latent variable from the current state {{< math >}}$\mathbf{z}_{n}=\mathbf{z}(t_{n})${{< /math >}} to the subseqeuent one {{< math >}}$\mathbf{z}_{n+1}=\mathbf{z}(t_{n+1})${{< /math >}} at the next time step consists of three steps:
 1. network inference 
 2. PDE time-stepping 
 3. network inversion 
 
 #### Network Inference
-During the first step of the computation of the latent space dynamics, all spatiotemporal information for the PDE time-stepping is gathered for the selected samples {{< math >}}$\mathcal{X}=\{\mathbf{x}_i\}_{i=1}^{m}${{< /math >}}. The function value itself
-{{< math >}}$\mathbf{f}(\mathbf{x},t_n)=dec(\mathbf{x}, \mathbf{z}_n) \quad \forall \mathbf{x}\in\mathcal{X}${{< /math >}} is obtained from the decoder along with the spatial {{< math >}}$\nabla\mathbf{f}(\mathbf{x},t_n) = \nabla_\mathbf{x}dec(\mathbf{x}, \mathbf{z}_n)${{< /math >}} as well as temporal gradients {{< math >}}$\dot{\mathbf{f}}(\mathbf{x},t_n) = \frac{\partial dec(\mathbf{x}, \mathbf{z}_n)}{\partial \mathbf{z}}\dot{\mathbf{z}}_n${{< /math >}}. A similar procedure can be used for higher order terms ({{< math >}}$\nabla^2_\mathbf{x}dec(\mathbf{x}, \mathbf{z}_n), \ddot{\mathbf{f}}(\mathbf{x},t_n)${{< /math >}}).
+During the first step of the computation of the latent space dynamics, all spatiotemporal information for the PDE time-stepping is gathered for the selected samples {{< math >}}$\mathcal{X}${{< /math >}}. The function value itself {{< math >}}$\mathbf{f}(\mathbf{x},t_n)=dec(\mathbf{x}, \mathbf{z}_n)${{< /math >}} is obtained from the decoder for all {{< math >}}$\mathbf{x}\in\mathcal{X}${{< /math >}}along with the spatial {{< math >}}$\nabla\mathbf{f}(\mathbf{x},t_n) = \nabla_\mathbf{x}dec(\mathbf{x}, \mathbf{z}_n)${{< /math >}} as well as temporal gradients {{< math >}}$\dot{\mathbf{f}}(\mathbf{x},t_n) = \frac{\partial dec(\mathbf{x}, \mathbf{z}_n)}{\partial \mathbf{z}}\dot{\mathbf{z}}_n${{< /math >}}. A similar procedure can be used for higher order terms ({{< math >}}$\nabla^2_\mathbf{x}dec(\mathbf{x}, \mathbf{z}_n), \ddot{\mathbf{f}}(\mathbf{x},t_n), \dots ${{< /math >}}).
 
 #### PDE Time-stepping
-Having all necessary information avaible, the PDE {{< math >}}$\mathcal{F}(\mathbf{f}_n, \nabla\mathbf{f}_n, \dots, \dot{\mathbf{f}}_{n+1}, \dots)=0${{< /math >}} is evolved from $t_n$ to $t_{n+s}$. For each domain point {{< math >}}$\mathcal{X}=\{\mathbf{x}_i\}_{i=1}^{m}${{< /math >}}, the PDE is solved for the temporal derivative {{< math >}}$\dot{\mathbf{f}}_{n+1}${{< /math >}} and the configuration is then evolved in time using a, in this case, explicit time integration method {{< math >}}$\mathcal{I}_{\mathcal{F}}${{< /math >}} like Runge-Kutta methods. The update then follows 
+Having all necessary information avaible, the PDE {{< math >}}$\mathcal{F}(\mathbf{f}_n, \nabla\mathbf{f}_n, \dots, \dot{\mathbf{f}}_{n+1}, \dots)=0${{< /math >}} is evolved from $t_n$ to $t_{n+s}$. For each domain point {{< math >}}$\mathbf{x}\in\mathcal{X}${{< /math >}}, the PDE is solved for the temporal derivative {{< math >}}$\dot{\mathbf{f}}_{n+1}${{< /math >}} and the configuration is then evolved in time using a, in this case, explicit time integration method {{< math >}}$\mathcal{I}_{\mathcal{F}}${{< /math >}} like Runge-Kutta methods. The update then follows 
 {{< math >}}
-  $$\mathbf{f}_{n+1} = \mathcal{I}_{\mathcal{F}}(\Delta t, \mathbf{f}_{n}, \dot{\mathbf{f}}_{n+1}) \quad \forall \mathbf{x}\in\mathcal{X} 
+  $$\mathbf{f}_{n+1} = \mathcal{I}_{\mathcal{F}}(\Delta t, \mathbf{f}_{n}, \dot{\mathbf{f}}_{n+1}) \quad \forall \mathbf{x}\in\mathcal{X} .
   $$
 {{< /math >}} 
 
 #### Network Inversion
-In the last step the dynamics on the reduced manifold are updated in such a way that {{< math >}}$\mathbf{z}_{n+1}${{< /math >}}  matches best to the just calculated evolved configuration {{< math >}}$\mathbf{f}_{n+1}${{< /math >}} . To achieve this the optimization problem
+In the last step the dynamics on the reduced manifold are updated in such a way that {{< math >}}$\mathbf{z}_{n+1}${{< /math >}}  matches best to the just calculated {{< math >}}$\mathbf{f}_{n+1}${{< /math >}}. To achieve this the optimization problem
 {{< math >}}
   $$\mathbf{z}_{n+1}^*= \underset{\mathbf{z}_{n+1}}{\text{argmin}} \sum_{\mathbf{x}\in\mathcal{X}} \left| dec(\mathbf{x}, \mathbf{z}_{n+1}) - \mathbf{f}(\mathbf{x}, t_{n+1})\right|
   $$
 {{< /math >}} 
-is solved with a with Gauss-Newton algorithm or analytically using linearization.
+is solved with a with Gauss-Newton algorithm or using linearization.
 
 {{% callout note %}}
 CROM evolves the actual PDE for some domain points and updates the dynamics on the reduced manifold based on these results.
@@ -182,7 +183,7 @@ Let's consider a one dimensional diffusion problem
     \frac{\partial u}{\partial t} = \alpha(x) \frac{\partial^2 u}{\partial^2 x}
   $$
 {{< /math >}} 
-with the temperature {{< math >}}$u${{< /math >}} and a spatially-varying diffusion speed {{< math >}}$\alpha${{< /math >}}. Following the example from cite[crom], the spatial coordinates is departed into three intervalls of equal size with different diffusion factors, i.e. 
+with the temperature {{< math >}}$u${{< /math >}} and a spatially-varying diffusion speed {{< math >}}$\alpha${{< /math >}}. Following the example from the CROM paper, the spatial coordinates is departed into three intervalls of equal size with different diffusion factors, i.e. 
 {{< math >}}
   $$
     \alpha(x) = \left\{ 
@@ -191,7 +192,7 @@ with the temperature {{< math >}}$u${{< /math >}} and a spatially-varying diffus
             \alpha_2 & \, 1/3 \leq x < 2/3 \\
             \alpha_3 & \, 2/3 \leq x \leq 1 \\
         \end{array}
-    \right. .
+    \right 
   $$
 {{< /math >}}
 
@@ -200,14 +201,14 @@ The high-fidelity spatial vector field is discretized with $P=501$ points and so
 An update of the vector field thus results in 
 {{< math >}}
   $$
-    \frac{u_{n+1}^i - u_{n}^i}{\Delta t} = \alpha \frac{u_n^{i+1} - 2u_n^{i} + u_n^{i-1}}{\Delta x^2}
-      \Leftrightarrow 
+    \frac{u_{n+1}^i - u_{n}^i}{\Delta t} = \alpha \frac{u_n^{i+1} - 2u_n^{i} + u_n^{i-1}}{\Delta x^2}\\
+      \Leftrightarrow \\
     u_{n+1}^i = u_n + \frac{\alpha \Delta t}{\Delta x^2}(u_n^{i+1} - 2u_n^{i} + u_n^{i-1}).
   $$
 {{< /math >}}
-With this method training and test data is generated based on different diffusion factors {{< math >}}$\alpha_1, \alpha_2, \alpha_3 \in [0.2,1.0]^3${{< /math >}}. Thereby, the initial condition is the same for every simulation and just the diffusion factors change.
+With this method training and test data is generated based on different diffusion factors {{< math >}}$\alpha_1, \alpha_2, \alpha_3 \in [0.0,1.0]^3${{< /math >}}. Thereby, the initial condition is the same for every simulation and just the diffusion factors change.
 
-For a it can be solved using the following code snippet
+For a given initial condition and values of alpha and it can be solved using the following code snippet
 ```python
 import numpy as np
 
@@ -241,9 +242,7 @@ def solve_diffusion(Nt, Nx, dx, dt, alpha, u_init):
 ```
 
 #### Reduced-Order Model
-The latent dimension is set to {{< math >}}$r=16${{< /math >}} and the decoder {{< math >}}$dec(x, \mathbf{z})${{< /math >}} consists out of three fully-connected hidden layers with 128 neurons each. 
-To evolve the latent dynamics, only $m=22$ support points are evaluated at each time step, as can be seen in fig xy,
-It is also apparent that the ROM captures the FOM quite well. 
+The latent dimension of the reduced order model is set to {{< math >}}$r=16${{< /math >}} and the decoder {{< math >}}$dec(x, \mathbf{z})${{< /math >}} consists out of three fully-connected hidden layers with 128 neurons each. 
 
 A very simple implementation of the autoencoder for this example in PyTorch could look like this:
 ```python
@@ -313,11 +312,11 @@ class CROMAutoencoder(nn.Module):
 ```
 
 This autoencoder can then be trained on the FOM simulation data to find the low-dimensional embedding. 
-After 4000 epochs, the autoencoder was able to reconstruct the equation to some extent.
+After 4000 epochs, the autoencoder is able to reconstruct the full vector field to some extent.
 {{< figure src="diffusion_rec_test_2.gif" caption="Reconstruction of the full vector field for test data." numbered="true" id="ae">}}
 
 Hereafter, we can evolve the latent dynamics in time using only a few (in this case {{< math >}}$m=22${{< /math >}}) integration points. 
-First, we need to define a function to call the decoder
+First, we need to define a function to call the decoder for a given position {{< math >}}$x${{< /math >}} and latent variable {{< math >}}$\mathbf{z}${{< /math >}}
 ```python
 def decode(x, z):
     """
@@ -340,7 +339,7 @@ def decode(x, z):
 
     return u_n
 ```
-which can then be used inside the PDE time-stepping scheme
+which can then be used inside the PDE time-stepping scheme:
 ```
 # encode initial condition
 z_init = model.encoder(torch.from_numpy(u_init).float()).detach()
@@ -351,9 +350,9 @@ z[0] = z_init
 
 # Main time-stepping loop
 for t in range(1, Nt):
-    u_old = forward(x_support, z[t-1])
+    u_old = decode(x_support, z[t-1])
     # compute the second order spatial gradient using autograd
-    hessian = torch.func.hessian(forward, argnums=0)(x_support, z[t-1])
+    hessian = torch.func.hessian(decode, argnums=0)(x_support, z[t-1])
     u_xx = torch.diagonal(torch.diagonal(hess_api, dim1=0, dim2=1), dim1=0, dim2=1).detach()
     # get time derivative
     u_t = alpha_support * u_xx
@@ -365,12 +364,13 @@ for t in range(1, Nt):
     z[t] = ?
 ```
 From this time series, we can reconstruct the full vector field at arbitrary points {{< math >}}$x\in\Omega${{< /math >}}.
-Please note that the presented code does only serves academic and illustrative purposes and is neither optimized nor complete. For a general implementation please refer to the official repositories. 
+Please note that the presented code does only serves academic and illustrative purposes and is neither optimized nor complete. For a general implementation please refer to the official [github page](https://crom-pde.github.io). 
 
 ### Concluding Remarks
-CROM is a very powerful discretization free ROM scheme for PDEs. The authors showed that it can outperform conventional approaches regarding accuracy and resource demands while offering adaptivity in spatial meshing. Nevertheless, it shares some limitations with classic data-driven ROM approaches like the dependency on the training data, i.e. it won't generalize well to unseen scenarios. 
+CROM is a very powerful discretization-free ROM scheme for PDEs. The authors showed that it can outperform conventional approaches regarding accuracy and resource demands while offering adaptive spatial resolutoins. Nevertheless, it shares some limitations with classic data-driven ROM approaches like the dependency on the training data, i.e. it won't generalize well to unseen scenarios. 
 In contrast to complete data-driven approaches it offers a nice blend of ML and PDE solutions at the cost of increased method complexity.
+
 #### Should you use CROM?
-Well, it depends. It is a very promising method which is likely to pave the way for many more great research projects. Especially, when you can take advantage of adaptively adjusting your discretization it is worth a try. If you don't mind the discritization present in your problem however, you can still go for the more conventional approaches and in that case even think if linear reduction (POD) isn't suitable for your certain problem.  
+Well, it depends. It is a very promising method which is likely to pave the way for many more great research projects. Especially, when you can take advantage of adaptively adjusting your discretization ,it is worth a try. If you, however, don't mind the discretization present in your problem, you can still go for the more conventional approaches and in that case even consider whether linear reduction (PCA) isn't suitable for your certain problem.  
 
 ### Did you find this page helpful? Consider sharing it 🙌
