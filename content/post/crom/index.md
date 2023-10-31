@@ -38,7 +38,6 @@ categories:
   - Model Order Reduction
   - Scientific Machine Learning
 ---
-<!-- {{< cite page="/publication/preprint" view="citation" >}} -->
 In this blog post I want to talk about _continous reduced order modeling_ (CROM) ([ChenEtAl23](https://doi.org/10.48550/arXiv.2206.02607)), an innovative discretization-free reduced order modeling approach to approximate PDEs. The key novelty lies in utilizing a neural network (NN) to create a _continuous representation_ of the reduced manifold, in contrast to the discrete representation commonly found in classical methods relying on reduction methods as Proper Orthogonal Decomposition (POD).
 Assuming prior knowledge of the PDE's form, the method involves using a solver to generate data for training the neural network. This NN allows the generation of continuous spatial representations at any given time.
 
