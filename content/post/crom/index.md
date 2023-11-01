@@ -312,7 +312,7 @@ class CROMAutoencoder(nn.Module):
 ```
 
 This autoencoder can then be trained on the FOM simulation data to find the low-dimensional embedding. 
-After 4000 epochs, the autoencoder is able to reconstruct the full vector field to some extent.
+After 12000 epochs, the autoencoder is able to reconstruct the full vector field quite well as demonstrated in the following gif.
 {{< figure src="diffusion_rec_test_2.gif" caption="Reconstruction of the full vector field for test data." numbered="true" id="ae">}}
 
 Hereafter, we can evolve the latent dynamics in time using only a few (in this case {{< math >}}$m=22${{< /math >}}) integration points. 
