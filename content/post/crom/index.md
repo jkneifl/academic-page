@@ -146,7 +146,7 @@ CROM uses a decoder that directly approximates the continous vector field.
 ### Dynamics
 {{< figure src="dynamics.png" caption="Evolution of the latent dynamics." numbered="true" id="ae">}}
 
-In contrast to conventional approaches CROM, evaluates the actual PDE for a small number of domain points {{< math >}}$\mathcal{X}=\{\mathbf{x}_i\}^{i=1}^{m}${{< /math >}} to evolve in time. For a small set, i.e. $m \ll P$, this leads to dramatic time savings compared to the full-order model where the PDE must be evaluated at all $P$ points.
+In contrast to conventional approaches CROM, evaluates the actual PDE for a small number of domain points {{< math >}}$\mathcal{X}=\{\mathbf{x}^i\}_{i=1}^{m}${{< /math >}} to evolve in time. For a small set, i.e. $m \ll P$, this leads to dramatic time savings compared to the full-order model where the PDE must be evaluated at all $P$ points.
 The approach to update the latent variable from the current state {{< math >}}$\mathbf{z}_{n}=\mathbf{z}(t_{n})${{< /math >}} to the subseqeuent one {{< math >}}$\mathbf{z}_{n+1}=\mathbf{z}(t_{n+1})${{< /math >}} at the next time step consists of three steps:
 1. network inference 
 2. PDE time-stepping 
@@ -192,7 +192,7 @@ with the temperature {{< math >}}$u${{< /math >}} and a spatially-varying diffus
             \alpha_2 & \, 1/3 \leq x < 2/3 \\
             \alpha_3 & \, 2/3 \leq x \leq 1 \\
         \end{array}
-    \right 
+    \right. 
   $$
 {{< /math >}}
 
