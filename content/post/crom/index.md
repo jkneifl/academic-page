@@ -38,10 +38,10 @@ categories:
   - Model Order Reduction
   - Scientific Machine Learning
 ---
-In this blog post I want to talk about _continous reduced order modeling_ (CROM) [[ChenEtAl23](https://doi.org/10.48550/arXiv.2206.02607)], an innovative discretization-free reduced order modeling approach to approximate PDEs. The key novelty lies in utilizing a neural network (NN) to create a _continuous representation_ of the reduced manifold, in contrast to the discrete representation commonly found in classical methods relying on reduction methods such as Proper Orthogonal Decomposition (POD).
-Assuming prior knowledge of the PDE's form, the method involves using a solver to generate data for training the neural network. This NN allows the generation of continuous spatial representations at any given time.
+In this blog post, I want to talk about _continous reduced order modeling_ (CROM) [[ChenEtAl23](https://doi.org/10.48550/arXiv.2206.02607)], an innovative discretization-free reduced order modeling approach to approximate PDEs. The key novelty lies in utilizing an implicit neural representation (INR) to create a _continuous representation_ of the reduced manifold, in contrast to the discrete representation commonly found in classical methods relying on reduction methods like proper orthogonal decomposition.
+Assuming prior knowledge of the PDE's form, CROM involves using a solver to generate data for the training of a neural network (NN). This NN allows the generation of continuous spatial representations at any given time.
 
-At each time step, the PDE is solved for the subsequent time point {{< math >}}$t_{i+1}${{< /math >}} using a numerical scheme, but on a reduced set of spatial points. This selective sampling of spatial points (integration points) is the reason for time savings compared to high-fidelity solvers that operate on the entire spatial space.
+In order to evolve the dynamics at each time step, the original PDE is solved for the subsequent time point {{< math >}}$t_{i+1}${{< /math >}} using a numerical scheme, but on a reduced set of spatial points. This selective sampling of spatial points is the reason for time savings compared to high-fidelity solvers that operate on the entire spatial space.
 
 The latent variable at time {{< math >}}$t_{i+1}${{< /math >}} is then inferred from the solutions at the small set of integration points by solving an inverse problem, enabling the INR to generate the complete solution for time t+1. This iterative process captures the dynamic evolution of the PDE.
 
@@ -107,10 +107,10 @@ for the networks' weights {{< math >}}$\mathbf{\theta}_\text{e}, \mathbf{\theta}
 
 Just as there are different approaches for the reduction, there are also different methods to approximate the temporal dynamics of a system. 
 In case the underlying PDE is known, quasi-Newton solvers for implicit time integration of the latent dynamics on a continuously-differentiable nonlinear manifold have been used in [[LeeCarlberg20](https://doi.org/10.1016/j.jcp.2019.108973)]. 
-When there is no knowledge about the underling equations present, some the purely data-driven approaches try to directly approximate the time-dependent latent variable $\mathbf{z}(t) \approx \mathbf{\psi}(t)$ [[KneiflEtAl23](https://doi.org/10.1007/s00419-023-02458-5)] (Caution self-promotion), while others try to approximate the right-hand side of an ODE $\mathbf{\dot{z}}(t) = \mathbf{q}(\mathbf{z}, t) \approx \mathbf{\psi}(\mathbf{z}, t)$ on the low-dimensional embedding [[ChampionEtAl19](https://doi.org/10.1073/pnas.1906995116)]. In both cases, $\mathbf{\psi}(t)$ could be parameterized by a neural network. 
+When there is no knowledge about the underling equations present, some of the purely data-driven approaches try to directly approximate the time-dependent latent variable $\mathbf{z}(t) \approx \mathbf{\psi}(t)$ [[KneiflEtAl23](https://doi.org/10.1007/s00419-023-02458-5)] (Caution self-promotion), while others try to approximate the right-hand side of an ODE $\mathbf{\dot{z}}(t) = \mathbf{q}(\mathbf{z}, t) \approx \mathbf{\psi}(\mathbf{z}, t)$ on the low-dimensional embedding [[ChampionEtAl19](https://doi.org/10.1073/pnas.1906995116)]. In both cases, $\mathbf{\psi}(t)$ could be parameterized by a neural network. 
 
-What all those approaches share is that they rely on an already discretized vector field. Consequently, a change of resolution requires a new architecture and a new training of the reduced order model. Furthermore, they don't allow adaptive spatial resolution what could be useful in scenarios of varying intensity (low resolution when nothin is happening, high resolution when it gets exciting) or for applications under changes of available computational resources.
-CROM claims to be able to overcome these disadvantages. So, let's have a look how CROM differs from such approaches.
+What all those approaches share is that they rely on an already discretized vector field. Consequently, a change of resolution requires a new architecture and new training of the reduced order model. Furthermore, they don't allow adaptive spatial resolution what can be useful in scenarios of varying intensity (low resolution when nothin is happening, high resolution when things get exciting) or for applications under changes of available computational resources.
+CROM claims to be able to overcome these disadvantages. So, let's have a look how CROM differs from the previously presented approaches.
 
 ## CROM
 {{< figure src="featured.png" caption="A caption" numbered="true" id="ae">}}
