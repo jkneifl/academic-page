@@ -155,37 +155,37 @@ class TorchAutoencoder(nn.Module):
         self.encoder_0 = nn.Linear(self.Nx, self.n_neurons)
         self.encoder_0_act = nn.ELU(True)
         for i in range(n_layers-2):
-            setattr(self, f'encoder_{i}', nn.Linear(self.n_neurons, self.n_neurons))
-            setattr(self, f'encoder_{i}_act', nn.ELU(True))
-        setattr(self, f'encoder_{i}', nn.Linear(self.n_neurons, self.r))
+            setattr(self, f'encoder_{i+1}', nn.Linear(self.n_neurons, self.n_neurons))
+            setattr(self, f'encoder_{i+1}_act', nn.ELU(True))
+        setattr(self, f'encoder_{n_layers-1}', nn.Linear(self.n_neurons, self.r))
 
         # create layers for encoder
         self.decoder_0 = nn.Linear(self.r + self.Nd, self.n_neurons)
         self.decoder_0_act = nn.ELU(True)
         for i in range(n_layers-2):
-            setattr(self, f'decoder_{i}', nn.Linear(self.n_neurons, self.n_neurons))
-            setattr(self, f'decoder_{i}_act', nn.ELU(True))
-        setattr(self, f'decoder_{i}', nn.Linear(self.n_neurons+1, 1))
+            setattr(self, f'decoder_{i+1}', nn.Linear(self.n_neurons, self.n_neurons))
+            setattr(self, f'decoder_{i+1}_act', nn.ELU(True))
+        setattr(self, f'decoder_{n_layers-1}', nn.Linear(self.n_neurons+1, 1))
 
-        self.encoder = nn.Sequential(
-            nn.Linear(self.Nx, 128),
-            nn.ELU(True),
-            nn.Linear(128, 64),
-            nn.ELU(True),
-            nn.Linear(64, self.r),
-            nn.ELU(True),
-        )
-        self.decoder = nn.Sequential(
-            nn.Linear(self.r + self.Nd, 128),
-            # nn.ELU(True),
-            # nn.Linear(self.r, 64),
-            nn.ELU(True),
-            nn.Linear(128, 128),
-            nn.ELU(True),
-            nn.Linear(128, 128),
-            nn.ELU(True),
-            nn.Linear(128, 1)
-        )
+        # self.encoder = nn.Sequential(
+        #     nn.Linear(self.Nx, 128),
+        #     nn.ELU(True),
+        #     nn.Linear(128, 64),
+        #     nn.ELU(True),
+        #     nn.Linear(64, self.r),
+        #     nn.ELU(True),
+        # )
+        # self.decoder = nn.Sequential(
+        #     nn.Linear(self.r + self.Nd, 128),
+        #     # nn.ELU(True),
+        #     # nn.Linear(self.r, 64),
+        #     nn.ELU(True),
+        #     nn.Linear(128, 128),
+        #     nn.ELU(True),
+        #     nn.Linear(128, 128),
+        #     nn.ELU(True),
+        #     nn.Linear(128, 1)
+        # )
     def encoder(self, u):
         for i in range(self.n_layers):
             u = getattr(self, f'encoder_{i}')(u)
@@ -213,8 +213,8 @@ class TorchAutoencoder(nn.Module):
             if hasattr(self, f'decoder_{i}_act'):
                 u_ = getattr(self, f'decoder_{i}_act')(u_)
         # stack x and u_ (skip connection from x to output layer)
-        output_input = torch.cat((x, u_), dim=2)
-        u_ = getattr(self, f'decoder_{self.n_layers}')(output_input)
+        output_input = torch.cat((x.view(-1, self.Nd), u_), dim=1)
+        u_ = getattr(self, f'decoder_{self.n_layers-1}')(output_input)
 
         # reshape x_rec
         u_rec = u_.view(batch_size_local, -1)
@@ -222,6 +222,23 @@ class TorchAutoencoder(nn.Module):
         return u_rec
 
     def forward(self, x, u):
+        """
+        :param x: (batchsize x n) positional coordinates
+        :param u: (batchsize x n) vector field values
+        """
+
+        # save batch size for reshaping later
+        batch_size_local = x.size(0)
+
+        # encode input to latent space
+        z = self.encoder(u)
+
+        # reshape x_rec
+        u_rec = self.decoder(x, z)
+
+        return u_rec
+
+    def forward2(self, x, u):
         """
         :param x: (batchsize x n) positional coordinates
         :param u: (batchsize x n) vector field values
