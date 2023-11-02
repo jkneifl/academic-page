@@ -134,8 +134,8 @@ In order to optimize the weights of the encoder and decoder the loss function (r
 {{< math >}}
   $$
   \mathcal{L}_{\text{crom}}=
-    \sum_{i=1}^{P} \left| \mathbf{f}_i - dec_{\mathbf{\theta}_\text{d}}(\mathbf{x}, \mathbf{z}(t)) \right|=
-    \sum_{i=1}^{P} \left| \mathbf{f}_i - dec_{\mathbf{\theta}_\text{d}}(\mathbf{x}, enc_{\mathbf{\theta}_\text{e}}(\mathbf{f}(t))) \right|
+    \sum_{i=1}^{P} \left| \mathbf{f}_i - dec_{\mathbf{\theta}_\text{d}}(\mathbf{x}^i, \mathbf{z}(t)) \right|=
+    \sum_{i=1}^{P} \left| \mathbf{f}_i - dec_{\mathbf{\theta}_\text{d}}(\mathbf{x}^i, enc_{\mathbf{\theta}_\text{e}}(\mathbf{f}(t))) \right|
   $$
 {{< /math >}}
 
@@ -353,7 +353,7 @@ for t in range(1, Nt):
     u_old = decode(x_support, z[t-1])
     # compute the second order spatial gradient using autograd
     hessian = torch.func.hessian(decode, argnums=0)(x_support, z[t-1])
-    u_xx = torch.diagonal(torch.diagonal(hess_api, dim1=0, dim2=1), dim1=0, dim2=1).detach()
+    u_xx = torch.diagonal(torch.diagonal(hessian, dim1=0, dim2=1), dim1=0, dim2=1).detach()
     # get time derivative
     u_t = alpha_support * u_xx
     # update solution using a first-order Euler scheme
@@ -364,7 +364,7 @@ for t in range(1, Nt):
     z[t] = ?
 ```
 From this time series, we can reconstruct the full vector field at arbitrary points {{< math >}}$x\in\Omega${{< /math >}}.
-Please note that the presented code does only serves academic and illustrative purposes and is neither optimized nor complete. For a general implementation please refer to the official [github page](https://crom-pde.github.io). 
+Please note that the presented code does only serve academic and illustrative purposes and is neither optimized nor complete. For a general implementation please refer to the official [github page](https://crom-pde.github.io). 
 
 ### Concluding Remarks
 CROM is a very powerful discretization-free ROM scheme for PDEs. The authors showed that it can outperform conventional approaches regarding accuracy and resource demands while offering adaptive spatial resolutoins. Nevertheless, it shares some limitations with classic data-driven ROM approaches like the dependency on the training data, i.e. it won't generalize well to unseen scenarios. 

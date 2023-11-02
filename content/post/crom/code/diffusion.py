@@ -138,7 +138,7 @@ train_loader = DataLoader(dataset, batch_size=16, shuffle=True)
 
 # create autoencoder
 class TorchAutoencoder(nn.Module):
-    def __init__(self, r, Nx, Nd=1):
+    def __init__(self, r, Nx, Nd=1, n_layers=3, n_neurons=128):
         """
         :param r: latent space dimension
         :param Nx: number of spatial points
@@ -148,6 +148,24 @@ class TorchAutoencoder(nn.Module):
         self.r = r
         self.Nx = Nx
         self.Nd = Nd
+        self.n_layers = n_layers
+        self.n_neurons = n_neurons
+
+        # create layers for the encoder
+        self.encoder_0 = nn.Linear(self.Nx, self.n_neurons)
+        self.encoder_0_act = nn.ELU(True)
+        for i in range(n_layers-2):
+            setattr(self, f'encoder_{i}', nn.Linear(self.n_neurons, self.n_neurons))
+            setattr(self, f'encoder_{i}_act', nn.ELU(True))
+        setattr(self, f'encoder_{i}', nn.Linear(self.n_neurons, self.r))
+
+        # create layers for encoder
+        self.decoder_0 = nn.Linear(self.r + self.Nd, self.n_neurons)
+        self.decoder_0_act = nn.ELU(True)
+        for i in range(n_layers-2):
+            setattr(self, f'decoder_{i}', nn.Linear(self.n_neurons, self.n_neurons))
+            setattr(self, f'decoder_{i}_act', nn.ELU(True))
+        setattr(self, f'decoder_{i}', nn.Linear(self.n_neurons+1, 1))
 
         self.encoder = nn.Sequential(
             nn.Linear(self.Nx, 128),
@@ -168,6 +186,40 @@ class TorchAutoencoder(nn.Module):
             nn.ELU(True),
             nn.Linear(128, 1)
         )
+    def encoder(self, u):
+        for i in range(self.n_layers):
+            u = getattr(self, f'encoder_{i}')(u)
+            if hasattr(self, f'encoder_{i}_act'):
+                u = getattr(self, f'encoder_{i}_act')(u)
+        return u
+
+    def decoder(self, x, z):
+
+        # save batch size for reshaping later
+        batch_size_local = x.size(0)
+
+        # repeat z for every point in x
+        z = z.unsqueeze(1).repeat(1, x.size(1), 1)
+        # add new axis to x in the middle
+        x = x.unsqueeze(2)
+        # concatenate x and z
+        decoder_input = torch.cat((x, z), dim=2)
+        # reshape for decoder so that all the points are processed at once (batchsize = batch_size_local * Nx)
+        decoder_input = decoder_input.view(-1, self.r + self.Nd)
+
+        u_ = decoder_input
+        for i in range(self.n_layers-1):
+            u_ = getattr(self, f'decoder_{i}')(u_)
+            if hasattr(self, f'decoder_{i}_act'):
+                u_ = getattr(self, f'decoder_{i}_act')(u_)
+        # stack x and u_ (skip connection from x to output layer)
+        output_input = torch.cat((x, u_), dim=2)
+        u_ = getattr(self, f'decoder_{self.n_layers}')(output_input)
+
+        # reshape x_rec
+        u_rec = u_.view(batch_size_local, -1)
+
+        return u_rec
 
     def forward(self, x, u):
         """
