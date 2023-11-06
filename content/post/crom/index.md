@@ -134,8 +134,8 @@ In order to optimize the weights of the encoder and decoder the loss function (r
 {{< math >}}
   $$
   \mathcal{L}_{\text{crom}}=
-    \sum_{i=1}^{P} \left| \mathbf{f}_i - dec_{\mathbf{\theta}_\text{d}}(\mathbf{x}^i, \mathbf{z}(t)) \right|=
-    \sum_{i=1}^{P} \left| \mathbf{f}_i - dec_{\mathbf{\theta}_\text{d}}(\mathbf{x}^i, enc_{\mathbf{\theta}_\text{e}}(\mathbf{f}(t))) \right|
+    {\color{teal}\sum_{i=1}^{P}} \left| \mathbf{f}_{\color{teal}i} - dec_{\mathbf{\theta}_\text{d}}({\color{teal}\mathbf{x}^i}, \mathbf{z}(t)) \right|=
+    {\color{teal}\sum_{i=1}^{P}} \left| \mathbf{f}_{\color{teal}i} - dec_{\mathbf{\theta}_\text{d}}({\color{teal}\mathbf{x}^i}, enc_{\mathbf{\theta}_\text{e}}(\mathbf{f}(t))) \right|
   $$
 {{< /math >}}
 
@@ -367,7 +367,7 @@ From this time series, we can reconstruct the full vector field at arbitrary poi
 Please note that the presented code does only serve academic and illustrative purposes and is neither optimized nor complete. For a general implementation please refer to the official [github page](https://crom-pde.github.io). 
 
 ### Concluding Remarks
-CROM is a very powerful discretization-free ROM scheme for PDEs. The authors showed that it can outperform conventional approaches regarding accuracy and resource demands while offering adaptive spatial resolutoins. Nevertheless, it shares some limitations with classic data-driven ROM approaches like the dependency on the training data, i.e. it won't generalize well to unseen scenarios. 
+CROM is a very powerful discretization-free ROM scheme for PDEs. The authors showed that it can outperform conventional approaches regarding accuracy and resource demands while offering adaptive spatial resolutions. Nevertheless, it shares some limitations with classic data-driven ROM approaches like the dependency on the training data, i.e. it won't generalize well to unseen scenarios. 
 In contrast to complete data-driven approaches it offers a nice blend of ML and PDE solutions at the cost of increased method complexity.
 
 #### Should you use CROM?

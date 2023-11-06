@@ -198,9 +198,9 @@ class TorchAutoencoder(nn.Module):
         # save batch size for reshaping later
         batch_size_local = x.size(0)
 
-        # repeat z for every point in x
+        # repeat z for every point in x (batch_size_local x Nx x r)
         z = z.unsqueeze(1).repeat(1, x.size(1), 1)
-        # add new axis to x in the middle
+        # add new axis to x to the end (batch_size_local x Nx x Nd)
         x = x.unsqueeze(2)
         # concatenate x and z
         decoder_input = torch.cat((x, z), dim=2)
@@ -270,11 +270,13 @@ class TorchAutoencoder(nn.Module):
 # create model
 model = TorchAutoencoder(r=r, Nx=u_train.shape[1], Nd=1)
 criterion = nn.MSELoss()
-optimizer = torch.optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-5)
+optimizer = torch.optim.Adam(model.parameters(), lr=0.0001, weight_decay=1e-5)
 
 # train model
-if True:
-    num_epochs = 6000
+model.load_state_dict(torch.load(f'model_{x_factor}.pth'))
+
+if False:
+    num_epochs = 12000
     losses = []
     for epoch in range(num_epochs):
         for data in train_loader:
@@ -302,53 +304,55 @@ model.load_state_dict(torch.load(f'model_{x_factor}.pth'))
 # %% test autoencoder
 
 # reconstruct data
-i_sample = 148
-u_rec = model(torch.from_numpy(x_factor*x_train).float(), torch.from_numpy(u_train).float()).detach().numpy()
-plt.plot(u_rec[i_sample])
-plt.plot(u_train[i_sample])
-plt.show()
+i_sample = 248
+# u_rec = model(torch.from_numpy(x_factor*x_train).float(), torch.from_numpy(u_train).float()).detach().numpy()
+# plt.plot(u_rec[i_sample])
+# plt.plot(u_train[i_sample])
+# plt.show()
 
-u_rec_test = model(torch.from_numpy(x_factor*x_test).float(), torch.from_numpy(u_test).float()).detach().numpy()
-# create gif of reconstruction
+# u_rec_test = model(torch.from_numpy(x_factor*x_test).float(), torch.from_numpy(u_test).float()).detach().numpy()
+# # create gif of reconstruction
 # import imageio
 # output_dir = ""
-# images = []
 # i_sim = 1
-# for i in range(i_sim*Nt, (i_sim+1)*Nt):
-#     # figure without gui
-#     plt.ioff()
-#     # plot with gui
+# for i_sim in range(10):
+#     images = []
+#     for i in range(i_sim*Nt, (i_sim+1)*Nt):
+#         # figure without gui
+#         plt.ioff()
+#         # plot with gui
 #
-#     fig = plt.figure(figsize=(8, 8*0.64))
-#     plt.plot(x_test[0], u_test[i], 'm', label='FOM')
-#     plt.plot(x_test[0], u_rec_test[i], 'c', label='Reconstruction')
-#     plt.axvspan(x_test[0, 0], x_test[0, 167], facecolor='grey', alpha=samples_test[i_sim, 0])
-#     plt.axvspan(x_test[0, 1*167], x_test[0, 2*167], facecolor='grey', alpha=samples_test[i_sim, 1])
-#     plt.axvspan(x_test[0, 2*167], x_test[0, -1], facecolor='grey', alpha=samples_test[i_sim, 2])
-#     plt.xlabel('$x$')
-#     plt.ylabel('$u$')
-#     plt.ylim([-1, 1])
-#     plt.xlim([0, x_test.max()])
-#     # legend with fixed position upper right
-#     plt.legend(loc='upper right', bbox_to_anchor=(1.0, 1.0))
-#     plt.title(f'$t={t[i%Nt]*1000:.3f}\,$ms')
-#     # increase font size
-#     plt.rcParams.update({'font.size': 16})
-#     # increase label and tick size
-#     plt.tick_params(axis='both', which='major', labelsize=16)
-#     plt.tight_layout()
-#     fig.savefig('gifs/tmp.png')
-#     images.append(imageio.imread('gifs/tmp.png'))
-# # repeated gif
-# imageio.mimsave(f'gifs/diffusion_rec_test_{i_sim+1}.gif', images, loop=1)
+#         fig = plt.figure(figsize=(8, 8*0.64))
+#         plt.plot(x_test[0], u_test[i], 'm', label='FOM')
+#         plt.plot(x_test[0], u_rec_test[i], 'c', label='Reconstruction')
+#         plt.axvspan(x_test[0, 0], x_test[0, 167], facecolor='grey', alpha=samples_test[i_sim, 0]/samples_test.max())
+#         plt.axvspan(x_test[0, 1*167], x_test[0, 2*167], facecolor='grey', alpha=samples_test[i_sim, 1]/samples_test.max())
+#         plt.axvspan(x_test[0, 2*167], x_test[0, -1], facecolor='grey', alpha=samples_test[i_sim, 2]/samples_test.max())
+#         plt.xlabel('$x$')
+#         plt.ylabel('$u$')
+#         plt.ylim([-1, 1])
+#         plt.xlim([0, x_test.max()])
+#         # legend with fixed position upper right
+#         plt.legend(loc='upper right', bbox_to_anchor=(1.0, 1.0))
+#         plt.title(f'$t={t[i%Nt]*1000:.3f}\,$ms')
+#         # increase font size
+#         plt.rcParams.update({'font.size': 16})
+#         # increase label and tick size
+#         plt.tick_params(axis='both', which='major', labelsize=16)
+#         plt.tight_layout()
+#         fig.savefig('gifs/tmp.png')
+#         images.append(imageio.imread('gifs/tmp.png'))
+#     # repeated gif
+#     imageio.mimsave(f'gifs/diffusion_rec_test_{i_sim+1}.gif', images, loop=1)
 
 # %% latent dynamics
 i_test = 0
 support_point_indices = [0, 51, 205, 315, 261, 214, 144, 356, 267, 115, 271, 244, 309,  62, 364,
         412, 467, 249, 403, 175, 328, 105, 354, 500]
+support_point_indices = range(100)
 Nsupport = len(support_point_indices)
 
-x_support = torch.from_numpy(x[support_point_indices]*x_factor).float().requires_grad_()
+x_support = torch.from_numpy(x[support_point_indices]*x_factor).float().requires_grad_().view([1, -1])
 # lets reduce the size in order not to blow out colab. Hessians require significant memory
 alpha = get_alpha(samples_test[i_test, 0], samples_test[i_test, 1], samples_test[i_test, 2])
 alpha_support = torch.from_numpy(alpha[support_point_indices]).float()
@@ -374,6 +378,7 @@ def forward(x, z):
 
     return u_n
 
+forward = model.decoder
 
 # encode initial condition
 z_init = model.encoder(torch.from_numpy(u_init).float()).detach()
@@ -382,16 +387,33 @@ z = torch.zeros((Nt, r))
 # set initial condition
 z[0] = z_init
 
+from torch.autograd import grad
+def nth_derivative(f, wrt, n):
+
+    for i in range(n):
+
+        grads = grad(f, wrt, create_graph=True)[0]
+        f = grads.sum()
+
+    return grads
+
+x = torch.arange(4, requires_grad=True).reshape(2, 2)
+loss = (x ** 4).sum()
+
+nth_derivative(f=u_old[0, 0], wrt=x_support[0,0], n=2)
+
+
 # Main time-stepping loop
 for t in range(1, Nt):
-    u_old = forward(x_support, z[t-1])
+    u_old = forward(x_support, z[t-1:t])
     # compute the second order spatial gradient using autograd
-    hessian = torch.func.hessian(forward, argnums=0)(x_support, z[t-1])
-    u_xx = torch.diagonal(torch.diagonal(hessian, dim1=0, dim2=1), dim1=0, dim2=1).detach()
+    # hessian = torch.func.hessian(forward, argnums=0)(x_support, z[t-1:t])
+    # u_xx = torch.diagonal(torch.diagonal(hessian, dim1=0, dim2=1), dim1=0, dim2=1).detach().squeeze()
+    u_xx2 = (u_old[0, 2:] - 2 * u_old[0, 1:-1] + u_old[0, :-2]) / (dx ** 2)
     # apply boundary conditions
-    for i in range(len(support_point_indices)):
-        if index[i] == 0 or index[i] == n_points - 1:
-            u_xx[i] = 0
+    # for i, index in enumerate(support_point_indices):
+    #     if index == 0 or index == Nx:
+    #         u_xx[i] = 0
 
     # get time derivative
     u_t = alpha_support * u_xx
@@ -401,7 +423,7 @@ for t in range(1, Nt):
 
     # evolve latent variable in time (this part uses the linerized version instead of Gauss-Newton solver)
     res = u_t
-    jac = torch.func.jacrev(forward, argnums=1)(x_support, z[t - 1]).detach()
+    jac = torch.func.jacrev(forward, argnums=1)(x_support, z[t-1:t]).detach().squeeze()
     vhat = torch.inverse(torch.matmul(jac.transpose(1, 0), jac)).matmul(jac.transpose(1, 0)).matmul(res)
     vhat = vhat.view(1, 1, -1)  # (dim: ? x ? x r)
     z[t] = z[t-1] + vhat * dt
@@ -412,11 +434,11 @@ for t in range(1, Nt):
 z2 = z.numpy()
 # reconstruct full vector field
 
-u_rec_start = forward(torch.from_numpy(x_factor*x).float(), z[0]).detach().numpy()
-u_rec_end = forward(torch.from_numpy(x_factor*x).float(), z[-1]).detach().numpy()
+u_rec_start = forward(torch.from_numpy(x_factor*x).float().view([1, -1]), z[0:1]).detach().numpy()
+u_rec_end = forward(torch.from_numpy(x_factor*x).float().view([1, -1]), z[-1:]).detach().numpy()
 
-plt.plot(u_rec_start)
-plt.plot(u_rec_end, "--")
+plt.plot(u_rec_start.T)
+plt.plot(u_rec_end.T, "--")
 plt.legend(['start', 'end'])
 plt.show()
 

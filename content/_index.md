@@ -122,8 +122,8 @@ sections:
       columns: '2'
       view: compact
   - block: collection
+    id: publications
     content:
-      id: publications
       title: Publications
       # text: |-
       #   {{% callout note %}}
