@@ -113,7 +113,7 @@ What all those approaches share is that they rely on an already discretized vect
 CROM claims to be able to overcome these disadvantages. So, let's have a look how CROM differs from the previously presented approaches.
 
 ## CROM
-{{< figure src="featured.png" caption="A caption" numbered="true" id="ae">}}
+{{< figure src="featured.png" caption="CROM latent manifold construction." numbered="true" id="ae">}}
 CROM follows unconventional approaches in both, finding the low-dimensional embedding as well as in evolving the latent dynamics. 
 ### Embedding
 Similar to a conventional autoencoder approaches it constructs an encoder and a decoder. While there are no changes to the encoder compared to conventional methods, the decoder this time does not try to reconstruct a discretized vector field from the latent variable. Instead the decoder 
