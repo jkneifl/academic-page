@@ -1,5 +1,5 @@
 ---
-title: CROM Continoues Reduced Order Models
+title: CROM Continuous Reduced Order Models
 subtitle: Discretization-free Approximation of PDEs Using Implicit Neural Representations
 
 # Summary for listings and search engines
