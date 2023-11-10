@@ -82,5 +82,8 @@ email: ''
 highlight_name: true
 ---
 
-Jonas Kneifl is a ...
+Greetings! I'm a PhD student delving into scientific machine learning at the University of Stuttgart. My academic path led me to the captivating world of engineering cybernetics, where I honed my skills in mathematics, mechanics, and control theory, and formed a deep interest in systems theory and understanding complex models.
+
+In my research, I'm driven to efficiently and cost-effectively approximate complex models by blending core numerical methods with artificial intelligence learning techniques. I'm passionate about the synergy between scientific principles and cutting-edge technologies.
+
 {style="text-align: justify;"}
