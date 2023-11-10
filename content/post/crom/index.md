@@ -364,8 +364,8 @@ for t in range(1, Nt):
     z[t] = ?
 ```
 From this time series, we can reconstruct the full vector field at arbitrary points {{< math >}}$x\in\Omega${{< /math >}}. An example result for a test scenario can be seen in the following gif.
-{{< figure src="diffusion_approx_test_1.gif" caption="Approximation of the full vector field for test data." numbered="true" id="ae">}}
-Although the results is not perfect yet, one can see the potential. The noticable errors results from a model that is not optimized to the full extent and from the linearization that is used to find the optimal {{< math >}}$z_{i+1}${{< /math >}}.
+{{< figure src="diffusion_approx_test_4.gif" caption="Approximation of the full vector field for test data." numbered="true" id="ae">}}
+Although the result is not perfect yet, one can see the potential. The noticable errors results from a model that is not optimized to the full extent and from the linearization that is used to find the optimal {{< math >}}$z_{i+1}${{< /math >}}.
 Please also note that the presented code does only serve academic and illustrative purposes and is neither optimized nor complete. For a general implementation and high quality results please refer to the official [github page](https://crom-pde.github.io). 
 
 ### Concluding Remarks
