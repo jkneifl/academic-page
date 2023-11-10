@@ -346,8 +346,8 @@ i_sample = 248
 
 # %% latent dynamics
 i_test = 0
-support_point_indices = [0, 51, 205, 315, 261, 214, 144, 356, 267, 115, 271, 244, 309,  62, 364,
-        412, 467, 249, 403, 175, 328, 105, 354, 500]
+support_point_indices = [51, 205, 315, 261, 214, 144, 356, 267, 115, 271, 244, 309,  62, 364,
+        412, 467, 249, 403, 175, 328, 105, 354]
 # support_point_indices = range(Nx+1)
 Nsupport = len(support_point_indices)
 x_support = torch.from_numpy(x[support_point_indices]*x_factor).float().requires_grad_().view([1, -1])

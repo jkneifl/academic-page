@@ -3,7 +3,7 @@ title: CROM Continuous Reduced Order Models
 subtitle: Discretization-free Approximation of PDEs Using Implicit Neural Representations
 
 # Summary for listings and search engines
-summary: CROM - builds a continous low-dimensional embedding for continous vector fields of PDEs themselves instead relying on a predefined discretization of the latter.
+summary: CROM - builds a continous low-dimensional embedding for vector fields of PDEs instead of relying on a predefined discretization of the latter.
 
 # Link this post with a project
 projects: []
@@ -315,7 +315,7 @@ This autoencoder can then be trained on the FOM simulation data to find the low-
 After 12000 epochs, the autoencoder is able to reconstruct the full vector field quite well as demonstrated in the following gif.
 {{< figure src="diffusion_rec_test_2.gif" caption="Reconstruction of the full vector field for test data." numbered="true" id="ae">}}
 
-Hereafter, we can evolve the latent dynamics in time using only a few (in this case {{< math >}}$m=22${{< /math >}}) integration points. 
+Hereafter, we can evolve the latent dynamics in time using only a few (in this case {{< math >}}$m=22${{< /math >}}) integration points. For a guidance how to select those points, please refer to the original paper.
 First, we need to define a function to call the decoder for a given position {{< math >}}$x${{< /math >}} and latent variable {{< math >}}$\mathbf{z}${{< /math >}}
 ```python
 def decode(x, z):
