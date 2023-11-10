@@ -87,7 +87,6 @@ ax[1].plot(x, u[i_sim, -1], label='t=T/2')
 plt.xlabel('x')
 plt.legend()
 plt.show()
-print('a')
 
 # create gif of diffusion process
 # import imageio
@@ -351,11 +350,8 @@ support_point_indices = [0, 51, 205, 315, 261, 214, 144, 356, 267, 115, 271, 244
         412, 467, 249, 403, 175, 328, 105, 354, 500]
 # support_point_indices = range(Nx+1)
 Nsupport = len(support_point_indices)
-
 x_support = torch.from_numpy(x[support_point_indices]*x_factor).float().requires_grad_().view([1, -1])
-# lets reduce the size in order not to blow out colab. Hessians require significant memory
-alpha = get_alpha(samples_test[i_test, 0], samples_test[i_test, 1], samples_test[i_test, 2])
-alpha_support = torch.from_numpy(alpha[support_point_indices]).float()
+
 
 def forward(x, z):
     """
@@ -380,12 +376,6 @@ def forward(x, z):
 
 forward = model.decoder
 
-# encode initial condition
-z_init = model.encoder(torch.from_numpy(u_init).float()).detach().requires_grad_()
-# create latent vector of size (timesteps x (spatial points + 1))
-z = torch.zeros((Nt, r))
-# set initial condition
-z[0] = z_init
 
 from torch.autograd import grad
 def nth_derivative(f, wrt, n):
@@ -397,50 +387,64 @@ def nth_derivative(f, wrt, n):
 
     return grads
 
-# Main time-stepping loop
-for i_time in range(1, Nt):
-    u_old = forward(x_support, z[i_time-1:i_time])
-    # compute the second order spatial gradient using autograd
-    hessian = torch.func.hessian(forward, argnums=0)(x_support, z[i_time-1:i_time]).squeeze()
-    u_xx = torch.diagonal(torch.diagonal(hessian, dim1=0, dim2=1), dim1=0, dim2=1).detach().squeeze()
-    # apply boundary conditions
-    for i, index in enumerate(support_point_indices):
-        if index == 0 or index == Nx:
-            u_xx[i] = 0
+def time_stepping(x_support, alpha_support, u_init):
+    # encode initial condition
+    z_init = model.encoder(torch.from_numpy(u_init).float()).detach().requires_grad_()
+    # create latent vector of size (timesteps x (spatial points + 1))
+    z = torch.zeros((Nt, r))
+    # set initial condition
+    z[0] = z_init
+    # Main time-stepping loop
+    for i_time in range(1, Nt):
+        u_old = forward(x_support, z[i_time-1:i_time])
+        # compute the second order spatial gradient using autograd
+        hessian = torch.func.hessian(forward, argnums=0)(x_support, z[i_time-1:i_time]).squeeze()
+        u_xx = torch.diagonal(torch.diagonal(hessian, dim1=0, dim2=1), dim1=0, dim2=1).detach().squeeze()
+        # apply boundary conditions
+        for i, index in enumerate(support_point_indices):
+            if index == 0 or index == Nx:
+                u_xx[i] = 0
 
-    # get time derivative
-    u_t = alpha_support * u_xx
-    # update solution using a first-order Euler scheme
-    # u_new = u_old + dt * u_t
-    u_new = u_old + u_t
+        # get time derivative
+        u_t = alpha_support * u_xx
+        # update solution using a first-order Euler scheme
+        # u_new = u_old + dt * u_t
+        u_new = u_old + u_t
 
-    # evolve latent variable in time (this part uses the lineriazed version instead of Gauss-Newton solver)
-    res = u_t
-    jac = torch.func.jacrev(forward, argnums=1)(x_support, z[i_time-1:i_time]).detach().squeeze()
-    vhat = torch.inverse(torch.matmul(jac.transpose(1, 0), jac)).matmul(jac.transpose(1, 0)).matmul(res)
-    vhat = vhat.view(1, 1, -1)  # (dim: ? x ? x r)
-    z[i_time] = z[i_time-1] + vhat * dt
+        # evolve latent variable in time (this part uses the lineriazed version instead of Gauss-Newton solver)
+        res = u_t
+        jac = torch.func.jacrev(forward, argnums=1)(x_support, z[i_time-1:i_time]).detach().squeeze()
+        vhat = torch.inverse(torch.matmul(jac.transpose(1, 0), jac)).matmul(jac.transpose(1, 0)).matmul(res)
+        vhat = vhat.view(1, 1, -1)  # (dim: ? x ? x r)
+        z[i_time] = z[i_time-1] + vhat * dt
 
     # # find z_new that matches u_new the best
     # z[t] = find_best_match(u_new, x_support, z[t-1])
+    return z
 
 # reconstruct full vector field
 
-u_rec_start = forward(torch.from_numpy(x_factor*x).float().view([1, -1]), z[0:1]).detach().numpy()
-u_rec_end = forward(torch.from_numpy(x_factor*x).float().view([1, -1]), z[-1:]).detach().numpy()
-
-plt.plot(u_rec_start.T)
-plt.plot(u_rec_end.T, "--")
-plt.legend(['start', 'end'])
-plt.show()
+# u_rec_start = forward(torch.from_numpy(x_factor*x).float().view([1, -1]), z[0:1]).detach().numpy()
+# u_rec_end = forward(torch.from_numpy(x_factor*x).float().view([1, -1]), z[-1:]).detach().numpy()
+#
+# plt.plot(u_rec_start.T)
+# plt.plot(u_rec_end.T, "--")
+# plt.legend(['start', 'end'])
+# plt.show()
 
 # %% Approximation solution
 
-u_rec_test = model.decoder(torch.from_numpy(x_factor*x_test[:150]).float(), z).detach().numpy()
 # create gif of reconstruction
 import imageio
 output_dir = ""
 for i_test in range(10):
+
+    # lets reduce the size in order not to blow out colab. Hessians require significant memory
+    alpha = get_alpha(samples_test[i_test, 0], samples_test[i_test, 1], samples_test[i_test, 2])
+    alpha_support = torch.from_numpy(alpha[support_point_indices]).float()
+    z = time_stepping(x_support, alpha_support, u_init)
+    u_rec_test = model.decoder(torch.from_numpy(x_factor * x_test[:150]).float(), z).detach().numpy()
+
     images = []
     for i in range(i_test*Nt, (i_test+1)*Nt):
         # figure without gui
@@ -449,8 +453,8 @@ for i_test in range(10):
 
         fig = plt.figure(figsize=(8, 8*0.64))
         plt.plot(x_test[0], u_test[i], 'm', label='FOM')
-        plt.plot(x_test[0], u_rec_test[i], 'c', label='Approximation')
-        plt.plot(x_test[0, support_point_indices], u_rec_test[i, support_point_indices], 'co', label='integration points')
+        plt.plot(x_test[0], u_rec_test[i%Nt], 'c', label='Approximation')
+        plt.plot(x_test[0, support_point_indices], u_rec_test[i%Nt, support_point_indices], 'co', label='integration points')
         plt.axvspan(x_test[0, 0], x_test[0, 167], facecolor='grey', alpha=samples_test[i_test, 0]/samples_test.max())
         plt.axvspan(x_test[0, 1*167], x_test[0, 2*167], facecolor='grey', alpha=samples_test[i_test, 1]/samples_test.max())
         plt.axvspan(x_test[0, 2*167], x_test[0, -1], facecolor='grey', alpha=samples_test[i_test, 2]/samples_test.max())
@@ -466,7 +470,7 @@ for i_test in range(10):
         # increase label and tick size
         plt.tick_params(axis='both', which='major', labelsize=16)
         plt.tight_layout()
-        fig.savefig('gifs/tmp.png')
+        fig.savefig('gifs/tmp.png', dpi=300)
         images.append(imageio.imread('gifs/tmp.png'))
     # repeated gif
     imageio.mimsave(f'gifs/diffusion_approx_test_{i_test+1}.gif', images, loop=1)
