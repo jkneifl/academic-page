@@ -249,121 +249,153 @@ A very simple implementation of the autoencoder for this example in PyTorch coul
 import torch
 from torch import nn
 
+# create autoencoder
 class CROMAutoencoder(nn.Module):
-    def __init__(self, r, Nx, Nd=1):
+    def __init__(self, r, n_x, n_d=1, n_layers=1, n_neurons=128):
         """
         :param r: latent space dimension
-        :param Nx: number of spatial points
-        :param Nd: number of coordinates required to describe the position (1 for 1D, 2 for 2D, ...)
+        :param n_x: number of spatial points
+        :param n_d: number of coordinates required to describe the position (1 for 1D, 2 for 2D, ...)
+        :param n_layers: number of hidden layers in the encoder and decoder
+        :param n_neurons: number of neurons in each hidden layer
         """
         super(CROMAutoencoder, self).__init__()
         self.r = r
-        self.Nx = Nx
-        self.Nd = Nd
+        self.n_x = n_x
+        self.n_d = n_d
+        self.n_layers = n_layers
+        self.n_neurons = n_neurons
 
-        # create fully-connected encoder from u to z
-        self.encoder = nn.Sequential(
-            nn.Linear(self.Nx, 128),
-            nn.ELU(True),
-            nn.Linear(128, 64),
-            nn.ELU(True),
-            nn.Linear(64, self.r),
-            nn.ELU(True),
-        )
-        # create fully-connected decoder from [x, z] to u(x)
-        self.decoder = nn.Sequential(
-            nn.Linear(self.r + self.Nd, 128),
-            nn.ELU(True),
-            nn.Linear(128, 128),
-            nn.ELU(True),
-            nn.Linear(128, 128),
-            nn.ELU(True),
-            nn.Linear(128, 1)
-        )
+        # create layers for the encoder
+        self.encoder_0 = nn.Linear(self.n_x, self.n_neurons)
+        self.encoder_0_act = nn.ELU(True)
+        # hidden layers
+        for i in range(n_layers):
+            setattr(self, f'encoder_{i + 1}', nn.Linear(self.n_neurons, self.n_neurons))
+            setattr(self, f'encoder_{i + 1}_act', nn.ELU(True))
+        setattr(self, f'encoder_{n_layers + 1}', nn.Linear(self.n_neurons, self.r))
+
+        # create layers for decoder
+        self.decoder_0 = nn.Linear(self.r + self.n_d, self.n_neurons)
+        self.decoder_0_act = nn.ELU(True)
+        # hidden layers
+        for i in range(n_layers):
+            setattr(self, f'decoder_{i + 1}', nn.Linear(self.n_neurons, self.n_neurons))
+            setattr(self, f'decoder_{i + 1}_act', nn.ELU(True))
+        # output layer with skip connection from spatial coordinate
+        setattr(self, f'decoder_{n_layers + 1}', nn.Linear(self.n_neurons + self.n_d, 1))
+
+    def encoder(self, u):
+        """
+        Encoder that maps the vector field values to the latent space
+        :param u: (batchsize x n) vector field values
+        :return:
+        """
+        for i in range(self.n_layers+2): # +2 for input and output layer
+            u = getattr(self, f'encoder_{i}')(u)
+            if hasattr(self, f'encoder_{i}_act'):
+                u = getattr(self, f'encoder_{i}_act')(u)
+        return u
+
+    def decoder(self, x, z):
+        """
+        Decoder that maps the latent variable along with a spatial coordinate to the reconstructed vector field value
+        :param x: (batchsize x n) positional coordinates
+        :param z: (batchsize x r) latent variable
+        :return:
+        """
+
+        # save batch size for reshaping later
+        batch_size_local = x.size(0)
+
+        # repeat z for every point in x (batch_size_local x n_x x r)
+        z = z.unsqueeze(1).repeat(1, x.size(1), 1)
+        # add new axis to x to the end (batch_size_local x n_x x n_d)
+        x = x.unsqueeze(2)
+        # concatenate x and z
+        decoder_input = torch.cat((x, z), dim=2)
+        # reshape for decoder so that all the points are processed at once (batchsize = batch_size_local * n_x)
+        decoder_input = decoder_input.view(-1, self.r + self.n_d)
+
+        u_ = decoder_input
+        for i in range(self.n_layers + 1): # +1 for input layer
+            u_ = getattr(self, f'decoder_{i}')(u_)
+            if hasattr(self, f'decoder_{i}_act'):
+                u_ = getattr(self, f'decoder_{i}_act')(u_)
+        # stack x and u_ (skip connection from x to output layer)
+        output_input = torch.cat((x.view(-1, self.n_d), u_), dim=1)
+        u_ = getattr(self, f'decoder_{self.n_layers + 1}')(output_input)
+
+        # reshape x_rec
+        u_rec = u_.view(batch_size_local, -1)
+
+        return u_rec
 
     def forward(self, x, u):
         """
         :param x: (batchsize x n) positional coordinates
         :param u: (batchsize x n) vector field values
         """
-        
-        # save batch size for reshaping later
-        batch_size_local = x.size(0)
 
         # encode input to latent space
         z = self.encoder(u)
 
-        
-        # repeat z for every point in x
-        z = z.unsqueeze(1).repeat(1, x.size(1), 1)
-        # add new axis to x in the middle
-        x = x.unsqueeze(2)
-        # concatenate x and z
-        decoder_input = torch.cat((x, z), dim=2)
-        # reshape for decoder so that all the points are processed at once (batchsize = batch_size_local * Nx)
-        decoder_input = decoder_input.view(-1, self.r + self.Nd)
-        
-        # decode latent space to output
-        u_rec = self.decoder(decoder_input)
         # reshape x_rec
-        u_rec = u_rec.view(batch_size_local, -1)
+        u_rec = self.decoder(x, z)
 
         return u_rec
 ```
-
+In contrast to the implementation of the original paper, I don't use convolutional layers for simplicity and introduced a skip-connection in the decoder from the spatial coordinate {{< math >}}$x${{< /math >}} to the output layer to facilitate the network's ability to recognize spatial dependencies.
 This autoencoder can then be trained on the FOM simulation data to find the low-dimensional embedding. 
 After 12000 epochs, the autoencoder is able to reconstruct the full vector field quite well as demonstrated in the following gif.
 {{< figure src="diffusion_rec_test_2.gif" caption="Reconstruction of the full vector field for test data." numbered="true" id="ae">}}
 
 Hereafter, we can evolve the latent dynamics in time using only a few (in this case {{< math >}}$m=22${{< /math >}}) integration points. For a guidance how to select those points, please refer to the original paper.
-First, we need to define a function to call the decoder for a given position {{< math >}}$x${{< /math >}} and latent variable {{< math >}}$\mathbf{z}${{< /math >}}
-```python
-def decode(x, z):
+```
+def time_stepping(model, n_t, n_x, dt, x_support, support_point_indices, alpha_support, u_init):
     """
-    :param x: set of positional coordinates
-    :param z: latent space coordinates
+    Time evolution of the latent variable by evaluating the original PDE on a small number of support points
+    and then finding the latent variables that matches best to the found evolved vector field values
+    :param model: CROMAutoencoder model
+    :param n_t: number of time steps
+    :param n_x: number of spatial grid points
+    :param dt: time step size
+    :param x_support: spatial grid points that are evaluated during time stepping
+    :param support_point_indices: indices of the support points
+    :param alpha_support: diffusion coefficients at the support points
+    :param u_init: initial condition of the vector field
+    :return:
     """
+    # encode initial condition
+    z_init = model.encoder(torch.from_numpy(u_init).float()).detach().requires_grad_()
+    # create latent vector of size (timesteps x (spatial points + 1))
+    z = torch.zeros((n_t, model.r))
+    # set initial condition
+    z[0] = z_init
+    # Main time-stepping loop
+    for i_time in range(1, n_t):
+        # compute the second order spatial gradient using autograd
+        hessian = torch.func.hessian(model.decoder, argnums=0)(x_support, z[i_time-1:i_time]).squeeze()
+        u_xx = torch.diagonal(torch.diagonal(hessian, dim1=0, dim2=1), dim1=0, dim2=1).detach().squeeze()
+        # apply boundary conditions
+        for i, index in enumerate(support_point_indices):
+            if index == 0 or index == n_x:
+                u_xx[i] = 0
 
-    n = x.size(0)
-    # repeat z for every point in x
-    z = z.unsqueeze(0).repeat(n, 1)
-    # add new axis to x in the middle
-    x_support = x.unsqueeze(1)
-    # concatenate x and z
-    decoder_input = torch.cat((x, z), dim=1)
-    # cast to float
-    decoder_input = decoder_input.float()
+        # get time derivative
+        u_t = alpha_support * u_xx
 
-    # decode latent space to output
-    u_n = model.decoder(decoder_input).squeeze()
+        # evolve latent variable in time (this part uses the linearized version instead of Gauss-Newton solver)
+        res = u_t
+        jac = torch.func.jacrev(model.decoder, argnums=1)(x_support, z[i_time-1:i_time]).detach().squeeze()
+        vhat = torch.inverse(torch.matmul(jac.transpose(1, 0), jac)).matmul(jac.transpose(1, 0)).matmul(res)
+        vhat = vhat.view(1, 1, -1)  # (dim: ? x ? x r)
+        z[i_time] = z[i_time-1] + vhat * dt
 
-    return u_n
+    return z
 ```
-which can then be used inside the PDE time-stepping scheme:
-```
-# encode initial condition
-z_init = model.encoder(torch.from_numpy(u_init).float()).detach()
-# create latent vector of size (timesteps x (spatial points + 1))
-z = torch.zeros((Nt, r))
-# set initial condition
-z[0] = z_init
 
-# Main time-stepping loop
-for t in range(1, Nt):
-    u_old = decode(x_support, z[t-1])
-    # compute the second order spatial gradient using autograd
-    hessian = torch.func.hessian(decode, argnums=0)(x_support, z[t-1])
-    u_xx = torch.diagonal(torch.diagonal(hessian, dim1=0, dim2=1), dim1=0, dim2=1).detach()
-    # get time derivative
-    u_t = alpha_support * u_xx
-    # update solution using a first-order Euler scheme
-    u_new = u_old + dt * u_t
-
-    # todo
-    # find z_new that best matches to u_new
-    z[t] = ?
-```
-From this time series, we can reconstruct the full vector field at arbitrary points {{< math >}}$x\in\Omega${{< /math >}}. An example result for a test scenario can be seen in the following gif.
+From this latent time series, we can reconstruct the full vector field at arbitrary points {{< math >}}$x\in\Omega${{< /math >}}. An example result for a test scenario can be seen in the following gif.
 {{< figure src="diffusion_approx_test_4.gif" caption="Approximation of the full vector field for test data." numbered="true" id="ae">}}
 Although the result is not perfect yet, one can see the potential. The noticable errors results from a model that is not optimized to the full extent and from the linearization that is used to find the optimal {{< math >}}$z_{i+1}${{< /math >}}.
 Please also note that the presented code does only serve academic and illustrative purposes and is neither optimized nor complete. For a general implementation and high quality results please refer to the official [github page](https://crom-pde.github.io). 
