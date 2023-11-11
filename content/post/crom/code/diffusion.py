@@ -19,7 +19,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s %(message)s')
 
 script_path = os.path.dirname(os.path.realpath(__file__))
 # Parameters
-train_model = True
+train_model = False
 create_gifs = False
 # model parameters
 r = 16  # latent dimension
@@ -85,7 +85,7 @@ else:
 u_rec_test = model(torch.from_numpy(x_test).float(), torch.from_numpy(u_test).float()).detach().numpy()
 # # create gif of reconstruction
 if create_gifs:
-    utils.reconstruction_gif(x, u, u_rec_test, diffusion_samples, t, n_t, n_x, i_sims=[0], output_dir="")
+    utils.reconstruction_gif(x, u_test, u_rec_test, diffusion_samples, t, n_t, n_x, i_sims=[0], output_dir="")
 
 # %% latent dynamics
 
@@ -100,13 +100,14 @@ x_support = torch.from_numpy(x[support_point_indices]).float().requires_grad_().
 u_approx = []
 for i_test in range(10):
     # get alpha for test simulation
-    alpha = utils.get_alpha(diffusion_samples_test[i_test, 0], diffusion_samples_test[i_test, 1], diffusion_samples_test[i_test, 2])
+    alpha = utils.get_alpha(n_x, diffusion_samples_test[i_test, 0], diffusion_samples_test[i_test, 1], diffusion_samples_test[i_test, 2])
     alpha_support = torch.from_numpy(alpha[support_point_indices]).float()
     # evolve latent variable in time
-    z = utils.time_stepping(x_support, alpha_support, u_init)
+    z = utils.time_stepping(model, n_t, n_x, dt, x_support, support_point_indices, alpha_support, u_init)
     # reconstruct full vector field
-    u_approx.append(model.decoder(torch.from_numpy(x[:150]).float(), z).detach().numpy())
+    u_approx.append(model.decoder(torch.from_numpy(x_test[:n_t]).float(), z).detach().numpy())
 
 # create gifs of approximation
-if create_gifs:
-    utils.approximation_gif(x, u, u_approx, diffusion_samples_test, t, n_t, n_x, i_sims=[0], output_dir="")
+# if create_gifs:
+utils.approximation_gif(x, u_test, u_approx, diffusion_samples_test, t, n_t, n_x, support_point_indices,
+                        i_sims=[0], output_dir="")

@@ -131,8 +131,8 @@ def reconstruction_gif(x, u, u_rec, alphas, t, n_t, n_x, i_sims=0, output_dir=""
         for i in range(i_sim*n_t, (i_sim+1)*n_t):
             # figure without gui
             fig = plt.figure(figsize=(8, 8*0.64))
-            plt.plot(x[0], u[i], 'm', label='FOM')
-            plt.plot(x[0], u_rec[i], 'c', label='Reconstruction')
+            plt.plot(x, u[i], 'm', label='FOM')
+            plt.plot(x, u_rec[i], 'c', label='Reconstruction')
             images.append(format_figure(fig, t[i], x, alphas, n_x, i_sim))
         # repeated gif
         imageio.mimsave(os.path.join(output_dir, f'gifs/diffusion_rec_test_{i_sim+1}.gif'), images, loop=1)
@@ -159,9 +159,9 @@ def approximation_gif(x, u, u_approx, alphas, t, n_t, n_x, support_point_indices
         for i in range(i_sim * n_t, (i_sim + 1) * n_t):
             # figure without gui
             fig = plt.figure(figsize=(8, 8 * 0.64))
-            plt.plot(x[0], u[i], 'm', label='FOM')
-            plt.plot(x[0], u_approx[i % n_t], 'c', label='Approximation')
-            plt.plot(x[0, support_point_indices], u_approx[i % n_t, support_point_indices], 'co',
+            plt.plot(x, u[i], 'm', label='FOM')
+            plt.plot(x, u_approx[i_sim][i % n_t], 'c', label='Approximation')
+            plt.plot(x[support_point_indices], u_approx[i_sim][i % n_t, support_point_indices], 'co',
                      label='integration points')
             images.append(format_figure(fig, t[i], x, alphas, n_x, i_sim))
         # repeated gif
