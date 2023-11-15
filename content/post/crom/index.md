@@ -351,7 +351,7 @@ After 12000 epochs, the autoencoder is able to reconstruct the full vector field
 {{< figure src="diffusion_rec_test_2.gif" caption="Reconstruction of the full vector field for test data." numbered="true" id="ae">}}
 
 Hereafter, we can evolve the latent dynamics in time using only a few (in this case {{< math >}}$m=22${{< /math >}}) integration points. For a guidance how to select those points, please refer to the original paper.
-```
+```python
 def time_stepping(model, n_t, n_x, dt, x_support, support_point_indices, alpha_support, u_init):
     """
     Time evolution of the latent variable by evaluating the original PDE on a small number of support points
