@@ -11,3 +11,7 @@ go.sum
 
 # mac related
 *.DS_Store
+
+content/post/crom/code/gifs/
+
+*.pyc
