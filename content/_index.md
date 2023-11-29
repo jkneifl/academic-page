@@ -122,7 +122,7 @@ sections:
       columns: '2'
       view: compact
   - block: collection
-    id: pubs
+    id: publications
     content:
       title: Publications
       # text: |-

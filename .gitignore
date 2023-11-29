@@ -14,4 +14,4 @@ go.sum
 
 content/post/crom/code/gifs/
 
-content/post/crom/code/__pycache__/
+*.pyc
