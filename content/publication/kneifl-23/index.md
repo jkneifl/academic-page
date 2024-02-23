@@ -22,7 +22,7 @@ publishDate: '2024-02-23T13:47:48.274083Z'
 # Publication type.
 # A single CSL publication type but formatted as a YAML list (for Hugo requirements).
 publication_types:
-- '2'
+- 'Journal'
 publication: '*Archive of Applied Mechanics*'
 publication_short: ''
 
