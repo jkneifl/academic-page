@@ -96,4 +96,3 @@ links:
   url: https://doi.org/10.48550/ARXIV.2402.09234
 ---
 
-Add the **full text** or **supplementary notes** for the publication here using Markdown formatting.
