@@ -1,6 +1,6 @@
 ---
-title: Machine Learning Algorithms for Learning Nonlinear Terms of Reduced Mechanical
-  Models in Explicit Structural Dynamics
+title: A nonintrusive nonlinear model reduction method for structural dynamical problems
+  based on machine learning
 
 # Authors
 # A YAML list of author names
@@ -8,24 +8,45 @@ title: Machine Learning Algorithms for Learning Nonlinear Terms of Reduced Mecha
 # write the username (folder name) here, and it will be replaced with their full name and linked to their profile.
 authors:
 - Jonas Kneifl
-- Jörg Fehr
+- Dennis Grunert
+- Joerg Fehr
+
+# Author notes (such as 'Equal Contribution')
+# A YAML list of notes for each author in the above `authors` list
 author_notes: []
 
-date: '2021-03-01'
+date: '2021-01-01'
 
 # Date to publish webpage (NOT necessarily Bibtex publication's date).
-publishDate: '2024-02-23T13:47:48.299282Z'
+publishDate: '2023-10-26T15:27:19.799546Z'
 
 # Publication type.
 # A single CSL publication type but formatted as a YAML list (for Hugo requirements).
 publication_types:
-- 'Journal'
-publication: '*PAMM*'
+- article-journal
+
+# Publication name and optional abbreviated publication name.
+publication: '*International Journal for Numerical Methods in Engineering*'
 publication_short: ''
 
-doi: 10.1002/pamm.202000353
+doi: https://doi.org/10.1002/nme.6712
 
-abstract: 'Modeling and simulations are a pillar in the development of complex technical systems. However, for time-critical applications a conduction of high-fidelity simulations is not always feasible. To mitigate this computational bottleneck model order reduction (MOR) can be applied. For nonlinear models, linear MOR approaches are only practicable to a limited extend. Nonlinear approaches, on the contrary, often require deep interventions in the used simulation code. If access is not possible, non-intrusive nonlinear model order reduction can be the key to success. The goal of this work is to implement a non-intrusive approach using classical model order reduction along with machine learning algorithms. It relies on the idea to learn the dynamics in the reduced space. The approach aims to learn the temporal evolution of the reduced dynamics of a system. By applying the method to a problem arising from the field of structural dynamics, accurate surrogate models are received. They can speed up the simulation time significantly, while still providing high-quality state approximations.'
+abstract: Abstract Model order reduction (MOR) has become one of the most widely used
+  tools to create efficient surrogate models for time-critical applications. For nonlinear
+  models, however, linear MOR approaches are only practicable to a limited extent.
+  Nonlinear approaches, on the contrary, often require intrusive manipulations of
+  the used simulation code. Hence, nonintrusive MOR approaches using classic model
+  order reduction along with machine learning (ML) algorithms can provide remedy.
+  Such approaches have drawn a lot of attention in the recent years. They rely on
+  the idea to learn the dynamics not in a high dimensional but in a reduced space,
+  that is, they predict the discrete sequence of reduced basis' coefficients. Open
+  questions are the suitability of such methods in the field of structural dynamics
+  and the best choice of the used ML algorithm. Both are addressed in this article
+  in addition to the integration of the methodology into a modular and flexible framework
+  that can effortless be adapted to various requirements. By applying the methodology
+  to a dynamic mechanical system, accurate surrogate models are received, which can
+  speed up the simulation time significantly, while still providing high-quality state
+  approximations.
 
 # Summary. An optional shortened abstract.
 summary: ''
@@ -37,6 +58,8 @@ tags:
 - nonlinear behavior
 - structural dynamics
 - surrogate model
+
+# Display this page in a list of Featured pages?
 featured: false
 
 # Links
@@ -69,5 +92,7 @@ image:
 projects: []
 links:
 - name: URL
-  url: https://doi.org/10.1002%2Fpamm.202000353
+  url: https://onlinelibrary.wiley.com/doi/abs/10.1002/nme.6712
 ---
+
+Add the **full text** or **supplementary notes** for the publication here using Markdown formatting.
