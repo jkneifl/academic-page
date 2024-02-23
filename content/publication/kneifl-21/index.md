@@ -1,6 +1,6 @@
 ---
-title: A nonintrusive nonlinear model reduction method for structural dynamical problems
-  based on machine learning
+title: Machine Learning Algorithms for Learning Nonlinear Terms of Reduced Mechanical
+  Models in Explicit Structural Dynamics
 
 # Authors
 # A YAML list of author names
@@ -8,45 +8,24 @@ title: A nonintrusive nonlinear model reduction method for structural dynamical 
 # write the username (folder name) here, and it will be replaced with their full name and linked to their profile.
 authors:
 - Jonas Kneifl
-- Dennis Grunert
-- Joerg Fehr
-
-# Author notes (such as 'Equal Contribution')
-# A YAML list of notes for each author in the above `authors` list
+- Jörg Fehr
 author_notes: []
 
-date: '2021-01-01'
+date: '2021-03-01'
 
 # Date to publish webpage (NOT necessarily Bibtex publication's date).
-publishDate: '2023-10-26T15:27:19.799546Z'
+publishDate: '2024-02-23T13:47:48.299282Z'
 
 # Publication type.
 # A single CSL publication type but formatted as a YAML list (for Hugo requirements).
 publication_types:
-- article-journal
-
-# Publication name and optional abbreviated publication name.
-publication: '*International Journal for Numerical Methods in Engineering*'
+- '2'
+publication: '*PAMM*'
 publication_short: ''
 
-doi: https://doi.org/10.1002/nme.6712
+doi: 10.1002/pamm.202000353
 
-abstract: Abstract Model order reduction (MOR) has become one of the most widely used
-  tools to create efficient surrogate models for time-critical applications. For nonlinear
-  models, however, linear MOR approaches are only practicable to a limited extent.
-  Nonlinear approaches, on the contrary, often require intrusive manipulations of
-  the used simulation code. Hence, nonintrusive MOR approaches using classic model
-  order reduction along with machine learning (ML) algorithms can provide remedy.
-  Such approaches have drawn a lot of attention in the recent years. They rely on
-  the idea to learn the dynamics not in a high dimensional but in a reduced space,
-  that is, they predict the discrete sequence of reduced basis' coefficients. Open
-  questions are the suitability of such methods in the field of structural dynamics
-  and the best choice of the used ML algorithm. Both are addressed in this article
-  in addition to the integration of the methodology into a modular and flexible framework
-  that can effortless be adapted to various requirements. By applying the methodology
-  to a dynamic mechanical system, accurate surrogate models are received, which can
-  speed up the simulation time significantly, while still providing high-quality state
-  approximations.
+abstract: ''
 
 # Summary. An optional shortened abstract.
 summary: ''
@@ -58,8 +37,6 @@ tags:
 - nonlinear behavior
 - structural dynamics
 - surrogate model
-
-# Display this page in a list of Featured pages?
 featured: false
 
 # Links
@@ -92,7 +69,7 @@ image:
 projects: []
 links:
 - name: URL
-  url: https://onlinelibrary.wiley.com/doi/abs/10.1002/nme.6712
+  url: https://doi.org/10.1002%2Fpamm.202000353
 ---
 
 Add the **full text** or **supplementary notes** for the publication here using Markdown formatting.
