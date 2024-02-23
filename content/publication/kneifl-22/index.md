@@ -20,7 +20,8 @@ publishDate: '2024-02-23T13:47:48.308543Z'
 # Publication type.
 # A single CSL publication type but formatted as a YAML list (for Hugo requirements).
 publication_types:
-- 'Journal'
+- article-conference
+
 publication: '*IFAC-PapersOnLine*'
 publication_short: ''
 
