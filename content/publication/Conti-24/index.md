@@ -9,7 +9,7 @@ authors:
 - Paolo Conti
 - Jonas Kneifl
 - Andrea Manzoni
-_ Attilio Frangi
+- Attilio Frangi
 - Jörg Fehr
 - Steven L. Brunton
 - J. Nathan Kutz
