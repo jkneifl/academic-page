@@ -13,7 +13,7 @@ address:
   country: Germany
 
 summary: At this event I am moderating a panel discussion with speakers from industry, academia and self-employment. We'll be covering topics such as different career paths and the according pros and cons as well as expert career advice on how to pursue your desired path.
-abstract: 'Are you nearing the end of your degree or PhD and need to decide what to do next? Whether to pursue a career in academia, take the plunge into industry or explore a completely new path can be a daunting decision. But don't worry - Beyond the Thesis is here to help! This isn't your typical lecture series. It's an opportunity to engage in an open dialogue with others who have been or are where you are now. Gain insights from those who've made these choices and are eager to share their experiences in academia and industry in a relaxed atmosphere.'
+abstract: Are you nearing the end of your degree or PhD and need to decide what to do next? Whether to pursue a career in academia, take the plunge into industry or explore a completely new path can be a daunting decision. But don't worry - Beyond the Thesis is here to help! This isn't your typical lecture series. It's an opportunity to engage in an open dialogue with others who have been or are where you are now. Gain insights from those who've made these choices and are eager to share their experiences in academia and industry in a relaxed atmosphere.
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
