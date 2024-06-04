@@ -39,7 +39,7 @@ tags:
 - Dynamical Systems (math.DS)
 - 'FOS: Computer and information sciences'
 - 'FOS: Mathematics'
-featured: true
+featured: false
 
 # Links
 url_pdf: ''
