@@ -8,7 +8,7 @@ location: University of Stuttgart, Stuttgart
 address:
   street: Pfaffenwaldring 45
   city: Stuttgart
-  region: Lombardy
+  region: Baden-Württemberg
   postcode: '70569'
   country: Germany
 
