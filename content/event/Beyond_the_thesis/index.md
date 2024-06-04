@@ -33,6 +33,8 @@ featured: false
 image:
   # caption: ''
   focal_point: Right
+  caption: 'Picture by Max Kovalenko'
+  preview_only: false
 
 # links:
 #   # - icon: twitters
