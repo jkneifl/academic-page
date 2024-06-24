@@ -21,7 +21,7 @@ publishDate: '2024-06-01T00:00:00.00'
 # A single CSL publication type but formatted as a YAML list (for Hugo requirements).
 publication_types:
 - 'Journal article'
-publication: 'Discover Applied Sciences'
+publication: '*Discover Applied Sciences*'
 publication_short: ''
 
 doi: 10.1007/s42452-024-06014-w
