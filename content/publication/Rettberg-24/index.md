@@ -14,10 +14,10 @@ authors:
 - Bernard Haasdonk
 author_notes: []
 
-date: '2024-01-01'
+date: '2024-08-01'
 
 # Date to publish webpage (NOT necessarily Bibtex publication's date).
-publishDate: '2024-08-16T13:20:16.108350Z'
+publishDate: '2024-08-16T13:32:09.910099Z'
 
 # Publication type.
 # A single CSL publication type but formatted as a YAML list (for Hugo requirements).
