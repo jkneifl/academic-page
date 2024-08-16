@@ -10,28 +10,38 @@ authors:
 - Jonas Kneifl
 - Dennis Grunert
 - Joerg Fehr
-
-# Author notes (such as 'Equal Contribution')
-# A YAML list of notes for each author in the above `authors` list
 author_notes: []
 
 date: '2021-01-01'
 
 # Date to publish webpage (NOT necessarily Bibtex publication's date).
-publishDate: '2023-10-26T15:27:19.799546Z'
+publishDate: '2024-08-16T13:20:15.837865Z'
 
 # Publication type.
 # A single CSL publication type but formatted as a YAML list (for Hugo requirements).
 publication_types:
-- article-journal
-
-# Publication name and optional abbreviated publication name.
+- '2'
 publication: '*International Journal for Numerical Methods in Engineering*'
 publication_short: ''
 
 doi: https://doi.org/10.1002/nme.6712
 
-abstract: Abstract Model order reduction (MOR) has become one of the most widely used tools to create efficient surrogate models for time-critical applications. For nonlinear models, however, linear MOR approaches are only practicable to a limited extent. Nonlinear approaches, on the contrary, often require intrusive manipulations of the used simulation code. Hence, nonintrusive MOR approaches using classic model order reduction along with machine learning (ML) algorithms can provide remedy. Such approaches have drawn a lot of attention in the recent years. They rely on the idea to learn the dynamics not in a high dimensional but in a reduced space, that is, they predict the discrete sequence of reduced basis' coefficients. Open questions are the suitability of such methods in the field of structural dynamics and the best choice of the used ML algorithm. Both are addressed in this article in addition to the integration of the methodology into a modular and flexible framework that can effortless be adapted to various requirements. By applying the methodology to a dynamic mechanical system, accurate surrogate models are received, which can speed up the simulation time significantly, while still providing high-quality state approximations.
+abstract: Abstract Model order reduction (MOR) has become one of the most widely used
+  tools to create efficient surrogate models for time-critical applications. For nonlinear
+  models, however, linear MOR approaches are only practicable to a limited extent.
+  Nonlinear approaches, on the contrary, often require intrusive manipulations of
+  the used simulation code. Hence, nonintrusive MOR approaches using classic model
+  order reduction along with machine learning (ML) algorithms can provide remedy.
+  Such approaches have drawn a lot of attention in the recent years. They rely on
+  the idea to learn the dynamics not in a high dimensional but in a reduced space,
+  that is, they predict the discrete sequence of reduced basis' coefficients. Open
+  questions are the suitability of such methods in the field of structural dynamics
+  and the best choice of the used ML algorithm. Both are addressed in this article
+  in addition to the integration of the methodology into a modular and flexible framework
+  that can effortless be adapted to various requirements. By applying the methodology
+  to a dynamic mechanical system, accurate surrogate models are received, which can
+  speed up the simulation time significantly, while still providing high-quality state
+  approximations.
 
 # Summary. An optional shortened abstract.
 summary: ''
@@ -43,8 +53,6 @@ tags:
 - nonlinear behavior
 - structural dynamics
 - surrogate model
-
-# Display this page in a list of Featured pages?
 featured: false
 
 # Links

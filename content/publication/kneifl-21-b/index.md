@@ -14,18 +14,30 @@ author_notes: []
 date: '2021-03-01'
 
 # Date to publish webpage (NOT necessarily Bibtex publication's date).
-publishDate: '2024-02-23T13:47:48.299282Z'
+publishDate: '2024-08-16T13:20:15.877683Z'
 
 # Publication type.
 # A single CSL publication type but formatted as a YAML list (for Hugo requirements).
 publication_types:
-- 'Journal'
+- '2'
 publication: '*PAMM*'
 publication_short: ''
 
 doi: 10.1002/pamm.202000353
 
-abstract: 'Modeling and simulations are a pillar in the development of complex technical systems. However, for time-critical applications a conduction of high-fidelity simulations is not always feasible. To mitigate this computational bottleneck model order reduction (MOR) can be applied. For nonlinear models, linear MOR approaches are only practicable to a limited extend. Nonlinear approaches, on the contrary, often require deep interventions in the used simulation code. If access is not possible, non-intrusive nonlinear model order reduction can be the key to success. The goal of this work is to implement a non-intrusive approach using classical model order reduction along with machine learning algorithms. It relies on the idea to learn the dynamics in the reduced space. The approach aims to learn the temporal evolution of the reduced dynamics of a system. By applying the method to a problem arising from the field of structural dynamics, accurate surrogate models are received. They can speed up the simulation time significantly, while still providing high-quality state approximations.'
+abstract: Modeling and simulations are a pillar in the development of complex technical
+  systems. However, for time-critical applications a conduction of high-fidelity simulations
+  is not always feasible. To mitigate this computational bottleneck model order reduction
+  (MOR) can be applied. For nonlinear models, linear MOR approaches are only practicable
+  to a limited extend. Nonlinear approaches, on the contrary, often require deep interventions
+  in the used simulation code. If access is not possible, non-intrusive nonlinear
+  model order reduction can be the key to success. The goal of this work is to implement
+  a non-intrusive approach using classical model order reduction along with machine
+  learning algorithms. It relies on the idea to learn the dynamics in the reduced
+  space. The approach aims to learn the temporal evolution of the reduced dynamics
+  of a system. By applying the method to a problem arising from the field of structural
+  dynamics, accurate surrogate models are received. They can speed up the simulation
+  time significantly, while still providing high-quality state approximations.
 
 # Summary. An optional shortened abstract.
 summary: ''
