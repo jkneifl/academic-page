@@ -86,8 +86,6 @@ image:
 #   Otherwise, set `projects: []`.
 projects: []
 links:
-- name: arXiv
-  url: https://arxiv.org/abs/2408.08185
 - name: URL
   url: https://arxiv.org/abs/2408.08185
 ---
