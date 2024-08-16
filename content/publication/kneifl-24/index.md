@@ -13,15 +13,15 @@ authors:
 - J. Nathan Kutz
 author_notes: []
 
-date: '2024-01-01'
+date: '2024-02-01'
 
 # Date to publish webpage (NOT necessarily Bibtex publication's date).
-publishDate: '2024-02-23T13:47:48.327789Z'
+publishDate: '2024-08-16T13:32:09.789877Z'
 
 # Publication type.
 # A single CSL publication type but formatted as a YAML list (for Hugo requirements).
 publication_types:
-- 'preprint'
+- '0'
 publication: '*arXiv*'
 publication_short: ''
 
@@ -81,7 +81,7 @@ url_video: ''
 # Publication image
 # Add an image named `featured.jpg/png` to your page's folder then add a caption below.
 image:
-  caption: 'Multi-hierarchic surrogate modeling scheme'
+  caption: Multi-hierarchic surrogate modeling scheme
   focal_point: ''
   preview_only: false
 

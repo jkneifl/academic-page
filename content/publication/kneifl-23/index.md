@@ -17,12 +17,12 @@ author_notes: []
 date: '2023-06-01'
 
 # Date to publish webpage (NOT necessarily Bibtex publication's date).
-publishDate: '2024-02-23T13:47:48.274083Z'
+publishDate: '2024-08-16T13:32:09.585538Z'
 
 # Publication type.
 # A single CSL publication type but formatted as a YAML list (for Hugo requirements).
 publication_types:
-- article-journal
+- '2'
 publication: '*Archive of Applied Mechanics*'
 publication_short: ''
 

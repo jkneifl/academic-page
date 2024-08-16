@@ -1,4 +1,4 @@
-@Article{Kneifl23,
+@Article{kneifl23,
   author   = {Kneifl, Jonas and Rosin, David and Avci, Okan and R{\"o}hrle, Oliver and Fehr, J{\"o}rg},
   journal  = {Archive of Applied Mechanics},
   title    = {Low-dimensional data-based surrogate model of a continuum-mechanical musculoskeletal system based on non-intrusive model order reduction},
@@ -11,7 +11,7 @@
   url      = {https://doi.org/10.1007/s00419-023-02458-5},
 }
 
-@article{Kneifl21,
+@article{kneifl21,
 author = {Kneifl, Jonas and Grunert, Dennis and Fehr, Joerg},
 title = {A nonintrusive nonlinear model reduction method for structural dynamical problems based on machine learning},
 journal = {International Journal for Numerical Methods in Engineering},
@@ -27,7 +27,7 @@ year = {2021}
 }
 
 
-@Article{Kneifl21b,
+@Article{kneifl21b,
   author    = {Kneifl, Jonas and Fehr, Jörg},
   journal   = {{PAMM}},
   title     = {Machine Learning Algorithms for Learning Nonlinear Terms of Reduced Mechanical Models in Explicit Structural Dynamics},
@@ -42,7 +42,7 @@ year = {2021}
   url       = {https://doi.org/10.1002%2Fpamm.202000353},
 }
 
-@Article{KNEIFL22,
+@Article{kneifl22,
   author   = {J. Kneifl and J. Hay and J. Fehr},
   journal  = {IFAC-PapersOnLine},
   title    = {Real-time Human Response Prediction Using a Non-intrusive Data-driven Model Reduction Scheme},
@@ -58,7 +58,7 @@ year = {2021}
   url      = {https://www.sciencedirect.com/science/article/pii/S2405896322013015},
 }
 
-@Article{NICODEMUS22,
+@Article{nicodemus22,
   author   = {Jonas Nicodemus and Jonas Kneifl and Jörg Fehr and Benjamin Unger},
   journal  = {IFAC-PapersOnLine},
   title    = {Physics-informed Neural Networks-based Model Predictive Control for Multi-link Manipulators},
@@ -74,11 +74,12 @@ year = {2021}
   url      = {https://www.sciencedirect.com/science/article/pii/S2405896322013118},
 }
 
-@Misc{Kneifl24,
+@Misc{kneifl24,
   author    = {Kneifl, Jonas and Fehr, Jörg and Brunton, Steven L. and Kutz, J. Nathan},
   title     = {Multi-Hierarchical Surrogate Learning for Structural Dynamical Crash Simulations Using Graph Convolutional Neural Networks},
   year      = {2024},
   abstract  = {Crash simulations play an essential role in improving vehicle safety, design optimization, and injury risk estimation. Unfortunately, numerical solutions of such problems using state-of-the-art high-fidelity models require significant computational effort. Conventional data-driven surrogate modeling approaches create low-dimensional embeddings for evolving the dynamics in order to circumvent this computational effort. Most approaches directly operate on high-resolution data obtained from numerical discretization, which is both costly and complicated for mapping the flow of information over large spatial distances. Furthermore, working with a fixed resolution prevents the adaptation of surrogate models to environments with variable computing capacities, different visualization resolutions, and different accuracy requirements. We thus propose a multi-hierarchical framework for structurally creating a series of surrogate models for a kart frame, which is a good proxy for industrial-relevant crash simulations, at different levels of resolution. For multiscale phenomena, macroscale features are captured on a coarse surrogate, whereas microscale effects are resolved by finer ones. The learned behavior of the individual surrogates is passed from coarse to finer levels through transfer learning. In detail, we perform a mesh simplification on the kart model to obtain multi-resolution representations of it. We then train a graph-convolutional neural network-based surrogate that learns parameter-dependent low-dimensional latent dynamics on the coarsest representation. Subsequently, another, similarly structured surrogate is trained on the residual of the first surrogate using a finer resolution. This step can be repeated multiple times. By doing so, we construct multiple surrogates for the same system with varying hardware requirements and increasing accuracy.},
+  month     = {2},
   copyright = {arXiv.org perpetual, non-exclusive license},
   doi       = {10.48550/ARXIV.2402.09234},
   keywords  = {Machine Learning (cs.LG), Dynamical Systems (math.DS), FOS: Computer and information sciences, FOS: Computer and information sciences, FOS: Mathematics, FOS: Mathematics},
@@ -86,13 +87,14 @@ year = {2021}
   publisher = {arXiv},
 }
 
-@misc{Conti24,
+@misc{conti24,
  abstract = {The simulation of many complex phenomena in engineering and science requires solving expensive, high-dimensional systems of partial differential equations (PDEs). To circumvent this, reduced-order models (ROMs) have been developed to speed up computations. However, when governing equations are unknown or partially known, typically ROMs lack interpretability and reliability of the predicted solutions.
 In this work we present a data-driven, non-intrusive framework for building ROMs where the latent variables and dynamics are identified in an interpretable manner and uncertainty is quantified. Starting from a limited amount of high-dimensional, noisy data the proposed framework constructs an efficient ROM by leveraging variational autoencoders for dimensionality reduction along with a newly introduced, variational version of sparse identification of nonlinear dynamics (SINDy), which we refer to as Variational Identification of Nonlinear Dynamics (VINDy).
 In detail, the method consists of Variational Encoding of Noisy Inputs (VENI) to identify the distribution of reduced coordinates. Simultaneously, we learn the distribution of the coefficients of a pre-determined set of candidate functions by VINDy. Once trained offline, the identified model can be queried for new parameter instances and new initial conditions to compute the corresponding full-time solutions. The probabilistic setup enables uncertainty quantification as the online testing consists of Variational Inference naturally providing Certainty Intervals (VICI). In this work we showcase the effectiveness of the newly proposed VINDy method in identifying interpretable and accurate dynamical system for the Rössler system with different noise intensities and sources. Then the performance of the overall method - named VENI, VINDy, VICI - is tested on PDE benchmarks including structural mechanics and fluid dynamics.},
 title={VENI, VINDy, VICI: a variational reduced-order modeling framework with uncertainty quantification}, 
 author={Paolo Conti and Jonas Kneifl and Andrea Manzoni and Attilio Frangi and Jörg Fehr and Steven L. Brunton and J. Nathan Kutz},
 year={2024},
+      month     = {6},
 eprint={2405.20905},
  publisher = {arXiv},
 archivePrefix={arXiv},
@@ -101,9 +103,10 @@ primaryClass={cs.LG},
  doi = {10.48550/ARXIV.2405.20905},
 }
 
-@Article{Rodegast2024,
+@Article{rodegast24,
   author       = {Rodegast, Philipp and Maier, Steffen and Kneifl, Jonas and Fehr, Jörg},
   date         = {2024-06},
+  abstract     = {Globally, motorcycles attract vast and varied users. However, since the rate of severe injury and fatality in motorcycle accidents far exceeds that of passenger car accidents, efforts have been directed towards increasing passive safety systems. Impact simulations show that the risk of severe injury or death in the event of a motorcycle-to-car impact can be greatly reduced if the motorcycle is equipped with passive safety measures such as airbags and seat belts. For the passive safety systems to be activated, a collision must be detected within milliseconds for a wide variety of impact configurations, but under no circumstances may it be falsely triggered. For the challenge of reliably detecting impending collisions, this paper presents an investigation towards the applicability of machine learning algorithms. First, a series of simulations of accidents and driving operation is introduced to collect data to train machine learning classification models. Their performance is henceforth assessed and compared via multiple representative and application-oriented criteria.},
   journaltitle = {Discover Applied Sciences},
   title        = {On using machine learning algorithms for motorcycle collision detection},
   doi          = {10.1007/s42452-024-06014-w},
@@ -113,12 +116,13 @@ primaryClass={cs.LG},
   publisher    = {Springer Science and Business Media LLC},
 }
 
-@misc{Rettberg2024,
+@misc{rettberg24,
       title={Data-driven identification of latent port-Hamiltonian systems}, 
       author={Johannes Rettberg and Jonas Kneifl and Julius Herb and Patrick Buchfink and Jörg Fehr and Bernard Haasdonk},
-      abstract = {Conventional physics-based modeling techniques involve high effort, e.g.,~time and expert knowledge, while data-driven methods often lack interpretability, structure, and sometimes reliability. To mitigate this, we present a data-driven system identification framework that derives models in the port-Hamiltonian (pH) formulation. This formulation is suitable for multi-physical systems while guaranteeing the useful system theoretical properties of passivity and stability. 
+      abstract = {Conventional physics-based modeling techniques involve high effort, e.g., time and expert knowledge, while data-driven methods often lack interpretability, structure, and sometimes reliability. To mitigate this, we present a data-driven system identification framework that derives models in the port-Hamiltonian (pH) formulation. This formulation is suitable for multi-physical systems while guaranteeing the useful system theoretical properties of passivity and stability. 
       Our framework combines linear and nonlinear reduction with structured, physics-motivated system identification. In this process, high-dimensional state data obtained from possibly nonlinear systems serves as input for an autoencoder, which then performs two tasks (i) nonlinearly transforming and (ii) reducing this data onto a low-dimensional latent space. In this space, a linear pH system, that satisfies the pH properties per construction, is parameterized by the weights of a neural network. The mathematical requirements are met by defining the pH matrices through Cholesky factorizations. The neural networks that define the coordinate transformation and the pH system are identified in a joint optimization process to match the dynamics observed in the data while defining a linear pH system in the latent space. The learned, low-dimensional pH system can describe even nonlinear systems and is rapidly computable due to its small size. The method is exemplified by a parametric mass-spring-damper and a nonlinear pendulum example, as well as the high-dimensional model of a disc brake with linear thermoelastic behavior.},
       year={2024},
+      month     = {8},
       eprint={2408.08185},
       archivePrefix={arXiv},
       primaryClass={math.DS},
