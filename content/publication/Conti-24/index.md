@@ -96,6 +96,8 @@ image:
 #   Otherwise, set `projects: []`.
 projects: []
 links:
+- name: Code
+  url: https://github.com/jkneifl/VENI-VINDy-VICI
 - name: arXiv
   url: https://arxiv.org/abs/2405.20905
 ---
