@@ -81,6 +81,8 @@ The VAE accomplishes this by maximizing the likelihood of the observed data, giv
 
 #### VINDy: Variational Identification of Nonlinear Dynamics
 
+{{< figure src="coeffs3.gif" caption="Evolution of the coefficient distributions during training" numbered="true" id="ae">}}
+
 With our latent representation from VENI, the next step, VINDy (Variational Identification of Nonlinear Dynamics), comes into play. VINDy identifies the governing dynamics in this low-dimensional latent space, allowing us to predict how the latent variables change over time.
 
 This stage is inspired by Sparse Identification of Nonlinear Dynamics (SINDy), but our version goes further. Standard SINDy approximates dynamics using a small subset of possible functions, making it efficient and interpretable. However, it doesn’t account for uncertainty in the data. Our adaptation, VINDy, introduces a probabilistic element, where we treat the dynamics as a distribution over possible governing equations. This allows us to capture both the dynamics and the confidence we have in them.
