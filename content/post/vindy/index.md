@@ -42,14 +42,14 @@ categories:
 ---
 In scientific computing, we often work with complex systems governed by partial differential equations (PDEs) to model real-world phenomena in fields like fluid dynamics, structural mechanics, and reaction-diffusion systems. These high-dimensional models are incredibly accurate but also computationally demanding, especially when the goal is to run repeated simulations or operate in real-time environments. This is where reduced-order modeling (ROM) comes into play.
 
-However, ROMs typically face several challenges:
+<!-- However, ROMs typically face several challenges:
 	1.	They may lack interpretability, making it hard to understand the underlying physics.
 	2.	They often assume access to high-fidelity models, which isn’t always the case.
-	3.	They don’t always account for uncertainty, a key factor when dealing with noisy data or unknown system dynamics.
+	3.	They don’t always account for uncertainty, a key factor when dealing with noisy data or unknown system dynamics. -->
 
 To address these issues, we developed the [[VENI, VINDy, VICI framework](https://arxiv.org/abs/2405.20905)]. This approach combines data-driven machine learning with traditional physics-based insights, enabling reduced-order modeling while quantifying uncertainty.
 
-### Introducing the VENI, VINDy, VICI Framework
+<!-- ### Introducing the VENI, VINDy, VICI Framework
 {{< figure src="featured.gif" caption=" Overview of the VENI, VINDy, VICI procedure." numbered="true" id="ae">}}
 
 {{< math >}}
@@ -81,7 +81,7 @@ The VAE accomplishes this by maximizing the likelihood of the observed data, giv
 
 #### VINDy: Variational Identification of Nonlinear Dynamics
 
-{{< figure src="coeffs3.gif" caption="Evolution of the coefficient distributions during training" numbered="true" id="ae">}}
+{{< figure src="coeffs3.gif" caption="Evolution of the coefficient distributions during training" numbered="true" id="coeffs">}}
 
 With our latent representation from VENI, the next step, VINDy (Variational Identification of Nonlinear Dynamics), comes into play. VINDy identifies the governing dynamics in this low-dimensional latent space, allowing us to predict how the latent variables change over time.
 
@@ -122,4 +122,4 @@ Our results showcase that VENI, VINDy, VICI can effectively model complex, high-
 
 For those interested in exploring VENI, VINDy, VICI, we’ve made the code available on GitHub to encourage further research and applications across diverse fields.
 
-### Did you find this page helpful? Consider sharing it 🙌
+### Did you find this page helpful? Consider sharing it 🙌 -->
