@@ -9,10 +9,10 @@ summary: VENI, VINDy, VICI is an interpretable data-driven framework for buildin
 projects: []
 
 # Date published
-date: '2024-11-12T00:00:00Z'
+date: '2024-11-07T00:00:00Z'
 
 # Date updated
-lastmod: '2024-11-12T00:00:00Z'
+lastmod: '2024-11-07T00:00:00Z'
 
 # Is this an unpublished draft?
 draft: false
