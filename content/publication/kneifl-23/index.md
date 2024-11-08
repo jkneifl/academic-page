@@ -12,22 +12,17 @@ authors:
 - Okan Avci
 - Oliver Röhrle
 - Jörg Fehr
-
-# Author notes (such as 'Equal Contribution')
-# A YAML list of notes for each author in the above `authors` list
 author_notes: []
 
 date: '2023-06-01'
 
 # Date to publish webpage (NOT necessarily Bibtex publication's date).
-publishDate: '2023-10-26T15:27:19.792850Z'
+publishDate: '2024-08-16T13:32:09.585538Z'
 
 # Publication type.
 # A single CSL publication type but formatted as a YAML list (for Hugo requirements).
 publication_types:
-- article-journal
-
-# Publication name and optional abbreviated publication name.
+- '2'
 publication: '*Archive of Applied Mechanics*'
 publication_short: ''
 
@@ -59,7 +54,13 @@ abstract: Over the last decades, computer modeling has evolved from a supporting
 # Summary. An optional shortened abstract.
 summary: ''
 
-tags: []
+tags:
+- black box model
+- data-based model reduction
+- machine learning
+- nonlinear behavior
+- structural dynamics
+- surrogate model
 
 # Display this page in a list of Featured pages?
 featured: false
@@ -97,4 +98,3 @@ links:
   url: https://doi.org/10.1007/s00419-023-02458-5
 ---
 
-Add the **full text** or **supplementary notes** for the publication here using Markdown formatting.

@@ -11,22 +11,17 @@ authors:
 - Jonas Kneifl
 - Jörg Fehr
 - Benjamin Unger
-
-# Author notes (such as 'Equal Contribution')
-# A YAML list of notes for each author in the above `authors` list
 author_notes: []
 
 date: '2022-01-01'
 
 # Date to publish webpage (NOT necessarily Bibtex publication's date).
-publishDate: '2023-10-26T15:27:19.812390Z'
+publishDate: '2024-08-16T13:32:09.750268Z'
 
 # Publication type.
 # A single CSL publication type but formatted as a YAML list (for Hugo requirements).
 publication_types:
-- article-journal
-
-# Publication name and optional abbreviated publication name.
+- '2'
 publication: '*IFAC-PapersOnLine*'
 publication_short: ''
 
@@ -56,8 +51,6 @@ tags:
 - Surrogate Model
 - Mechanical System
 - Real-time Control
-
-# Display this page in a list of Featured pages?
 featured: false
 
 # Links
@@ -93,4 +86,3 @@ links:
   url: https://www.sciencedirect.com/science/article/pii/S2405896322013118
 ---
 
-Add the **full text** or **supplementary notes** for the publication here using Markdown formatting.
