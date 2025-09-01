@@ -32,7 +32,7 @@ abstract: Highly nonlinear dynamic finite element simulations using explicit tim
 summary: ''
 
 tags:
-featured: false
+featured: true
 
 # Links
 url_pdf: ''

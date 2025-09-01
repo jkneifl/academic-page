@@ -65,7 +65,7 @@ tags:
 - 'FOS: Computer and information sciences'
 - 'FOS: Mathematics'
 - 'FOS: Mathematics'
-featured: false
+featured: true
 
 # Links
 url_pdf: ''
