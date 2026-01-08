@@ -10,17 +10,22 @@ authors:
 - J. Kneifl
 - J. Hay
 - J. Fehr
+
+# Author notes (such as 'Equal Contribution')
+# A YAML list of notes for each author in the above `authors` list
 author_notes: []
 
 date: '2022-01-01'
 
 # Date to publish webpage (NOT necessarily Bibtex publication's date).
-publishDate: '2024-08-16T13:32:09.711415Z'
+publishDate: '2026-01-08T14:10:20.846458Z'
 
 # Publication type.
 # A single CSL publication type but formatted as a YAML list (for Hugo requirements).
 publication_types:
-- '2'
+- article-journal
+
+# Publication name and optional abbreviated publication name.
 publication: '*IFAC-PapersOnLine*'
 publication_short: ''
 
@@ -52,6 +57,8 @@ tags:
 - Human Body Modeling
 - Parameterized Ordinary Differential Equations
 - Long Short-Term Memory
+
+# Display this page in a list of Featured pages?
 featured: false
 
 # Links
@@ -86,3 +93,5 @@ links:
 - name: URL
   url: https://www.sciencedirect.com/science/article/pii/S2405896322013015
 ---
+
+Add the **full text** or **supplementary notes** for the publication here using Markdown formatting.

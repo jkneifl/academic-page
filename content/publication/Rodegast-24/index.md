@@ -10,17 +10,22 @@ authors:
 - Steffen Maier
 - Jonas Kneifl
 - Jörg Fehr
+
+# Author notes (such as 'Equal Contribution')
+# A YAML list of notes for each author in the above `authors` list
 author_notes: []
 
 date: '2024-06-01'
 
 # Date to publish webpage (NOT necessarily Bibtex publication's date).
-publishDate: '2024-08-16T13:32:09.871385Z'
+publishDate: '2026-01-08T14:10:20.866463Z'
 
 # Publication type.
 # A single CSL publication type but formatted as a YAML list (for Hugo requirements).
 publication_types:
-- '2'
+- article-journal
+
+# Publication name and optional abbreviated publication name.
 publication: '*Springer Science and Business Media LLC*'
 publication_short: ''
 
@@ -44,7 +49,9 @@ abstract: Globally, motorcycles attract vast and varied users. However, since th
 # Summary. An optional shortened abstract.
 summary: ''
 
-tags:
+tags: []
+
+# Display this page in a list of Featured pages?
 featured: false
 
 # Links
@@ -64,10 +71,10 @@ url_video: ''
 
 # Publication image
 # Add an image named `featured.jpg/png` to your page's folder then add a caption below.
-# image:
-#   caption: 'Multi-hierarchic surrogate modeling scheme'
-#   focal_point: ''
-#   preview_only: false
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: false
 
 # Associated Projects (optional).
 #   Associate this publication with one or more of your projects.
@@ -75,8 +82,6 @@ url_video: ''
 #   E.g. `projects: ['internal-project']` links to `content/project/internal-project/index.md`.
 #   Otherwise, set `projects: []`.
 projects: []
-links:
-- name: URL
-  url: https://doi.org/10.1007/s42452-024-06014-w
 ---
 
+Add the **full text** or **supplementary notes** for the publication here using Markdown formatting.

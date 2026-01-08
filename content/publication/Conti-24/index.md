@@ -14,17 +14,22 @@ authors:
 - Jörg Fehr
 - Steven L. Brunton
 - J. Nathan Kutz
+
+# Author notes (such as 'Equal Contribution')
+# A YAML list of notes for each author in the above `authors` list
 author_notes: []
 
 date: '2024-06-01'
 
 # Date to publish webpage (NOT necessarily Bibtex publication's date).
-publishDate: '2024-08-16T13:32:09.830386Z'
+publishDate: '2026-01-08T14:10:20.860932Z'
 
 # Publication type.
 # A single CSL publication type but formatted as a YAML list (for Hugo requirements).
 publication_types:
-- '0'
+- manuscript
+
+# Publication name and optional abbreviated publication name.
 publication: '*arXiv*'
 publication_short: ''
 
@@ -55,8 +60,7 @@ abstract: The simulation of many complex phenomena in engineering and science re
   benchmarks including structural mechanics and fluid dynamics.
 
 # Summary. An optional shortened abstract.
-summary: The proposed framework discovers probabilistic governing equations from high-dimensional
-  data in a low-dimensional latent space
+summary: ''
 
 tags:
 - Machine Learning (cs.LG)
@@ -65,11 +69,13 @@ tags:
 - 'FOS: Computer and information sciences'
 - 'FOS: Mathematics'
 - 'FOS: Mathematics'
+
+# Display this page in a list of Featured pages?
 featured: false
 
 # Links
 url_pdf: ''
-url_code: ''
+url_code: 'https://github.com/jkneifl/VENI-VINDy-VICI'
 url_dataset: ''
 url_poster: ''
 url_project: ''
@@ -85,7 +91,7 @@ url_video: ''
 # Publication image
 # Add an image named `featured.jpg/png` to your page's folder then add a caption below.
 image:
-  caption: VENI, VINDy, VICI
+  caption: 'VENI, VINDy, VICI'
   focal_point: ''
   preview_only: false
 
@@ -96,9 +102,8 @@ image:
 #   Otherwise, set `projects: []`.
 projects: []
 links:
-- name: Code
-  url: https://github.com/jkneifl/VENI-VINDy-VICI
 - name: arXiv
   url: https://arxiv.org/abs/2405.20905
 ---
 
+Add the **full text** or **supplementary notes** for the publication here using Markdown formatting.

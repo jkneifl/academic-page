@@ -111,18 +111,19 @@ year = {2021}
   publisher    = {Springer Science and Business Media LLC},
 }
 
-@misc{rettberg24,
-      title={Data-driven identification of latent port-Hamiltonian systems}, 
-      author={Johannes Rettberg and Jonas Kneifl and Julius Herb and Patrick Buchfink and Jörg Fehr and Bernard Haasdonk},
-      abstract = {Conventional physics-based modeling techniques involve high effort, e.g., time and expert knowledge, while data-driven methods often lack interpretability, structure, and sometimes reliability. To mitigate this, we present a data-driven system identification framework that derives models in the port-Hamiltonian (pH) formulation. This formulation is suitable for multi-physical systems while guaranteeing the useful system theoretical properties of passivity and stability. 
-      Our framework combines linear and nonlinear reduction with structured, physics-motivated system identification. In this process, high-dimensional state data obtained from possibly nonlinear systems serves as input for an autoencoder, which then performs two tasks (i) nonlinearly transforming and (ii) reducing this data onto a low-dimensional latent space. In this space, a linear pH system, that satisfies the pH properties per construction, is parameterized by the weights of a neural network. The mathematical requirements are met by defining the pH matrices through Cholesky factorizations. The neural networks that define the coordinate transformation and the pH system are identified in a joint optimization process to match the dynamics observed in the data while defining a linear pH system in the latent space. The learned, low-dimensional pH system can describe even nonlinear systems and is rapidly computable due to its small size. The method is exemplified by a parametric mass-spring-damper and a nonlinear pendulum example, as well as the high-dimensional model of a disc brake with linear thermoelastic behavior.},
-      year={2024},
-      month     = {8},
-      eprint={2408.08185},
-      archivePrefix={arXiv},
-      primaryClass={math.DS},
-      url={https://arxiv.org/abs/2408.08185}, 
-      doi = {10.48550/arXiv.2408.08185},
+@Article{rettberg25,
+  title     = "Data-driven identification of latent port-Hamiltonian systems",
+  author    = "Rettberg, Johannes and Kneifl, Jonas and Herb, Julius and
+               Buchfink, Patrick and Fehr, J{\"o}rg and Haasdonk, Bernard",
+  abstract = {Conventional physics-based modeling techniques involve high effort, e.g., time and expert knowledge, while data-driven methods often lack interpretability, structure, and sometimes reliability. To mitigate this, we present a data-driven system identification framework that derives models in the port-Hamiltonian (pH) formulation. This formulation is suitable for multi-physical systems while guaranteeing the useful system theoretical properties of passivity and stability. Our framework combines linear and nonlinear reduction with structured, physics-motivated system identification. In this process, high-dimensional state data obtained from possibly nonlinear systems serves as input for an autoencoder, which then performs two tasks: (i) nonlinearly transforming and (ii) reducing this data onto a low-dimensional latent space. In this space, a linear pH system that satisfies the pH properties per construction is parameterized by the weights of a neural network. The mathematical requirements are met by defining the pH matrices through Cholesky factorizations. The neural networks that define the coordinate transformation and the pH system are identified in a joint optimization process to match the dynamics observed in the data while defining a linear pH system in the latent space. The learned, low-dimensional pH system can describe even nonlinear systems and is rapidly computable due to its small size. The method is exemplified by a parametric mass-spring-damper and a nonlinear pendulum example, as well as the high-dimensional model of a disc brake with linear thermoelastic behavior.},
+  journal   = "Comput. Sci. Eng.",
+  publisher = "Springer Science and Business Media LLC",
+  volume    =  2,
+  number    =  1,
+  month     =  nov,
+  year      =  2025,
+  copyright = "https://creativecommons.org/licenses/by/4.0",
+  language  = "en"
 }
 
 @Comment{jabref-meta: databaseType:bibtex;}
