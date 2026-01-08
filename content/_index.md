@@ -40,6 +40,14 @@ sections:
       #   Leave `date_end` empty if it's your current employer.
       #   Begin multi-line descriptions with YAML's `|2-` multi-line prefix.
       items:
+        - title: Research Associate
+          company: Institute of Engineering and Computational Mechanics 
+          company_url: https://www.itm.uni-stuttgart.de/en/
+          company_logo: Uni_stuttgart_logo
+          location: University of Stuttgart, Stuttgart, Germany
+          date_start: '2020-06-01'
+          date_end: '2025-10-30'
+          description: Researcher in the field of Scientific Machine Learning within the cluster of excellence "Data-Integrated Simulation Science (SimTech)" and lecture assistant.
         - title: Visiting Researcher
           company: Department of Civil and Environmental Engineering
           company_url: https://www.dica.polimi.it/?lang=en
