@@ -67,7 +67,7 @@ social:
     link: https://github.com/jkneifl
   - icon: linkedin
     icon_pack: fab
-    link: https://www.linkedin.com/in/jonas-kneifl-918ba4194/
+    link: https://www.linkedin.com/in/jonas-kneifl/
   # Link to a PDF of your resume/CV.
   # To use: copy your resume to `static/uploads/resume.pdf`, enable `ai` icons in `params.yaml`,
   # and uncomment the lines below.
@@ -82,8 +82,9 @@ email: ''
 highlight_name: true
 ---
 
-Greetings! I recently completed my PhD, focusing on scientific machine learning. My academic journey led me to the captivating world of engineering cybernetics, where I honed my skills in mathematics, mechanics, and control theory, and formed a deep interest in systems theory and understanding complex models.
+Greetings! I hold a PhD in the field of Scientific Machine Learning, with a research background rooted in engineering cybernetics. My academic training spans mathematics, control theory, systems theory, and deep learning, shaping my interest in the principled understanding and modeling of complex dynamical systems.
 
-In my research, I’m driven to efficiently approximate complex models by blending core numerical methods with artificial intelligence learning techniques. I’m passionate about the synergy between scientific principles and cutting-edge technologies.
+In my research, I’m driven to efficiently approximate complex models by integrating established numerical methods with modern artificial intelligence techniques. 
+I am particularly interested in approaches that combine physical insight with data-driven learning to achieve accurate, interpretable, and computationally efficient models.
 
 {style="text-align: justify;"}
