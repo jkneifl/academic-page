@@ -68,11 +68,9 @@ social:
   - icon: linkedin
     icon_pack: fab
     link: https://www.linkedin.com/in/jonas-kneifl/
-  # Link to a PDF of your resume/CV.
-  # To use: copy your resume to `static/uploads/resume.pdf`, enable `ai` icons in `params.yaml`,
-  # and uncomment the lines below.
-  - icon: graduation-cap
-    icon_pack: ai
+  # Link to dissertation PDF using Font Awesome icon.
+  - icon: file-pdf
+    icon_pack: fas
     link: uploads/dissertation.pdf
 
 # Enter email to display Gravatar (if Gravatar enabled in Config)
