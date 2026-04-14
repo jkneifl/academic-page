@@ -3,7 +3,7 @@ title: Data-driven Surrogate Modeling of Structural Dynamical Systems via Latent
   Representations
 authors:
 - Jonas Kneifl
-date: 2025-None-01
+date: 2025-08-29
 publishDate: '2026-04-14T13:40:59.296857Z'
 publication_types:
 - book
@@ -30,7 +30,19 @@ abstract: Numerical simulations provide powerful predictive capabilities to anal
   efficient, accurate, interpretable surrogate models deployable in real-time settings,
   broadening numerical simulation accessibility in science and engineering.
 tags:
-- Model Reduction; Scientific Machine Learning; Data-driven modeling; Reduced-order
-  modeling
-- journal
+- Model Reduction
+- Scientific Machine Learning
+- Data-driven modeling
+- Reduced-order modeling
+
+# Display this page in a list of Featured pages?
+featured: true
+
+# Publication image
+# Add an image named `featured.jpg/png` to your page's folder then add a caption below.
+image:
+  caption: 'Representation of the surrogate modeling workflow, from the physical system to the generation of efficient surrogate models'
+  focal_point: ''
+  preview_only: false
+
 ---
