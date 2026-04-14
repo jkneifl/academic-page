@@ -132,12 +132,8 @@ Two sources of uncertainty are represented separately and propagate independentl
 - **Data noise** (captured by {{< math >}}$\boldsymbol{\sigma}^2_{\boldsymbol{\phi}}${{< /math >}} of the VAE encoder)
 - **Model uncertainty** (captured by {{< math >}}$\boldsymbol{\sigma}^2_\Xi${{< /math >}} of the VINDy coefficients)
 
-{{< figure src="vici.jpeg" caption="Schematic representation of the online VICI procedure to generate new solutions for a given initial condition x0
-and set of parameters β. We first sample multiple instances of the corresponding latent initial conditions and coefficients of
-the dynamical model, each defining an ODE system. Then each dynamical system is integrated in time through standard
-time-stepping schemes, resulting in multiple latent trajectories. These latter are finally processed by the decoder mean to
-obtain full state trajectories. Predictions and the corresponding UQ are computed directly from the statistical properties of the
-approximated solution trajectories." numbered="true" id="coeffs">}}
+{{< figure src="vici.jpeg" caption="VICI inference for a new parameter: the encoder samples initial latent states and the VINDy coefficient matrices from their learned distributions, integrates the latent ODE forward in time, and decodes the resulting ensemble of trajectories back to the full state space. The spread across decoded snapshots (top row) directly reflects the model's uncertainty." numbered="true" id="vici">}}
+
 ---
 
 ## Example: Reaction–Diffusion System
@@ -148,11 +144,8 @@ The full state is a spatial grid with thousands of degrees of freedom. The frame
 
 The latent dynamics take the form of a simple nonlinear oscillator, and the VINDy coefficients cleanly identify the relevant coupling terms. This interpretability is a direct consequence of the sparse probabilistic identification: rather than a black-box neural ODE, we obtain an equation we can inspect, simulate cheaply, and reason about physically.
 
-{{< figure src="RD.jpeg" caption="Results of the offline training a), consisting of the VENI and VINDy steps, for the reaction-diffusion problem. In
-the VINDy box, the identified posterior distributions of the coefficients are displayed. We note that the mixed linear terms,
-which are the dominant terms for the observed dynamics, are accurately identified as significant. In the VENI box, we highlight
-how the method is capable of learning an encoding function from noisy data, resulting in two latent variables that exhibit the
-expected oscillatory behavior." numbered="true" id="coeffs">}}
+{{< figure src="RD.jpeg" caption="Application to the reaction–diffusion system. Top left: three snapshots of training data corrupted with 20% noise. Bottom left: the VENI encoder maps each snapshot to a two-dimensional latent state z, tracing out a closed orbit in the phase portrait. Right: the identified posterior distributions over the VINDy coefficient matrix Ξ — a handful of terms carry tight, non-zero distributions while the rest collapse to zero, yielding a sparse and interpretable latent ODE." numbered="true" id="rd">}}
+
 
 ---
 
