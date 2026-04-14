@@ -37,7 +37,7 @@ Complex physical systems — think fluid flows, structural vibrations, or chemic
 
 **VENI, VINDy, VICI** [[paper](https://doi.org/10.1016/j.neunet.2026.108543)] addresses those issues at once. It builds a generative ROM that (1) handles noisy input data, (2) identifies interpretable governing equations in a low-dimensional space, and (3) produces predictions with calibrated uncertainty estimates — all within a single probabilistic framework.
 
-{{< figure src="/uploads/featured.gif" caption="Overview of the VENI, VINDy, VICI framework: noisy snapshots are encoded into a probabilistic latent space (VENI), governing equations are identified as distributions over sparse coefficient vectors (VINDy), and predictions are decoded back into the full space with uncertainty intervals (VICI)." numbered="true" id="overview">}}
+{{< figure src="featured.gif" caption="Overview of the VENI, VINDy, VICI framework: noisy snapshots are encoded into a probabilistic latent space (VENI), governing equations are identified as distributions over sparse coefficient vectors (VINDy), and predictions are decoded back into the full space with uncertainty intervals (VICI)." numbered="true" id="overview">}}
 
 {{% callout note %}}
 The code is available on GitHub: [github.com/jkneifl/VENI-VINDy-VICI](https://github.com/jkneifl/VENI-VINDy-VICI)

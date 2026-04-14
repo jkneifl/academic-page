@@ -30,7 +30,7 @@ publication_types:
 publication: '*IFAC-PapersOnLine*'
 publication_short: ''
 
-doi: https://doi.org/10.1016/j.ifacol.2022.09.117
+doi: 10.1016/j.ifacol.2022.09.117
 
 abstract: We discuss nonlinear model predictive control (MPC) for multi-body dynamics
   via physics-informed machine learning methods. In more detail, we use a physics-informed

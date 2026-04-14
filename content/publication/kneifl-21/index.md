@@ -29,7 +29,7 @@ publication_types:
 publication: '*International Journal for Numerical Methods in Engineering*'
 publication_short: ''
 
-doi: https://doi.org/10.1002/nme.6712
+doi: 10.1002/nme.6712
 
 abstract: Abstract Model order reduction (MOR) has become one of the most widely used
   tools to create efficient surrogate models for time-critical applications. For nonlinear
@@ -60,7 +60,7 @@ tags:
 - surrogate model
 
 # Display this page in a list of Featured pages?
-featured: false
+featured: true
 
 # Links
 url_pdf: ''

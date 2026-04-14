@@ -29,7 +29,7 @@ publication_types:
 publication: '*IFAC-PapersOnLine*'
 publication_short: ''
 
-doi: https://doi.org/10.1016/j.ifacol.2022.09.109
+doi: 10.1016/j.ifacol.2022.09.109
 
 abstract: Recent research in non-intrusive data-driven model order reduction (MOR)
   enabled accurate and efficient approximation of parameterized ordinary differential

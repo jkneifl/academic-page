@@ -13,7 +13,7 @@ authors:
 publication_types:
 - '2'
 abstract: ''
-featured: false
+featured: true
 publication: '*International Journal for Numerical Methods in Engineering*'
 doi: 10.1002/nme.7649
 ---
