@@ -33,7 +33,7 @@ categories:
   - Scientific Machine Learning
 ---
 
-Complex physical systems — think fluid flows, structural vibrations, or chemical reactions — are typically modeled by partial differential equations (PDEs). Solving these PDEs numerically is accurate but expensive: a single simulation can take hours or days. Reduced-order models (ROMs) or deep learning surrogates tackle this by finding a low-dimensional representation of the system that is cheap to evaluate while modern. The catch is that most ROMs are deterministic and assume clean, reliable data, neither of which holds in practice; while data-driven approaches often lack interpretability.
+Complex physical systems — think fluid flows, structural vibrations, or chemical reactions — are typically modeled by partial differential equations (PDEs). Solving these PDEs numerically is accurate but expensive: a single simulation can take hours or days. Reduced-order models (ROMs) or deep learning surrogate models tackle this by finding a low-dimensional representation of the system that is cheap to evaluate. The catch is that most ROMs are deterministic and assume clean, reliable data, neither of which holds in practice; while data-driven approaches often lack interpretability.
 
 **VENI, VINDy, VICI** [[paper](https://doi.org/10.1016/j.neunet.2026.108543)] addresses those issues at once. It builds a generative ROM that (1) handles noisy input data, (2) identifies interpretable governing equations in a low-dimensional space, and (3) produces predictions with calibrated uncertainty estimates — all within a single probabilistic framework.
 
@@ -122,7 +122,7 @@ The animation above captures the key behaviour: as training progresses, most coe
 With a trained VAE and a distribution over governing equations in hand, making predictions is straightforward:
 
 1. **Sample** multiple coefficient vectors {{< math >}}$\boldsymbol{\Xi}^{(k)} \sim \mathcal{L}(\boldsymbol{\mu}_\Xi, \text{diag}(\boldsymbol{\sigma}^2_\Xi))${{< /math >}} and latent initial conditions {{< math >}}$\boldsymbol{z}^{(k)}_0 \sim \mathcal{N}\!\left( \boldsymbol{\mu}_{\boldsymbol{\phi}}(\mathbf{x}),\, \text{diag}(\boldsymbol{\sigma}^2_{\boldsymbol{\phi}}(\mathbf{x}))\right)${{< /math >}}.
-2. **Integrate** the latent ODEs {{< math >}}$\dot{\mathbf{z}} = \boldsymbol{\Xi}^{(k)}\,\boldsymbol{\Theta}(\mathbf{z})${{< /math >}} forward from one latent initial condition, giving a bundle of latent trajectories {{< math >}}$\{\mathbf{z}^{(k)}(t)\}${{< /math >}}.
+2. **Integrate** the latent ODEs {{< math >}}$\dot{\mathbf{z}} = \boldsymbol{\Xi}^{(k)}\,\boldsymbol{\Theta}(\mathbf{z})${{< /math >}} forward from the latent initial conditions, giving a bundle of latent trajectories {{< math >}}$\{\mathbf{z}^{(k)}(t)\}${{< /math >}}.
 3. **Decode** each trajectory back to the full state space using the VAE decoder.
 4. **Summarise** the resulting ensemble: the mean is the point prediction; the spread gives the uncertainty interval.
 
@@ -144,7 +144,7 @@ The full state is a spatial grid with thousands of degrees of freedom. The frame
 
 The latent dynamics take the form of a simple nonlinear oscillator, and the VINDy coefficients cleanly identify the relevant coupling terms. This interpretability is a direct consequence of the sparse probabilistic identification: rather than a black-box neural ODE, we obtain an equation we can inspect, simulate cheaply, and reason about physically.
 
-{{< figure src="RD.jpeg" caption="Application to the reaction–diffusion system. Top left: three snapshots of training data corrupted with 20% noise. Bottom left: the VENI encoder maps each snapshot to a two-dimensional latent state z, tracing out a closed orbit in the phase portrait. Right: the identified posterior distributions over the VINDy coefficient matrix Ξ — a handful of terms carry tight, non-zero distributions while the rest collapse to zero, yielding a sparse and interpretable latent ODE." numbered="true" id="rd">}}
+{{< figure src="RD.jpeg" caption="Application to the reaction–diffusion system. Top left: three snapshots of training data corrupted with 20% noise. Bottom left: the VENI encoder maps each snapshot to a two-dimensional latent state, tracing out a closed orbit in the phase portrait. Right: the identified posterior distributions over the VINDy coefficient matrix — a handful of terms carry tight, non-zero distributions while the rest collapse to zero, yielding a sparse and interpretable latent ODE." numbered="true" id="rd">}}
 
 
 ---
