@@ -59,8 +59,8 @@ social:
     # label: Follow me on Twitter
     display:
       header: true
-  - icon: graduation-cap # Alternatively, use `google-scholar` icon from `ai` icon pack
-    icon_pack: fas
+  - icon: google-scholar # Alternatively, use `google-scholar` icon from `ai` icon pack
+    icon_pack: ai
     link: https://scholar.google.de/citations?user=Vs9mlAkAAAAJ&hl=de&oi=ao
   - icon: github
     icon_pack: fab
@@ -68,10 +68,6 @@ social:
   - icon: linkedin
     icon_pack: fab
     link: https://www.linkedin.com/in/jonas-kneifl/
-  # Link to dissertation PDF using Font Awesome icon.
-  - icon: file-pdf
-    icon_pack: fas
-    link: uploads/dissertation.pdf
 
 # Enter email to display Gravatar (if Gravatar enabled in Config)
 email: ''
@@ -86,3 +82,9 @@ In my research, I’m driven to efficiently approximate complex models by integr
 I am particularly interested in approaches that combine physical insight with data-driven learning to achieve accurate, interpretable, and computationally efficient models.
 
 {style="text-align: justify;"}
+
+## Dissertation
+
+<a class="btn btn-primary btn-lg" href="/uploads/dissertation.pdf" target="_blank" rel="noopener">
+  Download Dissertation (PDF)
+</a>
