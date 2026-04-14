@@ -9,24 +9,16 @@ summary: VENI, VINDy, VICI is an interpretable, data-driven framework for buildi
 projects: []
 
 # Date published
-date: '2024-11-07T00:00:00Z'
+date: '2026-04-14T00:00:00Z'
 
 # Date updated
-lastmod: '2024-11-07T00:00:00Z'
+lastmod: '2026-04-14T00:00:00Z'
 
 # Is this an unpublished draft?
 draft: false
 
 # Show this page in the Featured widget?
 featured: false
-
-# Featured image
-# Place an image named `featured.jpg/png` in this page's folder and customize its options here.
-image:
-  caption: ''
-  focal_point: ''
-  placement: 2
-  preview_only: false
 
 authors:
   - admin
@@ -45,7 +37,7 @@ Complex physical systems — think fluid flows, structural vibrations, or chemic
 
 **VENI, VINDy, VICI** [[paper](https://doi.org/10.1016/j.neunet.2026.108543)] addresses those issues at once. It builds a generative ROM that (1) handles noisy input data, (2) identifies interpretable governing equations in a low-dimensional space, and (3) produces predictions with calibrated uncertainty estimates — all within a single probabilistic framework.
 
-{{< figure src="featured.gif" caption="Overview of the VENI, VINDy, VICI framework: noisy snapshots are encoded into a probabilistic latent space (VENI), governing equations are identified as distributions over sparse coefficient vectors (VINDy), and predictions are decoded back into the full space with uncertainty intervals (VICI)." numbered="true" id="overview">}}
+{{< figure src="/uploads/featured.gif" caption="Overview of the VENI, VINDy, VICI framework: noisy snapshots are encoded into a probabilistic latent space (VENI), governing equations are identified as distributions over sparse coefficient vectors (VINDy), and predictions are decoded back into the full space with uncertainty intervals (VICI)." numbered="true" id="overview">}}
 
 {{% callout note %}}
 The code is available on GitHub: [github.com/jkneifl/VENI-VINDy-VICI](https://github.com/jkneifl/VENI-VINDy-VICI)
@@ -115,7 +107,7 @@ $$
 
 Each coefficient is now a Gaussian {{< math >}}$\mathcal{N}${{< /math >}} or Laplacian {{< math >}}$\mathcal{L}${{< /math >}} distribution parametrized by a learnable location {{< math >}}$\mu_i${{< /math >}} and scaling factor {{< math >}}$\sigma_i${{< /math >}}. A coefficient with a large mean and small variance corresponds to a term that is confidently important. A coefficient near zero with large variance corresponds to a term that could be pruned — the model is uncertain whether it belongs in the equation at all.
 
-{{< figure src="coeffs3.gif" caption="Evolution of the coefficient distributions during training. Relevant terms converge to tight Laplacian distributions away from zero; irrelevant terms collapse towards zero with small variance, achieving automatic sparsification." numbered="true" id="coeffs">}}
+{{< figure src="/uploads/coefficient_evolution.gif" caption="Evolution of the coefficient distributions during training. Relevant terms converge to tight Laplacian distributions away from zero; irrelevant terms collapse towards zero with small variance, achieving automatic sparsification." numbered="true" id="coeffs">}}
 
 ### Training
 
@@ -129,8 +121,8 @@ The animation above captures the key behaviour: as training progresses, most coe
 
 With a trained VAE and a distribution over governing equations in hand, making predictions is straightforward:
 
-1. **Sample** multiple coefficient vectors {{< math >}}$\boldsymbol{\xi}^{(k)} \sim \mathcal{N}(\boldsymbol{\mu}_\xi, \text{diag}(\boldsymbol{\sigma}^2_\xi))${{< /math >}}.
-2. **Integrate** the latent ODE {{< math >}}$\dot{\mathbf{z}} = \boldsymbol{\Theta}(\mathbf{z})\,\boldsymbol{\xi}^{(k)}${{< /math >}} forward from an initial condition, giving a bundle of latent trajectories {{< math >}}$\{\mathbf{z}^{(k)}(t)\}${{< /math >}}.
+1. **Sample** multiple coefficient vectors {{< math >}}$\boldsymbol{\Xi}^{(k)} \sim \mathcal{L}(\boldsymbol{\mu}_\Xi, \text{diag}(\boldsymbol{\sigma}^2_\Xi))${{< /math >}} and latent initial conditions {{< math >}}$\boldsymbol{z}^{(k)}_0 \sim \mathcal{N}\!\left( \boldsymbol{\mu}_{\boldsymbol{\phi}}(\mathbf{x}),\, \text{diag}(\boldsymbol{\sigma}^2_{\boldsymbol{\phi}}(\mathbf{x}))\right)${{< /math >}}.
+2. **Integrate** the latent ODEs {{< math >}}$\dot{\mathbf{z}} = \boldsymbol{\Xi}^{(k)}\,\boldsymbol{\Theta}(\mathbf{z})${{< /math >}} forward from one latent initial condition, giving a bundle of latent trajectories {{< math >}}$\{\mathbf{z}^{(k)}(t)\}${{< /math >}}.
 3. **Decode** each trajectory back to the full state space using the VAE decoder.
 4. **Summarise** the resulting ensemble: the mean is the point prediction; the spread gives the uncertainty interval.
 
@@ -138,10 +130,14 @@ This yields not just a single trajectory but a *predictive distribution* over fu
 
 Two sources of uncertainty are represented separately and propagate independently:
 - **Data noise** (captured by {{< math >}}$\boldsymbol{\sigma}^2_{\boldsymbol{\phi}}${{< /math >}} of the VAE encoder)
-- **Model uncertainty** (captured by {{< math >}}$\boldsymbol{\sigma}^2_\xi${{< /math >}} of the VINDy coefficients)
+- **Model uncertainty** (captured by {{< math >}}$\boldsymbol{\sigma}^2_\Xi${{< /math >}} of the VINDy coefficients)
 
-{{< figure src="vici.jpeg" caption="VICI inference for a new parameter β: the encoder samples initial latent states z₀ and the VINDy coefficient matrices Ξ from their learned distributions, integrates the latent ODE forward in time, and decodes the resulting ensemble of trajectories back to the full state space. The spread across decoded snapshots (top row) directly reflects the model's uncertainty." numbered="true" id="vici">}}
-
+{{< figure src="vici.jpeg" caption="Schematic representation of the online VICI procedure to generate new solutions for a given initial condition x0
+and set of parameters β. We first sample multiple instances of the corresponding latent initial conditions and coefficients of
+the dynamical model, each defining an ODE system. Then each dynamical system is integrated in time through standard
+time-stepping schemes, resulting in multiple latent trajectories. These latter are finally processed by the decoder mean to
+obtain full state trajectories. Predictions and the corresponding UQ are computed directly from the statistical properties of the
+approximated solution trajectories." numbered="true" id="coeffs">}}
 ---
 
 ## Example: Reaction–Diffusion System
@@ -152,7 +148,11 @@ The full state is a spatial grid with thousands of degrees of freedom. The frame
 
 The latent dynamics take the form of a simple nonlinear oscillator, and the VINDy coefficients cleanly identify the relevant coupling terms. This interpretability is a direct consequence of the sparse probabilistic identification: rather than a black-box neural ODE, we obtain an equation we can inspect, simulate cheaply, and reason about physically.
 
-{{< figure src="RD.jpeg" caption="Application to the reaction–diffusion system. Top left: three snapshots of training data corrupted with 20% noise. Bottom left: the VENI encoder maps each snapshot to a two-dimensional latent state z, tracing out a closed orbit in the phase portrait. Right: the identified posterior distributions over the VINDy coefficient matrix Ξ — a handful of terms carry tight, non-zero distributions while the rest collapse to zero, yielding a sparse and interpretable latent ODE." numbered="true" id="rd">}}
+{{< figure src="RD.jpeg" caption="Results of the offline training a), consisting of the VENI and VINDy steps, for the reaction-diffusion problem. In
+the VINDy box, the identified posterior distributions of the coefficients are displayed. We note that the mixed linear terms,
+which are the dominant terms for the observed dynamics, are accurately identified as significant. In the VENI box, we highlight
+how the method is capable of learning an encoding function from noisy data, resulting in two latent variables that exhibit the
+expected oscillatory behavior." numbered="true" id="coeffs">}}
 
 ---
 
@@ -163,11 +163,11 @@ The latent dynamics take the form of a simple nonlinear oscillator, and the VIND
 | Handles noisy data | ✗ | ✓ |
 | Interpretable dynamics | Partial | ✓ (sparse equations) |
 | Uncertainty quantification | ✗ | ✓ (end-to-end) |
-| Generative (can sample states) | ✗ | ✓ |
-| Works without knowledge of PDE | ✓ | ✓ |
+| Generative | ✗ | ✓ |
+| Works without knowledge of PDE | (✓) | ✓ |
 
 The combination of interpretability and probabilistic uncertainty quantification is what distinguishes this approach. An engineer using the model gets not just a fast surrogate, but also an explicit equation and a principled confidence estimate — both critical for any safety-relevant application.
 
 ---
 
-### Did you find this page helpful? Consider sharing it 🙌
+### Did you find this page helpful? Consider sharing it!
