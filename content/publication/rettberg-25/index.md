@@ -12,6 +12,7 @@ publishDate: '2026-01-21T13:37:33.235808Z'
 publication_types:
 - article-journal
 publication: '*Comput. Sci. Eng.*'
+doi: 10.1007/s44207-025-00007-2
 abstract: 'Conventional physics-based modeling techniques involve high effort, e.g.,
   time and expert knowledge, while data-driven methods often lack interpretability,
   structure, and sometimes reliability. To mitigate this, we present a data-driven
