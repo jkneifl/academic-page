@@ -67,20 +67,20 @@ What sets this apart from standard ROMs is that uncertainty is embedded into eve
 
 ## VENI: Encoding with a Variational Autoencoder
 
-A standard autoencoder maps each input snapshot {{< math >}}$\mathbf{x} \in \mathbb{R}^N${{< /math >}} to a single point {{< math >}}$\mathbf{z} \in \mathbb{R}^r${{< /math >}} in a low-dimensional latent space ({{< math >}}$r \ll N${{< /math >}}). This works well for clean data, but when measurements are noisy, the encoder has no principled way to separate signal from noise.
+A standard autoencoder maps each input snapshot {{< math >}}$\mathbf{x} \in \mathbb{R}^N${{< /math >}} to a single point {{< math >}}$\mathbf{z} \in \mathbb{R}^n${{< /math >}} in a low-dimensional latent space ({{< math >}}$n \ll N${{< /math >}}). This works well for clean data, but when measurements are noisy, the encoder has no principled way to separate signal from noise.
 
-A **variational autoencoder** (VAE) takes a different approach: instead of mapping to a point, the encoder maps each input to a *distribution* over the latent space,
+A **variational autoencoder** (VAE) takes a different approach: instead of mapping to a point, the encoder {{< math >}}$\boldsymbol{\phi}${{< /math >}} maps each input to a *distribution* over the latent space,
 
 {{< math >}}
 $$
-q_{\boldsymbol{\phi}}(\mathbf{z} \mid \mathbf{x}) = \mathcal{N}\!\left(\mathbf{z};\, \boldsymbol{\mu}_{\boldsymbol{\phi}}(\mathbf{x}),\, \text{diag}(\boldsymbol{\sigma}^2_{\boldsymbol{\phi}}(\mathbf{x}))\right).
+q_{\boldsymbol{\phi}}(\mathbf{z} \mid \mathbf{x}) = \mathcal{N}\!\left( \boldsymbol{\mu}_{\boldsymbol{\phi}}(\mathbf{x}),\, \text{diag}(\boldsymbol{\sigma}^2_{\boldsymbol{\phi}}(\mathbf{x}))\right).
 $$
 {{< /math >}}
 
 Concretely, the encoder network outputs two vectors — a mean {{< math >}}$\boldsymbol{\mu}${{< /math >}} and a standard deviation {{< math >}}$\boldsymbol{\sigma}${{< /math >}} — for every input snapshot. A latent state is then *sampled* from this Gaussian rather than being read off directly. The decoder takes this sample and reconstructs the full-dimensional state.
 
 {{% callout note %}}
-The encoder does not output a single latent vector. It outputs the **mean and variance of a Gaussian distribution**. The latent code used for decoding is a *sample* from that distribution.
+The encoder does not output a single latent vector. It outputs the **mean and variance of a Gaussian distribution**. The latent state used for decoding is a *sample* from that distribution.
 {{% /callout %}}
 
 Training maximises the **evidence lower bound** (ELBO), where a reconstruction term encourages the decoder to faithfully recover the input and the KL divergence pulls the learned posteriors towards a standard Gaussian prior (see paper for details). The balance between the two forces the latent space to be both informative and smooth — any noise in the input is naturally absorbed by the width of the posterior.
@@ -93,15 +93,15 @@ The practical effect is elegant: clean snapshots get narrow posteriors (the enco
 
 ### From SINDy to VINDy
 
-Once we have a low-dimensional latent trajectory {{< math >}}$\mathbf{z}(t) \in \mathbb{R}^r${{< /math >}}, we want to find the governing equations of its dynamics. **SINDy** (Sparse Identification of Nonlinear Dynamics) does this by assuming the right-hand side of the latent ODE is a sparse linear combination of candidate functions:
+Once we have a low-dimensional latent trajectory {{< math >}}$\mathbf{z}(t) \in \mathbb{R}^n${{< /math >}}, we want to find the governing equations of its dynamics. **SINDy** (Sparse Identification of Nonlinear Dynamics) does this by assuming the right-hand side of the latent ODE is a sparse linear combination of candidate functions:
 
 {{< math >}}
 $$
-\dot{\mathbf{z}}(t) = \boldsymbol{\Theta}(\mathbf{z})\,\boldsymbol{\xi},
+\dot{\mathbf{z}}(t) = \boldsymbol{\Xi}\,\boldsymbol{\Theta}(\mathbf{z}),
 $$
 {{< /math >}}
 
-where {{< math >}}$\boldsymbol{\Theta}(\mathbf{z}) = [1,\, z_1,\, z_2,\, z_1^2,\, z_1 z_2,\, \dots]${{< /math >}} is a library of candidate functions and {{< math >}}$\boldsymbol{\xi}${{< /math >}} is a sparse coefficient vector — most entries are zero, meaning only a handful of terms actually drive the dynamics. This sparsity makes the identified model interpretable: we get an explicit equation rather than a black-box neural network.
+where {{< math >}}$\boldsymbol{\Theta}(\mathbf{z}) = [1,\, z_1,\, z_2,\, z_1^2,\, z_1 z_2,\, \dots] \in \mathbb{R}^{r} ${{< /math >}} is a library of candidate functions and {{< math >}}$\boldsymbol{\Xi} \in \mathbb{R}^{n \times r}${{< /math >}} is a sparse coefficient vector — most entries are zero, meaning only a handful of terms actually drive the dynamics. This sparsity makes the identified model interpretable: we get an explicit equation rather than a black-box neural network.
 
 Standard SINDy fits a single coefficient vector, which is fine for clean data but fragile in the presence of noise: small errors in {{< math >}}$\dot{\mathbf{z}}${{< /math >}} can corrupt the identified equations.
 
@@ -109,17 +109,17 @@ Standard SINDy fits a single coefficient vector, which is fine for clean data bu
 
 {{< math >}}
 $$
-\boldsymbol{\xi}_i \sim \mathcal{N}(\mu_i, \sigma_i^2), \quad i = 1, \dots, n_\text{lib}.
+\boldsymbol{\Xi}_i \sim \mathcal{L}(\mu_i, \sigma_i^2), \quad i = 1, \dots, n_\text{lib}.
 $$
 {{< /math >}}
 
-Each coefficient is now a Gaussian or Laplacian distribution parametrized by a learnable location {{< math >}}$\mu_i${{< /math >}} and scaling factor {{< math >}}$\sigma_i${{< /math >}}. A coefficient with a large mean and small variance corresponds to a term that is confidently important. A coefficient near zero with large variance corresponds to a term that could be pruned — the model is uncertain whether it belongs in the equation at all.
+Each coefficient is now a Gaussian {{< math >}}$\mathcal{N}${{< /math >}} or Laplacian {{< math >}}$\mathcal{L}${{< /math >}} distribution parametrized by a learnable location {{< math >}}$\mu_i${{< /math >}} and scaling factor {{< math >}}$\sigma_i${{< /math >}}. A coefficient with a large mean and small variance corresponds to a term that is confidently important. A coefficient near zero with large variance corresponds to a term that could be pruned — the model is uncertain whether it belongs in the equation at all.
 
 {{< figure src="coeffs3.gif" caption="Evolution of the coefficient distributions during training. Relevant terms converge to tight Laplacian distributions away from zero; irrelevant terms collapse towards zero with small variance, achieving automatic sparsification." numbered="true" id="coeffs">}}
 
 ### Training
 
-VINDy is trained jointly with the VAE by adding a dynamics term to the ELBO. Latent codes {{< math >}}$\mathbf{z}(t)${{< /math >}} are sampled from the VAE encoder, numerical time derivatives {{< math >}}$\dot{\mathbf{z}}${{< /math >}} are computed, and the coefficient distributions are optimised so that {{< math >}}$\boldsymbol{\Theta}(\mathbf{z})\,\boldsymbol{\xi}${{< /math >}} matches {{< math >}}$\dot{\mathbf{z}}${{< /math >}} in expectation. A sparsity-promoting prior (analogous to the KL term in the VAE) further encourages most coefficients to shrink to zero, recovering interpretable, parsimonious dynamics.
+VINDy is trained jointly with the VAE by adding a dynamics term to the ELBO. Latent states {{< math >}}$\mathbf{z}(t)${{< /math >}} are sampled from the VAE encoder, latent time derivatives {{< math >}}$\dot{\mathbf{z}}${{< /math >}} are computed via the chain rule, and the coefficient distributions are optimized so that {{< math >}}$\boldsymbol{\Xi}\,\boldsymbol{\Theta}(\mathbf{z})${{< /math >}} matches {{< math >}}$\dot{\mathbf{z}}${{< /math >}} in expectation. A sparsity-promoting prior (analogous to the KL term in the VAE) further encourages most coefficients to shrink to zero, recovering interpretable, parsimonious dynamics.
 
 The animation above captures the key behaviour: as training progresses, most coefficient distributions collapse towards zero while a small subset converge to confident, non-zero values — the framework automatically discovers which terms matter.
 
@@ -140,6 +140,8 @@ Two sources of uncertainty are represented separately and propagate independentl
 - **Data noise** (captured by {{< math >}}$\boldsymbol{\sigma}^2_{\boldsymbol{\phi}}${{< /math >}} of the VAE encoder)
 - **Model uncertainty** (captured by {{< math >}}$\boldsymbol{\sigma}^2_\xi${{< /math >}} of the VINDy coefficients)
 
+{{< figure src="vici.jpeg" caption="VICI inference for a new parameter β: the encoder samples initial latent states z₀ and the VINDy coefficient matrices Ξ from their learned distributions, integrates the latent ODE forward in time, and decodes the resulting ensemble of trajectories back to the full state space. The spread across decoded snapshots (top row) directly reflects the model's uncertainty." numbered="true" id="vici">}}
+
 ---
 
 ## Example: Reaction–Diffusion System
@@ -149,6 +151,8 @@ We applied VENI, VINDy, VICI among others to a reaction–diffusion system that 
 The full state is a spatial grid with thousands of degrees of freedom. The framework compresses this to just **two latent variables**, finds an interpretable oscillatory equation governing their interaction via VINDy, and uses VICI to predict future states together with uncertainty bounds — closely matching the high-fidelity simulation while providing a measure of confidence in the prediction.
 
 The latent dynamics take the form of a simple nonlinear oscillator, and the VINDy coefficients cleanly identify the relevant coupling terms. This interpretability is a direct consequence of the sparse probabilistic identification: rather than a black-box neural ODE, we obtain an equation we can inspect, simulate cheaply, and reason about physically.
+
+{{< figure src="RD.jpeg" caption="Application to the reaction–diffusion system. Top left: three snapshots of training data corrupted with 20% noise. Bottom left: the VENI encoder maps each snapshot to a two-dimensional latent state z, tracing out a closed orbit in the phase portrait. Right: the identified posterior distributions over the VINDy coefficient matrix Ξ — a handful of terms carry tight, non-zero distributions while the rest collapse to zero, yielding a sparse and interpretable latent ODE." numbered="true" id="rd">}}
 
 ---
 
