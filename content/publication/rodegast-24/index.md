@@ -25,4 +25,6 @@ abstract: Globally, motorcycles attract vast and varied users. However, since th
   to collect data to train machine learning classification models. Their performance
   is henceforth assessed and compared via multiple representative and application-oriented
   criteria.
+# Display this page in a list of Featured pages?
+featured: true
 ---
