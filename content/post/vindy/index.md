@@ -41,9 +41,9 @@ categories:
   - Scientific Machine Learning
 ---
 
-Complex physical systems — think fluid flows, structural vibrations, or chemical reactions — are typically modeled by partial differential equations (PDEs). Solving these PDEs numerically is accurate but expensive: a single simulation can take hours or days. Reduced-order models (ROMs) tackle this by finding a low-dimensional representation of the system that is cheap to evaluate. The catch is that most ROMs are deterministic and assume clean, reliable data, neither of which holds in practice.
+Complex physical systems — think fluid flows, structural vibrations, or chemical reactions — are typically modeled by partial differential equations (PDEs). Solving these PDEs numerically is accurate but expensive: a single simulation can take hours or days. Reduced-order models (ROMs) or deep learning surrogates tackle this by finding a low-dimensional representation of the system that is cheap to evaluate while modern. The catch is that most ROMs are deterministic and assume clean, reliable data, neither of which holds in practice; while data-driven approaches often lack interpretability.
 
-**VENI, VINDy, VICI** [[paper](https://arxiv.org/abs/2405.20905)] addresses both issues at once. It builds a generative ROM that (1) handles noisy input data, (2) identifies interpretable governing equations in a low-dimensional space, and (3) produces predictions with calibrated uncertainty estimates — all within a single probabilistic framework.
+**VENI, VINDy, VICI** [[paper](https://doi.org/10.1016/j.neunet.2026.108543)] addresses those issues at once. It builds a generative ROM that (1) handles noisy input data, (2) identifies interpretable governing equations in a low-dimensional space, and (3) produces predictions with calibrated uncertainty estimates — all within a single probabilistic framework.
 
 {{< figure src="featured.gif" caption="Overview of the VENI, VINDy, VICI framework: noisy snapshots are encoded into a probabilistic latent space (VENI), governing equations are identified as distributions over sparse coefficient vectors (VINDy), and predictions are decoded back into the full space with uncertainty intervals (VICI)." numbered="true" id="overview">}}
 
@@ -61,37 +61,29 @@ The framework consists of three tightly coupled components:
 - **VINDy** — *Variational Identification of Nonlinear Dynamics*: discover sparse governing equations in the latent space, where the equation coefficients are themselves probability distributions.
 - **VICI** — *Variational Inference with Certainty Intervals*: propagate both latent dynamics and the coefficient uncertainty forward in time to produce predictions with confidence bounds.
 
-What sets this apart from standard ROMs is that uncertainty is not an afterthought — it is baked into every step, from the encoding of raw data all the way to the final prediction.
+What sets this apart from standard ROMs is that uncertainty is embedded into every step, from the encoding of raw data all the way to the final prediction.
 
 ---
 
 ## VENI: Encoding with a Variational Autoencoder
 
-A standard autoencoder maps each input snapshot {{< math >}}$\mathbf{f} \in \mathbb{R}^N${{< /math >}} to a single point {{< math >}}$\mathbf{z} \in \mathbb{R}^r${{< /math >}} in a low-dimensional latent space ({{< math >}}$r \ll N${{< /math >}}). This works well for clean data, but when measurements are noisy, the encoder has no principled way to separate signal from noise.
+A standard autoencoder maps each input snapshot {{< math >}}$\mathbf{x} \in \mathbb{R}^N${{< /math >}} to a single point {{< math >}}$\mathbf{z} \in \mathbb{R}^r${{< /math >}} in a low-dimensional latent space ({{< math >}}$r \ll N${{< /math >}}). This works well for clean data, but when measurements are noisy, the encoder has no principled way to separate signal from noise.
 
 A **variational autoencoder** (VAE) takes a different approach: instead of mapping to a point, the encoder maps each input to a *distribution* over the latent space,
 
 {{< math >}}
 $$
-q_{\boldsymbol{\phi}}(\mathbf{z} \mid \mathbf{f}) = \mathcal{N}\!\left(\mathbf{z};\, \boldsymbol{\mu}_{\boldsymbol{\phi}}(\mathbf{f}),\, \text{diag}(\boldsymbol{\sigma}^2_{\boldsymbol{\phi}}(\mathbf{f}))\right).
+q_{\boldsymbol{\phi}}(\mathbf{z} \mid \mathbf{x}) = \mathcal{N}\!\left(\mathbf{z};\, \boldsymbol{\mu}_{\boldsymbol{\phi}}(\mathbf{x}),\, \text{diag}(\boldsymbol{\sigma}^2_{\boldsymbol{\phi}}(\mathbf{x}))\right).
 $$
 {{< /math >}}
 
-Concretely, the encoder network outputs two vectors — a mean {{< math >}}$\boldsymbol{\mu}${{< /math >}} and a standard deviation {{< math >}}$\boldsymbol{\sigma}${{< /math >}} — for every input snapshot. A latent code is then *sampled* from this Gaussian rather than being read off directly. The decoder takes this sample and reconstructs the full-dimensional state.
+Concretely, the encoder network outputs two vectors — a mean {{< math >}}$\boldsymbol{\mu}${{< /math >}} and a standard deviation {{< math >}}$\boldsymbol{\sigma}${{< /math >}} — for every input snapshot. A latent state is then *sampled* from this Gaussian rather than being read off directly. The decoder takes this sample and reconstructs the full-dimensional state.
 
 {{% callout note %}}
 The encoder does not output a single latent vector. It outputs the **mean and variance of a Gaussian distribution**. The latent code used for decoding is a *sample* from that distribution.
 {{% /callout %}}
 
-Training maximises the **evidence lower bound** (ELBO):
-
-{{< math >}}
-$$
-\mathcal{L}_\text{ELBO} = \underbrace{\mathbb{E}_{q_{\boldsymbol{\phi}}}\!\left[\log p_{\boldsymbol{\theta}}(\mathbf{f} \mid \mathbf{z})\right]}_{\text{reconstruction}} - \underbrace{D_\text{KL}\!\left(q_{\boldsymbol{\phi}}(\mathbf{z}\mid\mathbf{f})\,\|\, p(\mathbf{z})\right)}_{\text{regularisation}}.
-$$
-{{< /math >}}
-
-The reconstruction term encourages the decoder to faithfully recover the input; the KL divergence pulls the learned posteriors {{< math >}}$q_{\boldsymbol{\phi}}(\mathbf{z}\mid\mathbf{f})${{< /math >}} towards a standard Gaussian prior {{< math >}}$p(\mathbf{z}) = \mathcal{N}(\mathbf{0}, \mathbf{I})${{< /math >}}. The balance between the two forces the latent space to be both informative and smooth — any noise in the input is naturally absorbed by the width {{< math >}}$\boldsymbol{\sigma}${{< /math >}} of the posterior.
+Training maximises the **evidence lower bound** (ELBO), where a reconstruction term encourages the decoder to faithfully recover the input and the KL divergence pulls the learned posteriors towards a standard Gaussian prior (see paper for details). The balance between the two forces the latent space to be both informative and smooth — any noise in the input is naturally absorbed by the width of the posterior.
 
 The practical effect is elegant: clean snapshots get narrow posteriors (the encoder is confident about where they live in the latent space), while noisy or ambiguous snapshots get wider posteriors (the encoder admits its uncertainty). This propagates naturally into downstream uncertainty estimates.
 
@@ -121,9 +113,9 @@ $$
 $$
 {{< /math >}}
 
-Each coefficient is now a Gaussian parametrized by a learnable mean {{< math >}}$\mu_i${{< /math >}} and standard deviation {{< math >}}$\sigma_i${{< /math >}}. A coefficient with a large mean and small variance corresponds to a term that is confidently important. A coefficient near zero with large variance corresponds to a term that could be pruned — the model is uncertain whether it belongs in the equation at all.
+Each coefficient is now a Gaussian or Laplacian distribution parametrized by a learnable location {{< math >}}$\mu_i${{< /math >}} and scaling factor {{< math >}}$\sigma_i${{< /math >}}. A coefficient with a large mean and small variance corresponds to a term that is confidently important. A coefficient near zero with large variance corresponds to a term that could be pruned — the model is uncertain whether it belongs in the equation at all.
 
-{{< figure src="coeffs3.gif" caption="Evolution of the coefficient distributions during training. Relevant terms converge to tight Gaussians away from zero; irrelevant terms collapse towards zero with small variance, achieving automatic sparsification." numbered="true" id="coeffs">}}
+{{< figure src="coeffs3.gif" caption="Evolution of the coefficient distributions during training. Relevant terms converge to tight Laplacian distributions away from zero; irrelevant terms collapse towards zero with small variance, achieving automatic sparsification." numbered="true" id="coeffs">}}
 
 ### Training
 
@@ -152,7 +144,7 @@ Two sources of uncertainty are represented separately and propagate independentl
 
 ## Example: Reaction–Diffusion System
 
-We applied VENI, VINDy, VICI to a reaction–diffusion system that generates rotating spiral waves — a PDE with rich spatio-temporal dynamics that lives on a genuinely low-dimensional manifold.
+We applied VENI, VINDy, VICI among others to a reaction–diffusion system that generates rotating spiral waves — a PDE with rich spatio-temporal dynamics that lives on a genuinely low-dimensional manifold.
 
 The full state is a spatial grid with thousands of degrees of freedom. The framework compresses this to just **two latent variables**, finds an interpretable oscillatory equation governing their interaction via VINDy, and uses VICI to predict future states together with uncertainty bounds — closely matching the high-fidelity simulation while providing a measure of confidence in the prediction.
 
@@ -171,20 +163,6 @@ The latent dynamics take the form of a simple nonlinear oscillator, and the VIND
 | Works without knowledge of PDE | ✓ | ✓ |
 
 The combination of interpretability and probabilistic uncertainty quantification is what distinguishes this approach. An engineer using the model gets not just a fast surrogate, but also an explicit equation and a principled confidence estimate — both critical for any safety-relevant application.
-
----
-
-## Suggested Figures
-
-Beyond the overview animation and the coefficient evolution gif already included, the following figures would substantially strengthen the post:
-
-1. **VAE encoder schematic** — a diagram showing a snapshot going into the encoder, two output heads producing {{< math >}}$\boldsymbol{\mu}${{< /math >}} and {{< math >}}$\boldsymbol{\sigma}${{< /math >}}, a sample being drawn (reparameterisation trick), and the decoder reconstructing the state. This is the single most important conceptual figure for readers unfamiliar with VAEs.
-
-2. **SINDy vs VINDy coefficient comparison** — a side-by-side showing the coefficient vector as a bar chart (SINDy) versus the same coefficients as Gaussians (VINDy), making the core methodological difference immediately visual.
-
-3. **VICI prediction plot** — a time-series plot showing the mean predicted latent trajectory overlaid with a shaded uncertainty band, compared against the ground truth. This conveys the end-to-end output of the framework in a single glance.
-
-4. **Latent space phase portrait** — a 2D scatter plot of the latent codes {{< math >}}$(z_1, z_2)${{< /math >}} coloured by time, showing the spiral or oscillatory structure of the identified dynamics. It makes the dimensionality reduction tangible.
 
 ---
 
