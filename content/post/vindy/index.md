@@ -3,7 +3,7 @@ title: VENI, VINDy, VICI
 subtitle: A Generative Approach to Reduced-Order Modeling with Uncertainty Quantification
 
 # Summary for listings and search engines
-summary: VENI, VINDy, VICI is an interpretable data-driven framework for building generative reduced order models with embedded uncertainty quantification based on variational autoencoders and SINDy.
+summary: VENI, VINDy, VICI is an interpretable, data-driven framework for building generative reduced-order models with uncertainty quantification, combining variational autoencoders with a probabilistic extension of SINDy.
 
 # Link this post with a project
 projects: []
@@ -40,86 +40,152 @@ categories:
   - Model Order Reduction
   - Scientific Machine Learning
 ---
-In scientific computing, we often work with complex systems governed by partial differential equations (PDEs) to model real-world phenomena in fields like fluid dynamics, structural mechanics, and reaction-diffusion systems. These high-dimensional models are incredibly accurate but also computationally demanding, especially when the goal is to run repeated simulations or operate in real-time environments. This is where reduced-order modeling (ROM) comes into play.
 
-However, ROMs typically face several challenges:
-	1.	They may lack interpretability, making it hard to understand the underlying physics.
-	2.	They often assume access to high-fidelity models, which isn’t always the case.
-	3.	They don’t always account for uncertainty, a key factor when dealing with noisy data or unknown system dynamics. -->
+Complex physical systems — think fluid flows, structural vibrations, or chemical reactions — are typically modeled by partial differential equations (PDEs). Solving these PDEs numerically is accurate but expensive: a single simulation can take hours or days. Reduced-order models (ROMs) tackle this by finding a low-dimensional representation of the system that is cheap to evaluate. The catch is that most ROMs are deterministic and assume clean, reliable data, neither of which holds in practice.
 
-To address these issues, we developed the [[VENI, VINDy, VICI framework](https://arxiv.org/abs/2405.20905)]. This approach combines data-driven machine learning with traditional physics-based insights, enabling reduced-order modeling while quantifying uncertainty.
+**VENI, VINDy, VICI** [[paper](https://arxiv.org/abs/2405.20905)] addresses both issues at once. It builds a generative ROM that (1) handles noisy input data, (2) identifies interpretable governing equations in a low-dimensional space, and (3) produces predictions with calibrated uncertainty estimates — all within a single probabilistic framework.
 
-### Introducing the VENI, VINDy, VICI Framework
-{{< figure src="featured.gif" caption=" Overview of the VENI, VINDy, VICI procedure." numbered="true" id="ae">}}
-
-{{< math >}}
-  $$
-  \mathcal{F}(\mathbf{f}, \nabla\mathbf{f}, \nabla^2\mathbf{f}, \dots, \dot{\mathbf{f}}, \ddot{\mathbf{f}})=0, \quad \mathbf{f}(\mathbf{x},t): \Omega \times \mathcal{T} \to \mathbb{R}^d
-  $$
-{{< /math >}}
+{{< figure src="featured.gif" caption="Overview of the VENI, VINDy, VICI framework: noisy snapshots are encoded into a probabilistic latent space (VENI), governing equations are identified as distributions over sparse coefficient vectors (VINDy), and predictions are decoded back into the full space with uncertainty intervals (VICI)." numbered="true" id="overview">}}
 
 {{% callout note %}}
-You can find the implementation of our code [[here](https://github.com/jkneifl/VENI-VINDy-VICI)] .
+The code is available on GitHub: [github.com/jkneifl/VENI-VINDy-VICI](https://github.com/jkneifl/VENI-VINDy-VICI)
 {{% /callout %}}
 
-Our framework involves three main components:
-	•	VENI – Encoding high-dimensional, noisy input data in a low-dimensional space.
-	•	VINDy – Discovering nonlinear dynamics in this low-dimensional representation.
-	•	VICI – Making predictions and providing uncertainty intervals around them.
+---
 
-By integrating these components, our approach builds models that not only approximate the high-dimensional system dynamics efficiently but also provide confidence levels for those approximations.
+## The Big Picture
 
-### Breaking Down the Framework: VENI, VINDy, and VICI
+The framework consists of three tightly coupled components:
 
-#### VENI: Variational Encoding of Noisy Inputs
+- **VENI** — *Variational Encoding of Noisy Inputs*: compress high-dimensional, noisy state snapshots into a low-dimensional probabilistic latent space using a variational autoencoder.
+- **VINDy** — *Variational Identification of Nonlinear Dynamics*: discover sparse governing equations in the latent space, where the equation coefficients are themselves probability distributions.
+- **VICI** — *Variational Inference with Certainty Intervals*: propagate both latent dynamics and the coefficient uncertainty forward in time to produce predictions with confidence bounds.
 
-In the first stage, VENI (Variational Encoding of Noisy Inputs) reduces high-dimensional data into a lower-dimensional latent space using a variational autoencoder (VAE). Here, we use noisy training data, as real-world measurements are rarely pristine. By encoding the data through the VAE, we find a compressed but meaningful representation of the system states, essentially capturing the main dynamics while filtering out the noise.
+What sets this apart from standard ROMs is that uncertainty is not an afterthought — it is baked into every step, from the encoding of raw data all the way to the final prediction.
 
-Let’s say we’re working with a reaction-diffusion system. This type of system is commonly used to model processes like chemical reactions or heat diffusion, where we have complex spatio-temporal dynamics. The VENI step would take these complex PDE solutions – perhaps thousands of spatial and temporal data points – and map them onto a much smaller set of latent variables, which still retain the essence of the system’s behavior.
+---
 
-The VAE accomplishes this by maximizing the likelihood of the observed data, given the latent variables, while introducing a probabilistic model to account for the inherent uncertainty in measurements. For example, for each spatial snapshot of the reaction-diffusion system, we obtain a compressed latent representation that reflects the system’s state. These latent variables now serve as the foundation for modeling the dynamics.
+## VENI: Encoding with a Variational Autoencoder
 
-#### VINDy: Variational Identification of Nonlinear Dynamics
+A standard autoencoder maps each input snapshot {{< math >}}$\mathbf{f} \in \mathbb{R}^N${{< /math >}} to a single point {{< math >}}$\mathbf{z} \in \mathbb{R}^r${{< /math >}} in a low-dimensional latent space ({{< math >}}$r \ll N${{< /math >}}). This works well for clean data, but when measurements are noisy, the encoder has no principled way to separate signal from noise.
 
-{{< figure src="coeffs3.gif" caption="Evolution of the coefficient distributions during training" numbered="true" id="coeffs">}}
+A **variational autoencoder** (VAE) takes a different approach: instead of mapping to a point, the encoder maps each input to a *distribution* over the latent space,
 
-With our latent representation from VENI, the next step, VINDy (Variational Identification of Nonlinear Dynamics), comes into play. VINDy identifies the governing dynamics in this low-dimensional latent space, allowing us to predict how the latent variables change over time.
+{{< math >}}
+$$
+q_{\boldsymbol{\phi}}(\mathbf{z} \mid \mathbf{f}) = \mathcal{N}\!\left(\mathbf{z};\, \boldsymbol{\mu}_{\boldsymbol{\phi}}(\mathbf{f}),\, \text{diag}(\boldsymbol{\sigma}^2_{\boldsymbol{\phi}}(\mathbf{f}))\right).
+$$
+{{< /math >}}
 
-This stage is inspired by Sparse Identification of Nonlinear Dynamics (SINDy), but our version goes further. Standard SINDy approximates dynamics using a small subset of possible functions, making it efficient and interpretable. However, it doesn’t account for uncertainty in the data. Our adaptation, VINDy, introduces a probabilistic element, where we treat the dynamics as a distribution over possible governing equations. This allows us to capture both the dynamics and the confidence we have in them.
+Concretely, the encoder network outputs two vectors — a mean {{< math >}}$\boldsymbol{\mu}${{< /math >}} and a standard deviation {{< math >}}$\boldsymbol{\sigma}${{< /math >}} — for every input snapshot. A latent code is then *sampled* from this Gaussian rather than being read off directly. The decoder takes this sample and reconstructs the full-dimensional state.
 
-Returning to the reaction-diffusion system, suppose our reduced-order model has only two latent variables, representing two main modes of the system’s oscillatory behavior. VINDy works by finding a sparse set of functions that describe how these two variables interact over time. We might find, for example, that the interaction between these two variables is governed by simple oscillatory dynamics, coupled with terms that account for nonlinear effects. Since the process is probabilistic, we get a clear sense of which terms are essential (e.g., oscillatory terms) and which are less certain, enabling us to quantify our confidence in each part of the model.
+{{% callout note %}}
+The encoder does not output a single latent vector. It outputs the **mean and variance of a Gaussian distribution**. The latent code used for decoding is a *sample* from that distribution.
+{{% /callout %}}
 
-#### VICI: Variational Inference with Certainty Intervals
+Training maximises the **evidence lower bound** (ELBO):
 
-The final step is VICI (Variational Inference with Certainty Intervals). Once VINDy has identified the system’s dynamics, VICI uses those learned dynamics to make predictions and provide uncertainty bounds. This is essential when extrapolating beyond the data seen in training, especially when we introduce new parameters or initial conditions.
+{{< math >}}
+$$
+\mathcal{L}_\text{ELBO} = \underbrace{\mathbb{E}_{q_{\boldsymbol{\phi}}}\!\left[\log p_{\boldsymbol{\theta}}(\mathbf{f} \mid \mathbf{z})\right]}_{\text{reconstruction}} - \underbrace{D_\text{KL}\!\left(q_{\boldsymbol{\phi}}(\mathbf{z}\mid\mathbf{f})\,\|\, p(\mathbf{z})\right)}_{\text{regularisation}}.
+$$
+{{< /math >}}
 
-To illustrate, let’s revisit our reaction-diffusion example. Imagine we want to predict the system’s behavior over a longer period or under slightly altered conditions, such as a different rate of chemical reaction. The VICI stage allows us to make these predictions by generating multiple plausible trajectories, each representing a possible system behavior. We then calculate a mean trajectory and its uncertainty interval, capturing the range of possible outcomes.
+The reconstruction term encourages the decoder to faithfully recover the input; the KL divergence pulls the learned posteriors {{< math >}}$q_{\boldsymbol{\phi}}(\mathbf{z}\mid\mathbf{f})${{< /math >}} towards a standard Gaussian prior {{< math >}}$p(\mathbf{z}) = \mathcal{N}(\mathbf{0}, \mathbf{I})${{< /math >}}. The balance between the two forces the latent space to be both informative and smooth — any noise in the input is naturally absorbed by the width {{< math >}}$\boldsymbol{\sigma}${{< /math >}} of the posterior.
 
-VICI effectively quantifies our uncertainty across the entire predictive process. If the data were noisy, VICI accounts for that, showing how prediction uncertainty grows over time or how it fluctuates when parameters are adjusted.
+The practical effect is elegant: clean snapshots get narrow posteriors (the encoder is confident about where they live in the latent space), while noisy or ambiguous snapshots get wider posteriors (the encoder admits its uncertainty). This propagates naturally into downstream uncertainty estimates.
 
-#### Application: Reaction-Diffusion System
+---
 
-To test the VENI, VINDy, VICI framework, we applied it to a benchmark reaction-diffusion system. This type of system is governed by PDEs that describe how quantities, like chemical concentrations, diffuse and react over space and time. Specifically, we looked at a reaction-diffusion model that generates spiral waves, common in pattern formation studies.
-	1.	Data Preparation: First, we generated simulation data by solving the reaction-diffusion PDEs over a grid. This gave us thousands of data points representing the system’s spatial and temporal evolution. However, to simulate real-world conditions, we added a degree of noise to this data.
-	2.	VENI Encoding: Next, VENI took this noisy data and reduced it to a latent space with just two variables. These two variables captured the main oscillatory behavior of the spiral waves, acting as a simplified representation of the complex reaction-diffusion system.
-	3.	VINDy Dynamics: With these latent variables, we applied VINDy to uncover the dynamics governing their interaction. The model identified an oscillatory relationship between the two variables, which mirrors the periodic nature of spiral wave formation in the reaction-diffusion system. Importantly, VINDy’s probabilistic nature provided insights into the confidence of each term in our model.
-	4.	VICI Prediction: Finally, with VICI, we tested the model’s predictive capabilities. Given initial conditions and parameters, VICI generated possible future states of the system, along with certainty intervals. This is valuable because it allowed us to observe how uncertainty increased over time – a common issue when making predictions in nonlinear systems. The results closely matched the original high-fidelity simulations, affirming the accuracy and reliability of the VENI, VINDy, VICI framework.
+## VINDy: Identifying Dynamics as Distributions
 
-#### Why VENI, VINDy, VICI?
+### From SINDy to VINDy
 
-The power of VENI, VINDy, VICI lies in its ability to generate interpretable and uncertainty-aware reduced-order models that operate even when data is noisy or sparse. Traditional ROM approaches are typically deterministic, meaning they cannot provide uncertainty estimates. This makes them less reliable when applied to real-world scenarios with imperfect measurements or incomplete information.
+Once we have a low-dimensional latent trajectory {{< math >}}$\mathbf{z}(t) \in \mathbb{R}^r${{< /math >}}, we want to find the governing equations of its dynamics. **SINDy** (Sparse Identification of Nonlinear Dynamics) does this by assuming the right-hand side of the latent ODE is a sparse linear combination of candidate functions:
 
-By embedding UQ directly into the training and prediction processes, VENI, VINDy, VICI achieves three key advantages:
-	1.	Interpretability: The sparse models identified by VINDy are straightforward and aligned with known physics, enabling insights into system behavior.
-	2.	Efficiency: The reduced-order nature of the models allows for rapid predictions, suitable for real-time applications or scenarios requiring repeated computations.
-	3.	Reliability: VICI’s certainty intervals give confidence bounds around predictions, which is crucial for applications where knowing the range of possible outcomes is as important as knowing the most likely outcome.
+{{< math >}}
+$$
+\dot{\mathbf{z}}(t) = \boldsymbol{\Theta}(\mathbf{z})\,\boldsymbol{\xi},
+$$
+{{< /math >}}
 
-#### Conclusion: Transforming Reduced-Order Modeling
+where {{< math >}}$\boldsymbol{\Theta}(\mathbf{z}) = [1,\, z_1,\, z_2,\, z_1^2,\, z_1 z_2,\, \dots]${{< /math >}} is a library of candidate functions and {{< math >}}$\boldsymbol{\xi}${{< /math >}} is a sparse coefficient vector — most entries are zero, meaning only a handful of terms actually drive the dynamics. This sparsity makes the identified model interpretable: we get an explicit equation rather than a black-box neural network.
 
-The VENI, VINDy, VICI framework represents a significant advancement in reduced-order modeling, combining data-driven insights with a strong foundation in uncertainty quantification. This framework is adaptable, with applications spanning structural mechanics, fluid dynamics, chemical reactions, and beyond.
+Standard SINDy fits a single coefficient vector, which is fine for clean data but fragile in the presence of noise: small errors in {{< math >}}$\dot{\mathbf{z}}${{< /math >}} can corrupt the identified equations.
 
-Our results showcase that VENI, VINDy, VICI can effectively model complex, high-dimensional systems with interpretable, low-dimensional representations and uncertainty-aware predictions, bringing new reliability and trustworthiness to ROM. By addressing the limitations of existing ROM approaches, VENI, VINDy, VICI has the potential to transform how we simulate, analyze, and understand complex systems in science and engineering.
+**VINDy** replaces the point-estimate coefficients with *distributions*:
 
-For those interested in exploring VENI, VINDy, VICI, we’ve made the code available on GitHub to encourage further research and applications across diverse fields.
+{{< math >}}
+$$
+\boldsymbol{\xi}_i \sim \mathcal{N}(\mu_i, \sigma_i^2), \quad i = 1, \dots, n_\text{lib}.
+$$
+{{< /math >}}
+
+Each coefficient is now a Gaussian parametrized by a learnable mean {{< math >}}$\mu_i${{< /math >}} and standard deviation {{< math >}}$\sigma_i${{< /math >}}. A coefficient with a large mean and small variance corresponds to a term that is confidently important. A coefficient near zero with large variance corresponds to a term that could be pruned — the model is uncertain whether it belongs in the equation at all.
+
+{{< figure src="coeffs3.gif" caption="Evolution of the coefficient distributions during training. Relevant terms converge to tight Gaussians away from zero; irrelevant terms collapse towards zero with small variance, achieving automatic sparsification." numbered="true" id="coeffs">}}
+
+### Training
+
+VINDy is trained jointly with the VAE by adding a dynamics term to the ELBO. Latent codes {{< math >}}$\mathbf{z}(t)${{< /math >}} are sampled from the VAE encoder, numerical time derivatives {{< math >}}$\dot{\mathbf{z}}${{< /math >}} are computed, and the coefficient distributions are optimised so that {{< math >}}$\boldsymbol{\Theta}(\mathbf{z})\,\boldsymbol{\xi}${{< /math >}} matches {{< math >}}$\dot{\mathbf{z}}${{< /math >}} in expectation. A sparsity-promoting prior (analogous to the KL term in the VAE) further encourages most coefficients to shrink to zero, recovering interpretable, parsimonious dynamics.
+
+The animation above captures the key behaviour: as training progresses, most coefficient distributions collapse towards zero while a small subset converge to confident, non-zero values — the framework automatically discovers which terms matter.
+
+---
+
+## VICI: Predictions with Uncertainty Intervals
+
+With a trained VAE and a distribution over governing equations in hand, making predictions is straightforward:
+
+1. **Sample** multiple coefficient vectors {{< math >}}$\boldsymbol{\xi}^{(k)} \sim \mathcal{N}(\boldsymbol{\mu}_\xi, \text{diag}(\boldsymbol{\sigma}^2_\xi))${{< /math >}}.
+2. **Integrate** the latent ODE {{< math >}}$\dot{\mathbf{z}} = \boldsymbol{\Theta}(\mathbf{z})\,\boldsymbol{\xi}^{(k)}${{< /math >}} forward from an initial condition, giving a bundle of latent trajectories {{< math >}}$\{\mathbf{z}^{(k)}(t)\}${{< /math >}}.
+3. **Decode** each trajectory back to the full state space using the VAE decoder.
+4. **Summarise** the resulting ensemble: the mean is the point prediction; the spread gives the uncertainty interval.
+
+This yields not just a single trajectory but a *predictive distribution* over future states. The uncertainty grows naturally for longer horizons or when the initial condition lies away from the training distribution — precisely the situations where a user most needs to know how much to trust the model.
+
+Two sources of uncertainty are represented separately and propagate independently:
+- **Data noise** (captured by {{< math >}}$\boldsymbol{\sigma}^2_{\boldsymbol{\phi}}${{< /math >}} of the VAE encoder)
+- **Model uncertainty** (captured by {{< math >}}$\boldsymbol{\sigma}^2_\xi${{< /math >}} of the VINDy coefficients)
+
+---
+
+## Example: Reaction–Diffusion System
+
+We applied VENI, VINDy, VICI to a reaction–diffusion system that generates rotating spiral waves — a PDE with rich spatio-temporal dynamics that lives on a genuinely low-dimensional manifold.
+
+The full state is a spatial grid with thousands of degrees of freedom. The framework compresses this to just **two latent variables**, finds an interpretable oscillatory equation governing their interaction via VINDy, and uses VICI to predict future states together with uncertainty bounds — closely matching the high-fidelity simulation while providing a measure of confidence in the prediction.
+
+The latent dynamics take the form of a simple nonlinear oscillator, and the VINDy coefficients cleanly identify the relevant coupling terms. This interpretability is a direct consequence of the sparse probabilistic identification: rather than a black-box neural ODE, we obtain an equation we can inspect, simulate cheaply, and reason about physically.
+
+---
+
+## Why Does This Matter?
+
+| Property | Standard ROM | VENI, VINDy, VICI |
+|---|---|---|
+| Handles noisy data | ✗ | ✓ |
+| Interpretable dynamics | Partial | ✓ (sparse equations) |
+| Uncertainty quantification | ✗ | ✓ (end-to-end) |
+| Generative (can sample states) | ✗ | ✓ |
+| Works without knowledge of PDE | ✓ | ✓ |
+
+The combination of interpretability and probabilistic uncertainty quantification is what distinguishes this approach. An engineer using the model gets not just a fast surrogate, but also an explicit equation and a principled confidence estimate — both critical for any safety-relevant application.
+
+---
+
+## Suggested Figures
+
+Beyond the overview animation and the coefficient evolution gif already included, the following figures would substantially strengthen the post:
+
+1. **VAE encoder schematic** — a diagram showing a snapshot going into the encoder, two output heads producing {{< math >}}$\boldsymbol{\mu}${{< /math >}} and {{< math >}}$\boldsymbol{\sigma}${{< /math >}}, a sample being drawn (reparameterisation trick), and the decoder reconstructing the state. This is the single most important conceptual figure for readers unfamiliar with VAEs.
+
+2. **SINDy vs VINDy coefficient comparison** — a side-by-side showing the coefficient vector as a bar chart (SINDy) versus the same coefficients as Gaussians (VINDy), making the core methodological difference immediately visual.
+
+3. **VICI prediction plot** — a time-series plot showing the mean predicted latent trajectory overlaid with a shaded uncertainty band, compared against the ground truth. This conveys the end-to-end output of the framework in a single glance.
+
+4. **Latent space phase portrait** — a 2D scatter plot of the latent codes {{< math >}}$(z_1, z_2)${{< /math >}} coloured by time, showing the spiral or oscillatory structure of the identified dynamics. It makes the dimensionality reduction tangible.
+
+---
 
 ### Did you find this page helpful? Consider sharing it 🙌
