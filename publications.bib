@@ -84,20 +84,6 @@ year = {2021}
   doi      = {10.1007/s00466-024-02553-6},
 }
 
-@misc{conti24,
-  abstract = {The simulation of many complex phenomena in engineering and science requires solving expensive, high-dimensional systems of partial differential equations (PDEs). To circumvent this, reduced-order models (ROMs) have been developed to speed up computations. However, when governing equations are unknown or partially known, typically ROMs lack interpretability and reliability of the predicted solutions. In this work we present a data-driven, non-intrusive framework for building ROMs where the latent variables and dynamics are identified in an interpretable manner and uncertainty is quantified. Starting from a limited amount of high-dimensional, noisy data the proposed framework constructs an efficient ROM by leveraging variational autoencoders for dimensionality reduction along with a newly introduced, variational version of sparse identification of nonlinear dynamics (SINDy), which we refer to as Variational Identification of Nonlinear Dynamics (VINDy). In detail, the method consists of Variational Encoding of Noisy Inputs (VENI) to identify the distribution of reduced coordinates. Simultaneously, we learn the distribution of the coefficients of a pre-determined set of candidate functions by VINDy. Once trained offline, the identified model can be queried for new parameter instances and new initial conditions to compute the corresponding full-time solutions. The probabilistic setup enables uncertainty quantification as the online testing consists of Variational Inference naturally providing Certainty Intervals (VICI). In this work we showcase the effectiveness of the newly proposed VINDy method in identifying interpretable and accurate dynamical system for the Rössler system with different noise intensities and sources. Then the performance of the overall method - named VENI, VINDy, VICI - is tested on PDE benchmarks including structural mechanics and fluid dynamics.},
-  title={VENI, VINDy, VICI: a variational reduced-order modeling framework with uncertainty quantification}, 
-  author={Paolo Conti and Jonas Kneifl and Andrea Manzoni and Attilio Frangi and Jörg Fehr and Steven L. Brunton and J. Nathan Kutz},
-  year={2024},
-  month     = {6},
-  eprint={2405.20905},
-  publisher = {arXiv},
-  archivePrefix={arXiv},
-  primaryClass={cs.LG},
-  keywords = {Machine Learning (cs.LG), Dynamical Systems (math.DS), FOS: Computer and information sciences, FOS: Computer and information sciences, FOS: Mathematics, FOS: Mathematics},
-  doi = {10.48550/ARXIV.2405.20905},
-}
-
 @Article{rodegast24,
   author       = {Rodegast, Philipp and Maier, Steffen and Kneifl, Jonas and Fehr, Jörg},
   date         = {2024-06},
@@ -171,21 +157,6 @@ year = {2021}
   keywords  = {Reduced-order modeling, data-driven methods, variational autoencoders, sparse system identification, nonlinear dynamics, generative AI, journal},
   owner     = {jonaskneifl},
   publisher = {Elsevier BV},
-}
-
- 
-@Article{Strauss2024,
-  author    = {Strauß, Anika and Kneifl, Jonas and Tkachuk, Anton and Fehr, Jörg and Bischoff, Manfred},
-  journal   = {International Journal for Numerical Methods in Engineering},
-  title     = {Accelerated Non‐linear Stability Analysis Based on Predictions From Data‐Based Surrogate Models},
-  year      = {2024},
-  issn      = {1097-0207},
-  month     = dec,
-  number    = {1},
-  volume    = {126},
-  doi       = {10.1002/nme.7649},
-  owner     = {jonaskneifl},
-  publisher = {Wiley},
 }
 
  
