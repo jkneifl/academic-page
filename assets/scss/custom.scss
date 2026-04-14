@@ -1,0 +1,18 @@
+/* Display dissertation PDF link as a separate row under social icons. */
+.network-icon li:last-child {
+  display: block;
+  width: 100%;
+  margin-top: 0.6rem;
+}
+
+.network-icon li:last-child a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.network-icon li:last-child a::after {
+  content: "Dissertation PDF";
+  font-size: 0.9rem;
+  font-weight: 600;
+}
