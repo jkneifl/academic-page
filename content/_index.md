@@ -132,7 +132,7 @@ sections:
   - block: collection
     id: publications
     content:
-      title: Publications
+      title: Featured Publications
       # text: |-
       #   {{% callout note %}}
       #   Quickly discover relevant content by [filtering publications](./publication/).
@@ -142,8 +142,8 @@ sections:
           - publication
         featured_only: true
     design:
-      view: citation
-      columns: 2
+      columns: '2'
+      view: compact
   - block: contact
     id: contact
     content:
