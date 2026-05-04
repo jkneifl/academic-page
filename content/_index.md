@@ -40,6 +40,14 @@ sections:
       #   Leave `date_end` empty if it's your current employer.
       #   Begin multi-line descriptions with YAML's `|2-` multi-line prefix.
       items:
+        - title: AI Researcher
+          company: IDEAS Research Institute
+          company_url: https://www.ideas.edu.pl/en/
+          company_logo: Ideas-Research-Institute-White-1
+          location: Warsaw, Poland
+          date_start: '2026-05-01'
+          date_end: ''
+          description: ''
         - title: Research Associate
           company: Institute of Engineering and Computational Mechanics 
           company_url: https://www.itm.uni-stuttgart.de/en/

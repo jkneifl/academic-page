@@ -14,12 +14,12 @@ status:
 superuser: true
 
 # Role/position/tagline
-role: Scientific Machine Learning researcher | PhD
+role: AI Researcher | PhD
 
 # Organizations/Affiliations to show in About widget
 organizations:
-  - name: University of Stuttgart, Institute of Engineering and Computational Mechanics 
-    url: https://www.itm.uni-stuttgart.de
+  - name: IDEAS Research Institute
+    url: https://www.ideas.edu.pl/en/
 
 # Short bio (displayed in user profile at end of posts)
 bio: My research interests combines model order reduction, surrogate modeling and machine learning.
