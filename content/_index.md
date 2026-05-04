@@ -162,13 +162,9 @@ sections:
       # Contact (add or remove contact options as necessary)
       email: jonas.kneifl@ideas.edu.pl
       address:
-        street: Pfaffenwaldring 9
-        city: Stuttgart
-        region: Baden-Württemberg
-        postcode: '70569'
-        country: Germany
-        country_code: DE
-      directions: ITM Room 3.101
+        city: Warsaw
+        country: Poland
+        country_code: PL
       contact_links:
         - icon: linkedin
           icon_pack: fab
