@@ -47,7 +47,7 @@ sections:
           location: Warsaw, Poland
           date_start: '2026-05-01'
           date_end: ''
-          description: ''
+          description: Fundamental AI research in the fields of Computer Vision and Generative AI.
         - title: Research Associate
           company: Institute of Engineering and Computational Mechanics 
           company_url: https://www.itm.uni-stuttgart.de/en/
