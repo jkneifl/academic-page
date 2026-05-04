@@ -52,7 +52,7 @@ education:
 social:
   - icon: envelope
     icon_pack: fas
-    link: 'mailto:jonas.kneifl@itm.uni-stuttgart.de'
+    link: 'mailto:jonas.kneifl@ideas.edu.pl'
   - icon: researchgate
     icon_pack: fab
     link: https://www.researchgate.net/profile/Jonas_Kneifl

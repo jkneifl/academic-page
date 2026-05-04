@@ -160,7 +160,7 @@ sections:
       # text: |-
       #   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam mi diam, venenatis ut magna et, vehicula efficitur enim.
       # Contact (add or remove contact options as necessary)
-      email: jonas.kneifl@itm.uni-stuttgart.de
+      email: jonas.kneifl@ideas.edu.pl
       address:
         street: Pfaffenwaldring 9
         city: Stuttgart
