@@ -163,6 +163,7 @@ sections:
       email: jonas.kneifl@ideas.edu.pl
       address:
         city: Warsaw
+        region: Masovian Voivodeship
         country: Poland
         country_code: PL
       contact_links:
