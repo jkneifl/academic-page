@@ -6,7 +6,7 @@ subtitle: A Generative Approach to Reduced-Order Modeling with Uncertainty Quant
 summary: VENI, VINDy, VICI is an interpretable, data-driven framework for building generative reduced-order models with uncertainty quantification, combining variational autoencoders with a probabilistic extension of SINDy.
 
 # Link this post with a project
-projects: []
+projects: [system-identification]
 
 # Date published
 date: '2026-04-14T00:00:00Z'

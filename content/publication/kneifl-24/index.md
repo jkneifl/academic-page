@@ -7,7 +7,7 @@ title: Multi-hierarchical surrogate learning for explicit structural dynamical s
 # If you created a profile for a user (e.g. the default `admin` user at `content/authors/admin/`), 
 # write the username (folder name) here, and it will be replaced with their full name and linked to their profile.
 authors:
-- Jonas Kneifl
+- admin
 - Jörg Fehr
 - Steven L. Brunton
 - J. Nathan Kutz
@@ -16,7 +16,7 @@ authors:
 # A YAML list of notes for each author in the above `authors` list
 author_notes: []
 
-date: '2024-10-01'
+date: '2024-10-05'
 
 # Date to publish webpage (NOT necessarily Bibtex publication's date).
 publishDate: '2026-01-08T14:10:20.856148Z'
@@ -87,7 +87,6 @@ image:
 #   Simply enter your project's folder or file name without extension.
 #   E.g. `projects: ['internal-project']` links to `content/project/internal-project/index.md`.
 #   Otherwise, set `projects: []`.
-projects: []
+projects: [surrogate-modeling]
 ---
 
-Add the **full text** or **supplementary notes** for the publication here using Markdown formatting.

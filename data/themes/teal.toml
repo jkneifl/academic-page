@@ -1,0 +1,19 @@
+# Minimal theme with a teal accent
+name = "Teal"
+
+[light]
+  primary = "#004b50"
+
+  menu_primary = "#fff"
+  menu_text = "#34495e"
+  menu_text_active = "#004b50"
+  menu_title = "#2b2b2b"
+
+  home_section_odd = "rgb(255, 255, 255)"
+  home_section_even = "rgb(247, 247, 247)"
+
+[dark]
+  primary = "#80cbc4"
+
+  link = "#80cbc4"
+  link_hover = "#b2dfdb"

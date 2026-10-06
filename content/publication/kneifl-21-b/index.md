@@ -7,14 +7,14 @@ title: Machine Learning Algorithms for Learning Nonlinear Terms of Reduced Mecha
 # If you created a profile for a user (e.g. the default `admin` user at `content/authors/admin/`), 
 # write the username (folder name) here, and it will be replaced with their full name and linked to their profile.
 authors:
-- Jonas Kneifl
+- admin
 - Jörg Fehr
 
 # Author notes (such as 'Equal Contribution')
 # A YAML list of notes for each author in the above `authors` list
 author_notes: []
 
-date: '2021-03-01'
+date: '2021-03-10'
 
 # Date to publish webpage (NOT necessarily Bibtex publication's date).
 publishDate: '2026-01-08T14:10:20.841814Z'
@@ -22,7 +22,7 @@ publishDate: '2026-01-08T14:10:20.841814Z'
 # Publication type.
 # A single CSL publication type but formatted as a YAML list (for Hugo requirements).
 publication_types:
-- article-journal
+- paper-conference
 
 # Publication name and optional abbreviated publication name.
 publication: '*PAMM*'
@@ -79,10 +79,7 @@ image:
 #   Simply enter your project's folder or file name without extension.
 #   E.g. `projects: ['internal-project']` links to `content/project/internal-project/index.md`.
 #   Otherwise, set `projects: []`.
-projects: []
-links:
-- name: URL
-  url: https://doi.org/10.1002%2Fpamm.202000353
+projects: [surrogate-modeling]
+
 ---
 
-Add the **full text** or **supplementary notes** for the publication here using Markdown formatting.

@@ -14,7 +14,7 @@ status:
 superuser: true
 
 # Role/position/tagline
-role: AI Researcher | PhD
+role: Postdoctoral Researcher
 
 # Organizations/Affiliations to show in About widget
 organizations:
@@ -22,7 +22,7 @@ organizations:
     url: https://www.ideas.edu.pl/en/
 
 # Short bio (displayed in user profile at end of posts)
-bio: My research interests combines model order reduction, surrogate modeling and machine learning.
+bio: My research combines model order reduction, surrogate modeling, and machine learning — and asks what physics generative models learn.
 
 # Interests to show in About widget
 interests:

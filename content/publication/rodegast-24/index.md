@@ -3,13 +3,13 @@ title: On using machine learning algorithms for motorcycle collision detection
 authors:
 - Philipp Rodegast
 - Steffen Maier
-- Jonas Kneifl
+- admin
 - Jörg Fehr
-date: '2024-06-01'
+date: '2024-06-13'
 publishDate: '2026-01-21T13:37:33.228249Z'
 publication_types:
 - article-journal
-publication: '*Springer Science and Business Media LLC*'
+publication: '*Discover Applied Sciences*'
 doi: 10.1007/s42452-024-06014-w
 abstract: Globally, motorcycles attract vast and varied users. However, since the
   rate of severe injury and fatality in motorcycle accidents far exceeds that of passenger
@@ -26,5 +26,6 @@ abstract: Globally, motorcycles attract vast and varied users. However, since th
   is henceforth assessed and compared via multiple representative and application-oriented
   criteria.
 # Display this page in a list of Featured pages?
-featured: true
+featured: false
+projects: [surrogate-modeling]
 ---
