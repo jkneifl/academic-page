@@ -17,3 +17,42 @@
   font-weight: 600;
 }
 
+
+/* The theme applies one primary color to both modes; lighten the accent
+   in dark mode so it stays readable on the dark background. */
+$dark-accent: #80cbc4;
+
+.dark {
+  .card .section-subheading a,
+  .home-section.light a,
+  .featurette-icon,
+  .text-primary,
+  .btn-link,
+  .page-link,
+  .btn-outline-primary,
+  .navbar .navbar-nav .nav-link.active {
+    color: $dark-accent !important;
+  }
+
+  .btn-outline-primary,
+  .experience .m-2 .border,
+  .experience .col.border-right {
+    border-color: $dark-accent !important;
+  }
+
+  .btn-outline-primary:hover,
+  .experience .m-2 .border.exp-fill {
+    background-color: $dark-accent !important;
+  }
+
+  .btn-outline-primary:hover {
+    color: #1a1a1a !important;
+  }
+
+  /* Logos are dark on transparent; show them as white silhouettes. */
+  .experience img,
+  .navbar-brand img {
+    filter: brightness(0) invert(1);
+    opacity: 0.85;
+  }
+}

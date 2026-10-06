@@ -42,13 +42,7 @@
        transform="matrix(0.0770976,0,0,0.0770976,151.51864,68.143583)">
       <title
          id="title182">background</title>
-      <rect
-         fill="#ffffff"
-         id="canvas_background"
-         height="58"
-         width="58"
-         y="-1"
-         x="-1" />
+      
       <g
          display="none"
          overflow="visible"
@@ -57,14 +51,7 @@
          height="100%"
          width="100%"
          id="canvasGrid">
-        <rect
-           fill="url(#gridpattern)"
-           stroke-width="0"
-           y="0"
-           x="0"
-           height="100%"
-           width="100%"
-           id="rect185" />
+        
       </g>
     </g>
     <g
