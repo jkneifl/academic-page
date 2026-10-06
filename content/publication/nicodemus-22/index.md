@@ -8,7 +8,7 @@ title: Physics-informed Neural Networks-based Model Predictive Control for Multi
 # write the username (folder name) here, and it will be replaced with their full name and linked to their profile.
 authors:
 - Jonas Nicodemus
-- Jonas Kneifl
+- admin
 - Jörg Fehr
 - Benjamin Unger
 
@@ -16,7 +16,7 @@ authors:
 # A YAML list of notes for each author in the above `authors` list
 author_notes: []
 
-date: '2022-01-01'
+date: '2022-09-01'
 
 # Date to publish webpage (NOT necessarily Bibtex publication's date).
 publishDate: '2026-01-08T14:10:20.851360Z'
@@ -24,10 +24,10 @@ publishDate: '2026-01-08T14:10:20.851360Z'
 # Publication type.
 # A single CSL publication type but formatted as a YAML list (for Hugo requirements).
 publication_types:
-- article-journal
+- paper-conference
 
 # Publication name and optional abbreviated publication name.
-publication: '*IFAC-PapersOnLine*'
+publication: '*IFAC-PapersOnLine* (10th Vienna International Conference on Mathematical Modelling, MATHMOD 2022)'
 publication_short: ''
 
 doi: 10.1016/j.ifacol.2022.09.117
@@ -58,7 +58,7 @@ tags:
 - Real-time Control
 
 # Display this page in a list of Featured pages?
-featured: true
+featured: false
 
 # Links
 url_pdf: ''
@@ -87,10 +87,7 @@ image:
 #   Simply enter your project's folder or file name without extension.
 #   E.g. `projects: ['internal-project']` links to `content/project/internal-project/index.md`.
 #   Otherwise, set `projects: []`.
-projects: []
-links:
-- name: URL
-  url: https://www.sciencedirect.com/science/article/pii/S2405896322013118
+projects: [surrogate-modeling]
+
 ---
 
-Add the **full text** or **supplementary notes** for the publication here using Markdown formatting.

@@ -2,12 +2,12 @@
 title: Data-driven Surrogate Modeling of Structural Dynamical Systems via Latent Space
   Representations
 authors:
-- Jonas Kneifl
+- admin
 date: 2025-08-29
 publishDate: '2026-04-14T13:40:59.296857Z'
 publication_types:
-- book
-publication: '*Shaker Verlag*'
+- thesis
+publication: 'PhD thesis, University of Stuttgart. *Shaker Verlag*'
 doi: 10.18419/OPUS-18307
 abstract: Numerical simulations provide powerful predictive capabilities to analyze
   the dynamic behavior of complex systems but suffer from high computational costs,
@@ -45,4 +45,5 @@ image:
   focal_point: ''
   preview_only: false
 
+projects: [surrogate-modeling]
 ---

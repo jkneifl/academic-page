@@ -3,7 +3,7 @@ title: 'VENI, VINDy, VICI: A generative reduced-order modeling framework with un
   quantification'
 authors:
 - Paolo Conti
-- Jonas Kneifl
+- admin
 - Andrea Manzoni
 - Attilio Frangi
 - Jörg Fehr
@@ -37,7 +37,6 @@ tags:
 - sparse system identification
 - nonlinear dynamics
 - generative AI
-- journal
 # Display this page in a list of Featured pages?
 featured: true
 
@@ -68,5 +67,5 @@ image:
 #   Simply enter your project's folder or file name without extension.
 #   E.g. `projects: ['internal-project']` links to `content/project/internal-project/index.md`.
 #   Otherwise, set `projects: []`.
-projects: []
+projects: [system-identification]
 ---

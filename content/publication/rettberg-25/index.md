@@ -2,16 +2,16 @@
 title: Data-driven identification of latent port-Hamiltonian systems
 authors:
 - Johannes Rettberg
-- Jonas Kneifl
+- admin
 - Julius Herb
 - Patrick Buchfink
 - Jörg Fehr
 - Bernard Haasdonk
-date: '2025-11-01'
+date: '2025-11-27'
 publishDate: '2026-01-21T13:37:33.235808Z'
 publication_types:
 - article-journal
-publication: '*Comput. Sci. Eng.*'
+publication: '*Computational Science and Engineering*'
 doi: 10.1007/s44207-025-00007-2
 abstract: 'Conventional physics-based modeling techniques involve high effort, e.g.,
   time and expert knowledge, while data-driven methods often lack interpretability,
@@ -69,9 +69,6 @@ image:
 #   Simply enter your project's folder or file name without extension.
 #   E.g. `projects: ['internal-project']` links to `content/project/internal-project/index.md`.
 #   Otherwise, set `projects: []`.
-projects: []
+projects: [system-identification]
 ---
 
-Add the **full text** or **supplementary notes** for the publication here using Markdown formatting.
- 
----

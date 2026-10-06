@@ -4,18 +4,18 @@ date: 2025-05-19
 type: landing
 
 design:
-  # Section spacing
   spacing: '5rem'
 
-# Page sections
 sections:
   - block: collection
     content:
-      title: Selected Projects
-      text: I enjoy making things. Here are a selection of projects that I have worked on over the years.
+      title: Research Lines
+      text: From fast surrogates, to interpretable identified dynamics, to understanding the physics inside generative models.
       filters:
         folders:
           - project
+      sort_by: Weight
+      sort_ascending: true
     design:
       view: article-grid
       fill_image: false

@@ -1,8 +1,4 @@
 /* Display dissertation PDF link as a separate row under social icons. */
-:root {
-  --color-primary: rgb(0, 75, 80);
-}
-
 .network-icon li:last-child {
   display: block;
   width: 100%;
@@ -20,3 +16,4 @@
   font-size: 0.9rem;
   font-weight: 600;
 }
+

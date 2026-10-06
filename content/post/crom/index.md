@@ -6,7 +6,7 @@ subtitle: Discretization-free Approximation of PDEs Using Implicit Neural Repres
 summary: CROM - builds a continous low-dimensional embedding for vector fields of PDEs instead of relying on a predefined discretization of the latter.
 
 # Link this post with a project
-projects: []
+projects: [surrogate-modeling]
 
 # Date published
 date: '2023-10-26T00:00:00Z'
