@@ -37,6 +37,10 @@ tags:
 
 featured: true
 
+links:
+  - name: Preprint
+    url: https://arxiv.org/abs/2610.03154
+
 projects:
   - physics-interpretability
 ---
