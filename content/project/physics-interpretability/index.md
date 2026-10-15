@@ -8,6 +8,6 @@ date: '2026-05-01'
 weight: 10
 ---
 
-Video generation models are increasingly pitched as world models, yet they often fail physics benchmarks. At IDEAS Research Institute I study whether they nonetheless encode physical quantities internally — using simulator-derived ground truth, linear probes on model activations, and steering to test whether that information is causally used.
+Video generation models are increasingly pitched as world models, yet they often fail physics benchmarks. At IDEAS Research Institute I study whether they nonetheless encode physical quantities internally — using simulator-derived ground truth, linear probes on model activations, and steering to test whether that information is causally used. First results are in our preprint [Does Physics Live in the Activations?](/publication/kneifl-26/).
 
 This brings the question from my earlier work full circle: instead of building models that respect physics, asking what physics large learned models already contain.
